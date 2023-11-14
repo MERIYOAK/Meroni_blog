@@ -1,0 +1,25 @@
+.my_journey_intro {
+    margin-top: 5rem;
+}
+.title {
+    font-size: 1.5rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.story_box_intro, .daily_quote {
+    display: block;
+    text-align: center;
+}
+
+.daily_quote {
+    font-size: .9rem;
+    margin-top: 1rem;
+}
+
+@media screen and (max-width: 1334px) {
+    .story_box_intro, .daily_quote {
+        padding: 0 1rem;
+    }
+}

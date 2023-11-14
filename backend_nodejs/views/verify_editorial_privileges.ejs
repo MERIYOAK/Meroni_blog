@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="../public/styles.css"/>
+</head>
+<body>
+    <h1 id="welcome-title">Editorial Privileges</h1>
+    <p id="welcome-description">Please enter your security credentials to access editorial privileges:</p>
+
+    <form action="/verify_credentials" method="POST" class="login-form"> 
+        <label for="username">Username:</label>
+        <input type="email" name="username" id="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required><br>
+
+        <button type="submit">Verify</button>
+    </form>
+</body>
+</html>
+    

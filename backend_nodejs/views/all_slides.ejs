@@ -1,0 +1,11 @@
+<%- include('partials/header.ejs') %>
+    <h1>All Slides</h1>
+        <% for (let i = 0; i < posts.length; i++) { %>
+            <div class="all_slides_container">
+                <h2><strong>Title: </strong><%= posts[i].title %></h2>
+                <p><strong>Image: </strong> <%= posts[i].image %></p>
+                <p><strong>URL: </strong> <%= posts[i].URL %></p>
+                <p><strong>Id number: </strong> <%= posts[i].id %></p>
+            </div>
+        <% } %>
+<%- include('partials/footer.ejs') %>

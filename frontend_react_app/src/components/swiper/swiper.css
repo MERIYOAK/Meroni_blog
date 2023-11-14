@@ -1,0 +1,9 @@
+.slide_image img {
+    width: 270px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.slide {
+    padding: 2rem;
+}

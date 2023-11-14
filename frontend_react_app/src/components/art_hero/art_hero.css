@@ -1,0 +1,51 @@
+.art_hero_container {
+    position: relative;
+}
+
+.art_hero_content {
+    position: absolute;
+    top: 50%; /* Move the top of the element to the vertical center */
+    left: 50%; /* Move the left side of the element to the horizontal center */
+    transform: translate(-50%, -50%); /* Center the element both horizontally and vertically */
+}
+
+.art_hero_content h4 {
+    font-size: 1.4rem;
+    margin: 3rem 0;
+}
+
+.art_hero_content ul {
+    padding: 1rem ;
+}
+
+.art_hero_content li a {
+    transition: var(--transition-variant);
+}
+
+.art_hero_content li a:hover {
+    text-decoration:underline;
+}
+
+.art_hero_content .btn {
+    font-size: .7rem;
+}
+
+@media screen  and (max-width: 900px) {
+    .art_hero_content {
+        width: 90%;
+    }
+    
+}
+
+@media screen  and (max-width: 600px) {
+    .art_hero_content {
+        width: 100%;
+    }
+
+    .art_hero_content h4, .art_hero_content p {
+        padding: .5rem;
+    }
+    
+}
+
+

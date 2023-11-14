@@ -1,0 +1,52 @@
+.link_box {
+    background: var(--color-bg);
+    color: var(--color-black);
+    max-width: 25rem;
+    max-height: 9.06rem;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 4rem auto;
+    transition: var(--transition);
+}
+
+.link_box:hover {
+    transform: translateY(-1rem);
+    background: var(--color-light);
+}
+
+.link_box_icon {
+    font-size: 3rem;
+}
+
+.link_box strong {
+    font-size: 1.2rem;
+}
+
+.link_box p {
+    font-size: 0.8rem;
+}
+
+@media screen and (max-width:900px) {
+    .link_box {
+        width: 25rem;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width:450px) {
+    .link_box {
+        width: 23rem;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .link_box {
+        width: 21rem;
+    }
+}
+
+@media screen and (max-width:370px) {
+    .link_box {
+        width: 19rem;
+    }
+}

@@ -1,0 +1,47 @@
+.my_image {
+    margin-top: 4rem;
+}
+
+.my_image img{
+    width: fit-content;
+    height: 100vh;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.intro {
+    display: inline-block;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-bg-variant);
+}
+
+.italics {
+    font-size: 1rem;
+}
+
+.name {
+    font-size: 3rem;
+    line-height: 3.5rem;
+}
+
+.about_me {
+    display: inline-block;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media screen and (max-width: 669px) {
+    .my_image img{
+        width: 100vw;
+        border-radius: 0%;
+    }
+
+    .my_image {
+        margin-top: 0;
+    }
+}

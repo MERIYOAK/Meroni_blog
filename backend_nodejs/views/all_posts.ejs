@@ -1,0 +1,17 @@
+<%- include("partials/header.ejs") %>
+    <h1>All Posts</h1>
+        <% for (let i = 0; i < posts.length; i++) { %>
+            <div class="all_posts_container">
+                <h2><%= posts[i].title %></h2>
+                <h3>Intro</h3>
+                <p> <%= posts[i].content.intro %></p>
+                <h3>Body</h3>
+                <p> <%= posts[i].content.body %></p>
+                <h3>Conclusion</h3>
+                <p> <%= posts[i].content.conclude %></p>
+                <p><strong>AuthorURL: </strong> <%= posts[i].authorURL %></p>
+                <p><strong>Date: </strong> <%= posts[i].date %></p>
+                <p><strong>Id number: </strong> <%= posts[i].id %></p>
+            </div>
+        <% } %>
+<%- include("partials/footer.ejs") %>

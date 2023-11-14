@@ -1,0 +1,413 @@
+        /* Your existing CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            margin: 1rem 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 1rem;
+        } 
+
+        .navbar_select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+         /* CSS for the footer */
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 5rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Responsive styles */
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .footer-links {
+        margin-top: 10px;
+    }
+
+    .footer-links li {
+        display: block;
+        margin: 10px 0;
+    }
+}
+
+/* Add these styles to your existing CSS file for crud.ejs */
+#welcome-title {
+    font-size: 2rem;
+    color: white;
+    margin-top: 20px;
+}
+
+#welcome-description {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+#user-role {
+    font-size: 1.2rem;
+    color: #0077b6; /* Customize the color */
+    margin-top: 10px;
+}
+
+#start-exploring-button {
+    background-color: #0077b6; /* Customize the button color */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+/**style for all_articles.ejs**/
+.all_articles_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .article_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .article_container {
+        width: 90%;
+    }
+}
+
+/**all_body_post2**/
+.all_body_post2_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_body_post2_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_body_post2_container {
+        width: 90%;
+    }
+}
+
+/***all_body_post3****/
+.all_body_post3_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+    overflow:scroll;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_body_post3_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_body_post3_container {
+        width: 90%;
+    }
+}
+
+/***all_body_posts****/
+.all_body_posts_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_body_posts_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_body_posts_container {
+        width: 90%;
+    }
+}
+
+/******all_box_posts*/
+.all_box_posts_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_box_posts_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_box_posts_container {
+        width: 90%;
+    }
+}
+
+/****all_posts*****/
+.all_posts_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_posts_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_posts_container {
+        width: 90%;
+    }
+}
+
+/***all_slides****/
+.all_slides_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_slides_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_slides_container {
+        width: 90%;
+    }
+}
+
+/*******all_small_posts****/
+.all_small_posts_container {
+    width: 70%;
+    margin: 3rem auto;
+    padding: 1.2rem;
+    background-color: black;
+    box-shadow: .9rem .9rem 3rem rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .all_small_posts_container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .all_small_posts_container {
+        width: 90%;
+    }
+}
+
+/******article_template css***/
+form {
+    max-width: 70rem;
+    background-color: black;
+    padding: 20px;
+    border-radius: 1rem;
+    margin: 2rem auto;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.9);
+}
+
+label {
+    display: block;
+    margin-top: 1.5rem;
+    color: white;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+#username,
+#password  {
+    width: 95%;
+    padding: .7rem;
+    border-radius: .5rem;
+    margin-top: .3rem;
+}
+
+input[type="number"]
+{
+    width: 3rem;
+    padding: .7rem;
+    border-radius: .5rem;
+    margin-top: .3rem;
+}
+
+.postType {
+    display: block;
+    width: 30%;
+    padding: .7rem;
+    border-radius: .5rem;
+    margin: 1rem auto;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+@media screen and (max-width: 700px) {
+    .postType {
+    width: 70%;
+    }
+} 
+
+/****confirmtion css***/
+.confirmation_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.confirmation {
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.login-form {
+    max-width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

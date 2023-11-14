@@ -1,0 +1,44 @@
+.philo_article {
+    background-color: var(--color-bg-variant);
+    width: 350px;
+    margin: 2rem;
+    border-radius: 1rem;
+    transition: var(--transition);
+}
+
+/* .philo_article:hover {
+    transform: scale(1.1);
+} */
+
+.article_image img {
+    width: 50%;
+    height: 250px;
+    margin: 0 auto;
+}
+
+.void {
+    height: .5rem;
+    background-color: var(--color-special);
+}
+
+.article_content h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 1rem 1.7rem;
+}
+
+.article_content p {
+    font-size: .9rem;
+    padding: .5rem;
+}
+
+.article_content .btn-primary {
+    margin: 1rem;
+}
+
+
+body.dark-theme .philo_article {
+    background: var(--color-bg2-variant);
+}
+
+

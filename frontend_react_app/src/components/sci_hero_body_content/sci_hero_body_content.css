@@ -1,0 +1,81 @@
+.bullet{
+    background: var(--color-black);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.body_h2 {
+    font-family: libre-baskerville,serif;
+    font-size: 3rem;
+    font-style: italic;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    line-height: 1.1;
+}
+
+.footer_h2 {
+    font-family: libre-baskerville,serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.75rem;
+    line-height: 1.1;
+    margin: 5px 0 8px 0;
+}
+
+.body_h2:hover, .footer_h2:hover {
+    text-decoration: underline;
+}
+
+.footer_p {
+    padding: 0 0 10px;
+    font-size: .8rem;
+}
+
+.body_p, .explore_button {
+    font-size: .8rem;
+}
+
+.explore_button {
+    text-decoration: underline;
+    transition: var(--transition);
+}
+
+.explore_button:hover {
+    text-decoration: none;
+    color: var(--color-black);
+}
+
+/***dark-theme**/
+body.dark-theme .bullet {
+    background: var(--color-white);
+}
+
+@media screen and (max-width: 1250px) {
+    .body_h2 {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+        line-height: 1;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .body_h2 {
+        font-size: 2rem;
+    }
+
+    .bullet{
+        width: 8px;
+        height: 8px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .body_h2 {
+        font-size: 2rem;
+        
+        margin-bottom: 1rem;
+    }
+}

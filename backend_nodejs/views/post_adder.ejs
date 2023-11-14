@@ -1,0 +1,39 @@
+<%- include('partials/header.ejs') %>
+    <h1>Add Post</h1>
+    <form action="/postAdder" method="POST">  
+
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" required><br>
+
+        <label for="intro">Intro:</label>
+        <textarea name="content[intro]" id="intro" required></textarea><br>
+
+        <label for="body">Body:</label>
+        <textarea name="content[body]" id="body" required></textarea><br>
+
+        <label for="conclude">Conclusion:</label>
+        <textarea name="content[conclude]" id="conclude" required></textarea><br>
+
+        <label for="image">Image URL:</label>
+        <input type="text" name="image" id="image" required><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" required><br>
+
+        <label for="authorURL">Author URL:</label>
+        <input type="text" name="authorURL" id="authorURL" required><br>
+
+        <select id="postType" name="postType" class="postType">
+            <option value="" disabled selected>Select Post Type</option>
+            <option value="my_journey_post">My Journey Post</option>
+            <option value="finance_post">Finance Post</option>
+            <option value="philosophy_post">Philosophy Post</option>
+            <option value="science_post">Science Post</option>
+            <option value="technology_post">Technology Post</option>
+            <option value="art_post">Art Post</option>
+            <option value="politics_post">Politics Post</option>
+        </select>
+
+        <button type="submit">Add Post</button>
+    </form>
+<%- include('partials/footer.ejs') %>

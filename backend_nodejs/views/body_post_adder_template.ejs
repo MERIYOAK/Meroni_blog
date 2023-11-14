@@ -1,0 +1,41 @@
+<%- include('partials/header.ejs') %>
+    <h1>Add a Body Post</h1>
+    <form action="/postAdder" method="POST">
+        <label for="main_title">Main Title:</label>
+        <input type="text" name="main_title" id="main_title" required><br>
+
+        <label for="sub_title">Sub Title:</label>
+        <input type="text" name="sub_title" id="sub_title" required><br>
+
+        <label for="main_link">Main Link:</label>
+        <input type="text" name="main_link" id="main_link" required><br>
+
+        <label for="image">Image URL:</label>
+        <input type="text" name="image" id="image" required><br>
+
+        <label for="article_title">Article Title:</label>
+        <input type="text" name="article_title" id="article_title" required><br>
+
+        <label for="article_content">Article Content:</label>
+        <textarea name="article_content" id="article_content" required></textarea><br>
+
+        <label for="article_link">Article Link:</label>
+        <input type="text" name="article_link" id="article_link" required><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" required><br>
+
+        <label for="author_name">Author Name:</label>
+        <input type="text" name="author_name" id="author_name" required><br>
+
+        <label for="authorURL">Author URL:</label>
+        <input type="text" name="authorURL" id="authorURL" required><br>
+
+        <select id="postType" name="postType" class="postType">
+            <option value="" disabled selected>Select Article Type</option>
+            <option value="technology_body_post">Technology Body Post</option>
+        </select>
+
+        <button type="submit">Add Body Post</button>
+    </form>
+<%- include('partials/footer.ejs') %>

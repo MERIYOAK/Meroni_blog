@@ -1,0 +1,117 @@
+.politics_body_container {
+    margin: 7rem 0;
+    padding: 1rem 0;
+    background: var(--color-bg2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem; 
+}
+
+.politics_body_left {
+    padding: 5rem;
+    position: relative;
+    color: var(--color-white);
+}
+
+.politics_body_left h1 {
+    line-height: 1.3
+}
+
+.politics_body_left p {
+    padding: 2rem 0;
+}
+
+.politics_body_left .proof {
+    margin-top: 2rem;
+}
+
+.politics_body_left_side_link {
+    position: absolute;
+    left: 0;
+    top: 80%; /* Adjust as needed to vertically center the div */
+    transform: rotate(-90deg); /* To make it vertical */
+    transform-origin: top left; /* Set the rotation origin */
+    background-color: var(--color-bg);
+    color: var(--color-black);
+    padding: 0.5rem 1rem; /* Add padding to make it visible */
+}
+
+
+
+.politics_body_right {
+    position: relative;
+}
+
+.first_image, .second_image  {
+    width: 500px;
+    height: 400px;
+}
+
+.third_image {
+    width: 150px;
+    height: 150px;
+}
+
+.first_image img, .second_image img, .third_image img {
+    border-radius: 15px;
+}
+
+.first_image {
+    position: absolute;
+    top: 15%;
+    left: 7%;
+}
+
+.second_image {
+    position: absolute;
+    top: 40%;
+    left: 25%;
+}
+
+.third_image {
+    position: absolute;
+    top: 45%;
+    left: -10%;
+}
+
+body.dark-theme .politics_body_left_side_link a {
+    color: var(--color-black);
+}
+
+@media screen and (max-width: 1350px) {
+    .first_image, .second_image  {
+        width: 400px;
+        height: 300px;
+    }
+    
+    .third_image {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media screen and (max-width: 1094px) {
+    .first_image, .second_image  {
+        width: 350px;
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .politics_body_container {
+        grid-template-columns: 1fr;
+    }
+
+    .politics_body_right {
+        display: none;
+    }
+
+    .politics_body_left {
+        padding: 3rem;
+    }
+
+    .politics_body_left_side_link {
+        top: 97%; 
+        height: 2rem;
+    }
+}

@@ -1,0 +1,24 @@
+.art_body_one_image_part img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: .5rem;
+}
+
+.art_body_one_content_part a, span{
+    font-size: .8rem;
+}
+
+.art_body_one_content_small_box {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 1rem;
+}
+
+@media screen and (max-width: 750px) {
+    .art_body_one_content_small_box {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+}

@@ -1,0 +1,27 @@
+.tech_trending_box_container_with_toggler {
+    position: relative;
+}
+
+.tech_trending_box_container {
+    display: flex;
+    margin: 1rem 0 0 2rem;
+}
+
+.tech_trending_box_container > * {
+    flex: 0 0 300px;
+}
+
+.tech_trending_box_toggler {
+    position: absolute;
+    bottom: -3rem;
+    right: 0;
+    z-index: 111;
+}
+
+.tech_trending_box_toggler button {
+    width: 30px;
+    background-color: var(--color-primary);
+    margin-right: 20px;
+    border-radius: 20%;
+    font-size: 1.5rem;
+}

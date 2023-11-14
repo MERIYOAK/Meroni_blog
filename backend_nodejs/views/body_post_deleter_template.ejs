@@ -1,0 +1,38 @@
+<%- include('partials/header.ejs') %>
+    <h1>Body Post Deleter</h1>
+    <form action="/deleteMyPost/<%= post.id %>/<%= post.tableName %>?_method=DELETE" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+
+        <label for="main_title">Main Title:</label>
+        <input type="text" name="main_title" id="main_title" required value="<%= post.main_title %>"><br>
+
+        <label for="sub_title">Sub Title:</label>
+        <input type="text" name="sub_title" id="sub_title" required value="<%= post.sub_title %>"><br>
+        
+        <label for="main_link">Main Link:</label>
+        <input type="text" name="main_link" id="main_link" required value="<%= post.main_link %>"><br>
+
+        <label for="image">Image URL:</label>
+        <input type="text" name="image" id="image" required value="<%= post.image %>"><br>
+
+        <label for="article_title">Article Title:</label>
+        <input type="text" name="article_title" id="article_title" required value="<%= post.article_title %>"><br>
+
+        <label for="article_content">Article Content:</label>
+        <textarea name="article_content" id="article_content" required><%= post.article_content %></textarea><br>
+
+        <label for="article_link">Article Link:</label>
+        <input type="text" name="article_link" id="article_link" required value="<%= post.article_link %>"><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" required value="<%= post.date %>"><br>
+
+        <label for="author_name">Author Name:</label>
+        <input type="text" name="author_name" id="author_name" required value="<%= post.author_name %>"><br>
+
+        <label for="authorURL">Author URL:</label>
+        <input type="text" name="authorURL" id="authorURL" required value="<%= post.authorURL %>"><br>
+
+        <button type="submit">Delete Body Post</button>
+    </form>
+<%- include('partials/footer.ejs') %>

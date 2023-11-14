@@ -1,0 +1,18 @@
+<%- include('partials/header.ejs') %>
+    <h1>Add Post</h1>
+    <form action="/postAdder" method="POST">
+        <label for="author">Author/Title:</label>
+        <input type="text" name="author" id="author" required>
+
+        <label for="quote">Quote/Line:</label>
+        <textarea name="quote" id="quote" rows="4" required></textarea>
+
+        <select id="postType" name="postType" class="postType">
+            <option value="" disabled selected>Select Post Type</option>
+            <option value="daily_quote">Daily Quote Post</option>
+            <option value="politics_hero_post">Politics Hero Post</option>
+        </select>
+
+        <button type="submit">Add Post</button>
+    </form>
+<%- include('partials/footer.ejs') %>

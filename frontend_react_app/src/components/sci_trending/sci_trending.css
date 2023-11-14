@@ -1,0 +1,31 @@
+.sci_trending_container {
+    margin: 5rem 0;
+}
+
+.sci_trending_heading_container {
+    display: flex;
+}
+
+.sci_trending_heading_icon {
+    font-size: 2rem;
+    margin: 0 .5rem;
+}
+
+.sci_trending_container .void2 {
+    margin-top: 0;
+}
+
+.sci_trending_box_container {
+    margin: 1rem 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 550px) {
+    .sci_trending_box_container {
+        margin: 1rem 1rem;
+    }
+}

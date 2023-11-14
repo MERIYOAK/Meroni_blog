@@ -1,0 +1,144 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: transparent;
+    height: 4rem;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-black);
+    cursor: default;
+}
+
+.logo:hover {
+    color: var(--color-light);
+}
+
+.navbar {
+    display: flex;
+    gap: 4rem;
+}
+
+.mobile__menu {
+    display: none;
+}
+
+/********************change navbar style on scroll*****************/
+.window-scroll {
+    background: var(--color-bg-variant);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 2000px) {
+    header {
+        font-size: .8rem;
+        height: 3rem;
+    }
+}
+
+/******************media queries (tablets) ****************/
+@media screen and (max-width: 1200px) {
+    .logo {
+        margin-left: -5rem;
+    }
+    .mobile__menu {
+        display: flex;  
+    }
+
+    .mobile__menu button {
+        font-size: 1.8rem;
+        border-radius: 20%;
+        padding-top: 0.4rem;
+        cursor: pointer;
+        background: transparent;
+        color: var(--color-black);   
+        margin-right: -5rem;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 5rem;
+        right: 5%;
+        height: fit-content;
+        flex-direction: column;
+        width: 18rem; 
+        gap: 2px;
+    }
+
+    .navbar__hidden {
+        display: none;
+    }
+
+    .navbar a:nth-child(1) {
+        --i:2
+    }
+    
+    .navbar a:nth-child(2) {
+        --i:3
+    }
+    
+    .navbar a:nth-child(3) {
+        --i:4
+    }
+    
+    .navbar a:nth-child(4) {
+        --i:5
+    }
+    
+    .navbar a:nth-child(5) {
+        --i:6
+    }
+    
+    .navbar a:nth-child(6) {
+        --i:7
+    }
+    
+    .navbar a:nth-child(7) {
+        --i:8
+    }
+
+    .navbar a {
+        background: var(--color-bg-variant);
+        height: 4.5rem;
+        width: 80%;
+        display: grid;
+        place-items: center;
+        margin-bottom: .5rem;
+        border-radius: .5rem;
+        animation: animateNavItems 1s linear forwards;
+        animation-delay: calc(.1s * var(--i));
+        transform-origin: top right;
+        opacity: 0;
+    }
+
+    @keyframes animateNavItems {
+        from {
+            transform: rotateZ(-90deg) rotateX(90deg) scale(0.1)
+        } 
+
+        to {
+            transform: rotateZ(0) rotateX(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    body.dark-theme .navbar a {
+        background: var(--color-bg2-variant);
+    }
+    
+
+}
+
+@media screen and (max-width: 376px) {
+    .logo {
+        margin-left: -3rem;
+    }
+}
+

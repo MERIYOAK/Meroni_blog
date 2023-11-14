@@ -1,0 +1,28 @@
+.art_body_two_box_container {
+    padding: 1rem;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.art_body_two_image_container img {
+    max-width: 680px;
+    max-height: 400px;
+    border-radius: .5rem;
+}
+
+
+
+@media screen and (max-width: 750px) {
+    .art_body_two_box_container {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin: 3rem 0;
+        padding: 0;
+    }
+
+    .art_body_two_box_container h3 {
+        margin: 1rem 0;
+    }
+}

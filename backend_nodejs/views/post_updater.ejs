@@ -1,0 +1,46 @@
+<%- include('partials/header.ejs') %>
+    <h1>Enter ID Number to Update</h1>
+    <form id="updateForm" method="GET">
+        <label for="postId">Post ID: </label>
+        <input type="number" id="postId" name="postId" required>
+        <select id="postType" name="postType" class="postType">
+            <option value="" disabled selected>Select Post Type</option>
+            <option value="my_journey_post">My Journey Post</option>
+            <option value="finance_post">Finance Post</option>
+            <option value="philosophy_post">Philosophy Post</option>
+            <option value="science_post">Science Post</option>
+            <option value="technology_post">Technology Post</option>
+            <option value="art_post">Art Post</option>
+            <option value="politics_post">Politics Post</option>
+            <option value="daily_quote">Daily Quote Post</option>
+            <option value="finance_slide_post">Finance Slide Post</option>
+            <option value="philosophy_article_post">Philosophy Article Post</option>
+            <option value="science_article_post">Science Article Post</option>
+            <option value="technology_body_post">Technology Body Post</option>
+            <option value="technology_box_post">Technology Box Post</option>
+            <option value="art_body_post">Art Body Post</option>
+            <option value="politics_body_post">Politics Body Post</option>
+            <option value="politics_hero_post">Politics Hero Post</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script>
+        const form = document.getElementById('updateForm');
+        const postIdInput = document.getElementById('postId');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const postId = postIdInput.value;
+
+            const postType = document.getElementById('postType').value;
+
+            form.action = `/postUpdater?postId=${postId}&postType=${postType}`;
+            form.submit();
+        });
+    </script>
+</body>
+</html>
+
+

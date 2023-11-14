@@ -1,0 +1,23 @@
+<%- include('partials/header.ejs') %>
+    <h1>Article Updater</h1>
+    <form action="/updateMyPost/<%= post.id %>/<%= post.tableName %>" method="POST"> <!-- Use POST for form updates -->
+
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" required value="<%= post.title %>"><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" required value="<%= post.date %>"><br>
+
+        <label for="content">Intro:</label>
+        <textarea name="content" id="content" required><%= post.content %></textarea><br>
+
+        <label for="image">Image URL:</label>
+        <input type="text" name="image" id="image" required value="<%= post.image %>"><br>
+
+        <label for="goToURL">Go to URL:</label>
+        <input type="text" name="goToURL" id="goToURL" required value="<%= post.goToURL %>"><br>
+
+        <button type="submit">Update Article</button>
+    </form>
+<%- include('partials/footer.ejs') %>
+
