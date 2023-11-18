@@ -57,6 +57,9 @@ function Footer() {
                 <a href='http://localhost:3000/editorial_privileges' className="menu__link">Editorial privileges</a>
             </div>
             <p>&copy;2023 Meroni | All Rights Reserved</p>
+            <div className='go_to_top_container'>
+                <a onClick={() => window.scrollTo(0, 0)} className='go_to_top'><span className='up'>&uarr;</span></a>
+            </div>
         </footer>
     )
 }

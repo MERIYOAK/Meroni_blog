@@ -3,13 +3,10 @@
   display: inline-block;
   top: 80px;
   height: 2.1rem;
-  width: 3.5rem;
+  width: 2.1rem;
   right: 10px;
   z-index: 111;
-}
-
-.toggle-checkbox {
-  display: none;
+  cursor: pointer;
 }
 
 .toggle-slider {
@@ -20,58 +17,35 @@
   right: 0;
   bottom: 0;
   background-color: var(--color-bg2);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.toggle-slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: var(--color-bg2);
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: background-color 0.4s;
+  transition: background-color 0.4s;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.toggle-checkbox:checked + .toggle-slider {
+.toggle-slider.light-mode {
+  background-color: var(--color-white);
+}
+
+.toggle-slider.dark-mode {
   background-color: var(--color-bg2);
 }
 
-.toggle-checkbox:checked + .toggle-slider:before {
-  background-color: var(--color-bg2);
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-.light-icon, .dark-icon {
-  position: absolute;
-  top: 6px;
+.dark-icon,
+.light-icon {
   font-size: 1.5rem;
 }
 
 .dark-icon {
-  left: 5px;
-}
-
-.light-icon {
-  right: 5px;
   color: var(--color-white);
 }
 
-@media screen and (max-width: 50px) {
-  .toggle-switch {
-    height: 35px;
-    width: 60px;
-  }
+.light-icon {
+  color: var(--color-bg2);
 }
 
-/* Dark theme styles */
 body.dark-theme {
     background-color: var(--color-bg2);
     color: var(--color-white);
@@ -100,4 +74,3 @@ body.dark-theme .mobile__menu button {
 body.dark-theme .window-scroll {
     background: var(--color-bg2-variant);
 }
-

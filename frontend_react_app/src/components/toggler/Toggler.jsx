@@ -34,15 +34,11 @@ function Toggler() {
     }, [isToggled]);
 
     return (
-        <label className="toggle-switch">
-            <input
-                type="checkbox"
-                checked={isToggled}
-                onChange={handleToggle}
-                className="toggle-checkbox"
-            />
-            <span title={title} className="toggle-slider">{!isToggled ? <MdDarkMode className="dark-icon" /> : <MdLightMode className="light-icon" />}</span>
-        </label>
+        <div className="toggle-switch" onClick={handleToggle}>
+            <span className={`toggle-slider ${isToggled ? 'light-mode' : 'dark-mode'}`}>
+                {!isToggled ? <MdDarkMode className="dark-icon" /> : <MdLightMode className="light-icon" />}
+            </span>
+        </div>
     );
 }
 

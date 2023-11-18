@@ -44,17 +44,17 @@ function Nav() {
 
   return (
     <header className="header">
-      <Link to="/" className="logo">Meroni</Link>
+      <Link to="/" onClick={handleMenuClose} className="logo">Meroni</Link>
       <nav
         className={isSmallScreen && !isMenuOpen ? "navbar__hidden" : "navbar"}
       >
-        <Link to="/">My Journey</Link>
-        <Link to="/finance">Finance</Link>
-        <Link to="/philosophy">Philosophy</Link>
-        <Link to="/science">Science</Link>
-        <Link to="/tech">Tech</Link>
-        <Link to="/art">Art</Link>
-        <Link to="/politics">Politics</Link>
+        <Link to="/" onClick={handleMenuClose}>My Journey</Link>
+        <Link to="/finance" onClick={handleMenuClose}>Finance</Link>
+        <Link to="/philosophy" onClick={handleMenuClose}>Philosophy</Link>
+        <Link to="/science" onClick={handleMenuClose}>Science</Link>
+        <Link to="/tech" onClick={handleMenuClose}>Tech</Link>
+        <Link to="/art" onClick={handleMenuClose}>Art</Link>
+        <Link to="/politics" onClick={handleMenuClose}>Politics</Link>
       </nav>
       <div className="mobile__menu">
         {!isMenuOpen && (
