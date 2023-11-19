@@ -103,3 +103,10 @@
         margin: 1rem 0rem .5rem;
     }
 }
+
+@media screen and (max-width:400px) {
+    .finance_hero_container {
+        top: 60%;
+    }
+}
+

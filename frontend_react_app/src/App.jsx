@@ -16,18 +16,18 @@ import Toggler from './components/toggler/Toggler';
 
 function App() {
   // const my_journey_posts = [
-  //     {
-  //         id: 1,
-  //         title: "Idiocruelocracy",
-  //         content: {
-  //             intro: "The most excruciating feeling is the realization that you possess immense potential, yet circumstances beyond your control shackle your abilities and thwart your aspirations. It's not your fault; you're hindered by forces beyond your command. These oppressive forces diminish your brilliance, grind down your spirit (not in an enjoyable way, by any means, LOL). Those who have lost hope and chosen different paths somehow seem to thrive while you remain just steps away from your goals. You ponder, why not take those steps? But fear holds you back. The fear of being crushed with no chance of recovery looms large.",
-  //             body: "It's a peculiar predicament where individuals of outstanding quality feel ashamed of their excellence. Those with both vision and insight find themselves tormented internally by their own doubts and externally by those who envy their clarity. These envious ones, in turn, are captives of their own insecurities. It's a vicious cycle of people attacking one another, a profoundly disheartening situation. In this milieu, everyone becomes a victim. A victim of ignorance, egotism, and egotism-driven foolishness, a phenomenon I like to call 'idiocruelocracy' (my own term, indeed). This leads to a surreal inversion of conventional wisdom. While the world often preaches self-improvement, here it seems the opposite holds true. In this environment, quality is devalued, and those with no discernible quality are lauded as if they possess everything. You don't seek help from anyone; you're capable of achieving your goals independently. Yet, as you endeavor to make progress, the very people around you, instead of providing support, attempt to control every aspect of your life, from your dietary choices to your daily activities, your social circles to your aspirations.",
-  //             conclude: "It's a disconcerting place, an existence characterized by chaos, an unconventional society where absurdity reigns. In the midst of all this, people on Earth continue to speak, attempting to inspire and motivate. They write numerous 'how-to' books, delivering sermons about conquering one's inner demons. They share what they consider the path to wealth and success. However, it appears that in this unique environment, the rules are inverted. Quality is perceived as worthless, while the absence of quality is celebrated as perfection. It's not that you seek assistance from others; you possess the capability to forge your path. But as you strive to do so, it would be a welcome relief if those around you allowed you the freedom to do it your way. Regrettably, they don't extend that courtesy. Instead, they attempt to exert control over every facet of your existence, leaving you feeling ensnared in a web of constraints. It's a bewildering place, a life filled with eccentricities, a society that defies convention at every turn. In the face of such circumstances, you may find yourself wondering, 'What must I do?' The answer remains elusive. But, in the words of Tupac Shakur, 'This ain't living.' Down with idiocruelocracy."
-  //         },
-  //         image: "https://images.pexels.com/photos/13411949/pexels-photo-13411949.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load ",
-  //         date: "2023-10-25",
-  //         authorURL: "https://www.facebook.com/yonathan.araia"
-  //     }
+  //   {
+  //     id: 1,
+  //     title: "Idiocruelocracy",
+  //     content: {
+  //       intro: "The most excruciating feeling is the realization that you possess immense potential, yet circumstances beyond your control shackle your abilities and thwart your aspirations. It's not your fault; you're hindered by forces beyond your command. These oppressive forces diminish your brilliance, grind down your spirit (not in an enjoyable way, by any means, LOL). Those who have lost hope and chosen different paths somehow seem to thrive while you remain just steps away from your goals. You ponder, why not take those steps? But fear holds you back. The fear of being crushed with no chance of recovery looms large.",
+  //       body: "It's a peculiar predicament where individuals of outstanding quality feel ashamed of their excellence. Those with both vision and insight find themselves tormented internally by their own doubts and externally by those who envy their clarity. These envious ones, in turn, are captives of their own insecurities. It's a vicious cycle of people attacking one another, a profoundly disheartening situation. In this milieu, everyone becomes a victim. A victim of ignorance, egotism, and egotism-driven foolishness, a phenomenon I like to call 'idiocruelocracy' (my own term, indeed). This leads to a surreal inversion of conventional wisdom. While the world often preaches self-improvement, here it seems the opposite holds true. In this environment, quality is devalued, and those with no discernible quality are lauded as if they possess everything. You don't seek help from anyone; you're capable of achieving your goals independently. Yet, as you endeavor to make progress, the very people around you, instead of providing support, attempt to control every aspect of your life, from your dietary choices to your daily activities, your social circles to your aspirations.",
+  //       conclude: "It's a disconcerting place, an existence characterized by chaos, an unconventional society where absurdity reigns. In the midst of all this, people on Earth continue to speak, attempting to inspire and motivate. They write numerous 'how-to' books, delivering sermons about conquering one's inner demons. They share what they consider the path to wealth and success. However, it appears that in this unique environment, the rules are inverted. Quality is perceived as worthless, while the absence of quality is celebrated as perfection. It's not that you seek assistance from others; you possess the capability to forge your path. But as you strive to do so, it would be a welcome relief if those around you allowed you the freedom to do it your way. Regrettably, they don't extend that courtesy. Instead, they attempt to exert control over every facet of your existence, leaving you feeling ensnared in a web of constraints. It's a bewildering place, a life filled with eccentricities, a society that defies convention at every turn. In the face of such circumstances, you may find yourself wondering, 'What must I do?' The answer remains elusive. But, in the words of Tupac Shakur, 'This ain't living.' Down with idiocruelocracy."
+  //     },
+  //     image: "https://images.pexels.com/photos/13411949/pexels-photo-13411949.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load ",
+  //     date: "2023-10-25",
+  //     authorURL: "https://www.facebook.com/yonathan.araia"
+  //   }
   // ];
 
   // let daily_quote_post = {
@@ -249,7 +249,7 @@ function App() {
   //   }
   // ]
 
-  // let Tech_trending_box_posts = [
+  // let tech_trending_box_posts = [
   //   {
   //     id: 1,
   //     image: "https://i.pcmag.com/imagery/articles/052dySUj05NEHb0fGqS99nP-1.fit_lpad.size_300x169.v1695844863.jpg",
@@ -284,7 +284,7 @@ function App() {
   //   }
   // ]
 
-  // let art_story_box_posts = [
+  // let art_posts = [
   //   {
   //     id: 1,
   //     title: "The impact of AI on the Art World",
@@ -405,7 +405,7 @@ function App() {
   //   }
   // ];
 
-  // Initialize state to store fetched data
+  //Initialize state to store fetched data
   const [my_journey_posts, setMyJourneyPosts] = useState([]);
   const [daily_quote_post, setDailyQuotePost] = useState({});
   const [finance_posts, setFinancePosts] = useState([]);
