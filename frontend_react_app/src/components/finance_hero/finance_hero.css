@@ -29,7 +29,7 @@
     text-align: center;
     font-family: lora,serif;
     font-weight: 500;
-    font-size: 3.052rem;
+    font-size: 3rem;
     margin: 20px 0;
     line-height: 120%;
     padding-bottom: 1rem;
@@ -37,7 +37,7 @@
 
 .intro2 .title span {
     color: var(--color-special) !important;
-    font-size: 3.052rem;
+    font-size: 3rem;
 }
 
 .link_box_container {
@@ -99,6 +99,10 @@
 }
 
 @media screen and (max-width:600px) {
+    .intro2 .title, .intro2 .title span {
+        font-size: 2.5rem;
+    }
+
     .link_box_container {
         margin: 1rem 0rem .5rem;
     }
@@ -107,6 +111,10 @@
 @media screen and (max-width:400px) {
     .finance_hero_container {
         top: 60%;
+    }
+
+    .intro2 .title, .intro2 .title span {
+        font-size: 2rem;
     }
 }
 
