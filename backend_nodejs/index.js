@@ -1,4 +1,4 @@
-//jshint esversion:6
+// //jshint esversion:6
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -10,6 +10,10 @@ import { dirname } from 'path';
 import path from 'path';
 import { config as configDotenv } from "dotenv";
 import bcrypt from "bcrypt";
+import cors from "cors";
+import multer from "multer";
+import { handleImage } from "./handleImage.js";
+import MongoStore from 'connect-mongo';
 
 // Load environment variables from .env file
 configDotenv();
@@ -18,29 +22,49 @@ const app = express();
 const port = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const upload = multer();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(methodOverride('_method'));
 app.set("view engine", "ejs");
 app.use(express.static("../frontend_react_app/dist"));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/public', express.static(path.join(__dirname, 'public'), { 'Content-Type': 'text/css' }));
-app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET, POST, PUT, DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+}));
+
+// Replace 'your-mongodb-uri' with your MongoDB connection URI
+const mongoStore = new MongoStore({
+    mongoUrl: process.env.MONGODB_URI,
+    collection: 'sessions',
+    ttl: process.env.SESSION_TTL,
+});
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: mongoStore,
     cookie: {
-        maxAge: process.env.MAX_AGE,
+        maxAge: process.env.SESSION_TTL * 1000,
+        //httpOnly: true,
+        //secure: true,
+        //sameSite: 'Strict',
     },
-    secure: true,
-    httpOnly: true,
-    sameSite: 'strict',
 }));
 
 // Middleware for authentication
 const authenticate = (req, res, next) => {
     if (req.session.isAuthenticated) {
+        console.log('Authenticated');
         next();
     } else {
+        console.log('Not authenticated');
         res.redirect('/');
     }
 };
@@ -49,8 +73,10 @@ const authenticate = (req, res, next) => {
 const authorize = (roles) => {
     return (req, res, next) => {
         if (roles.includes(req.session.userRole)) {
+            console.log('Authorized');
             next();
         } else {
+            console.log('Not authorized');
             res.redirect('/');
         }
     };
@@ -63,11 +89,17 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 });
 
 const userSchema = new mongoose.Schema({
+    id: Number,
+    firstName: String,
+    middleName: String,
+    lastName: String,
     email: String,
-    password: String
+    password: String,
+    imageUrl: String,
 });
 
 const User = new mongoose.model("User", userSchema);
+const Reader = new mongoose.model("Reader", userSchema);
 
 const createInitialUser = async () => {
     try {
@@ -77,7 +109,12 @@ const createInitialUser = async () => {
             try {
                 const hash = await bcrypt.hash(process.env.PASSWORD, parseInt(process.env.SALT_ROUNDS));
                 const singleUser = new User({
+                    id: 1,
+                    firstName: process.env.FIRST_NAME,
+                    middleName: process.env.MIDDLE_NAME,
+                    lastName: process.env.LAST_NAME,
                     email: process.env.EMAIL,
+                    image: './uploads/Meron.jpg',
                     password: hash
                 });
                 try {
@@ -99,6 +136,13 @@ const createInitialUser = async () => {
 
 createInitialUser();
 
+
+// const likesSchema = new mongoose.Schema({
+//     count: { type: Number, default: 0 }
+// });
+
+// const Likes = mongoose.model('Likes', likesSchema);
+
 const my_journey_post_schema = new mongoose.Schema({
     tableName: String,
     id: Number,
@@ -110,7 +154,39 @@ const my_journey_post_schema = new mongoose.Schema({
     },
     image: String,
     date: String,
-    authorURL: String
+    authorURL: String,
+    likesCount: { type: Number, default: 0 }, // New field to store likes count
+    likes: {
+        type: [
+            {
+                userId: String,
+            }
+        ],
+        default: []
+    },
+    commentsCount: { type: Number, default: 0 },
+    comments: {
+        type: [
+            {
+                comment: String,
+                userId: String,
+                userFirstName: String,
+                userMiddleName: String,
+                userImage: String,
+                date: String
+            }
+        ],
+        default: []
+    },
+    sharesCount: { type: Number, default: 0 },
+    shares: {
+        type: [
+            {
+                userId: String
+            }
+        ],
+        default: []
+    }
 });
 
 const My_journey_post = mongoose.model("my_journey_post", my_journey_post_schema);
@@ -120,6 +196,16 @@ const Science_post = mongoose.model("science_post", my_journey_post_schema);
 const Technology_post = mongoose.model("technology_post", my_journey_post_schema);
 const Art_post = mongoose.model("art_post", my_journey_post_schema);
 const Politics_post = mongoose.model("politics_post", my_journey_post_schema);
+
+// const likeSchema = new mongoose.Schema({
+//     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+//     userId: String,
+//     timestamp: String
+// });
+
+// const Like = mongoose.model('Like', likeSchema);
+
+//mongoose.model('Post', my_journey_post_schema);
 
 const daily_quote_schema = new mongoose.Schema({
     tableName: String,
@@ -232,6 +318,10 @@ app.get("/science", handleRequest);
 app.get("/tech", handleRequest);
 app.get("/art", handleRequest);
 app.get("/politics", handleRequest);
+app.get("/sign_up", handleRequest);
+app.get("/user_profile", handleRequest);
+app.get("/log_in", handleRequest);
+app.get("/log_out", handleRequest);
 
 // used to fetch all posts and daily quote to app.jsx in index.html
 app.get('/posts', async (req, res) => {
@@ -252,6 +342,7 @@ app.get('/posts', async (req, res) => {
         const politics_posts = await Politics_post.find().sort({ id: -1 });
         const black_body_content = await Politics_body_post.findOne().sort({ _id: -1 });
         const hero_content_box_posts = await Politics_hero_post.find().sort({ _id: -1 }).limit(3);
+
 
         res.json({
             my_journey_posts,
@@ -304,8 +395,6 @@ app.post('/verify_credentials', async (req, res) => {
                         console.error('Error saving session:', err);
                         res.json({ error: 'Error saving session' });
                     } else {
-                        console.log('User logged in:', foundUser.email);
-                        console.log('User role:', req.session.userRole);
                         res.render('crud');
                     }
                 });
@@ -422,7 +511,7 @@ app.post("/postAdder", authenticate, authorize([process.env.SESSION_ROLE]), asyn
                     image,
                     date,
                     authorURL,
-                    tableName: 'finance_post'
+                    tableName: 'finance_post',
                 });
                 break;
             }
@@ -446,7 +535,7 @@ app.post("/postAdder", authenticate, authorize([process.env.SESSION_ROLE]), asyn
                     image,
                     date,
                     authorURL,
-                    tableName: 'philosophy_post'
+                    tableName: 'philosophy_post',
                 });
                 break;
             }
@@ -470,7 +559,7 @@ app.post("/postAdder", authenticate, authorize([process.env.SESSION_ROLE]), asyn
                     image,
                     date,
                     authorURL,
-                    tableName: 'science_post'
+                    tableName: 'science_post',
                 });
                 break;
             }
@@ -494,7 +583,7 @@ app.post("/postAdder", authenticate, authorize([process.env.SESSION_ROLE]), asyn
                     image,
                     date,
                     authorURL,
-                    tableName: 'technology_post'
+                    tableName: 'technology_post',
                 });
                 break;
             }
@@ -518,7 +607,7 @@ app.post("/postAdder", authenticate, authorize([process.env.SESSION_ROLE]), asyn
                     image,
                     date,
                     authorURL,
-                    tableName: 'art_post'
+                    tableName: 'art_post',
                 });
                 break;
             }
@@ -542,7 +631,7 @@ app.post("/postAdder", authenticate, authorize([process.env.SESSION_ROLE]), asyn
                     image,
                     date,
                     authorURL,
-                    tableName: 'politics_post'
+                    tableName: 'politics_post',
                 });
                 break;
             }
@@ -1351,6 +1440,498 @@ app.get("/allPost", authenticate, authorize([process.env.SESSION_ROLE]), async (
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).json({ error: 'Error fetching posts' });
+    }
+});
+
+app.post('/sign_up', upload.single('image'), async (req, res) => {
+    const { email, password, firstName, middleName, lastName } = req.body;
+
+    try {
+        if (req.file) {
+            const readerExists = await Reader.findOne({ email: email });
+
+            if (readerExists) {
+                res.json({ error: true, message: 'Reader already exists' });
+                console.log('Reader already exists');
+            }
+
+            const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
+
+            const imageBuffer = req.file.buffer;
+
+            const imageUrl = await handleImage(imageBuffer);
+
+            let lastPost;
+            let lastId = 0;
+
+            lastPost = await Reader.find().sort({ id: -1 }).limit(1).exec();
+            if (lastPost && lastPost.length > 0) {
+                lastId = lastPost[0].id;
+            }
+            const id = lastId + 1;
+
+
+            // Save the rest of the data to the database
+            const reader = new Reader({
+                id,
+                email,
+                password: hash,
+                firstName,
+                middleName,
+                lastName,
+                imageUrl: imageUrl,
+            });
+
+            try {
+                await reader.save();
+
+                //Set session values
+                req.session.isAuthenticated = true;
+                req.session.userRole = "reader";
+                req.session.userId = reader._id.toString();
+                req.session.firstName = reader.firstName;
+                req.session.middleName = reader.middleName;
+                req.session.lastName = reader.lastName;
+                req.session.email = reader.email;
+                req.session.imageUrl = reader.imageUrl;
+
+                await new Promise((resolve, reject) => {
+                    req.session.save((err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+
+                res.json({
+                    success: true,
+                    message: 'Reader created successfully',
+                    isAuthenticated: req.session.isAuthenticated,
+                    userRole: req.session.userRole,
+                    id: req.session.userId,
+                    firstName: req.session.firstName,
+                    middleName: req.session.middleName,
+                    lastName: req.session.lastName,
+                    email: req.session.email,
+                    imageUrl: req.session.imageUrl
+                });
+                console.log('Reader created successfully');
+            } catch (saveError) {
+                console.error('Error saving user to the database:', saveError);
+                res.json({ error: true, message: 'Error saving user to the database' });
+            }
+        } else {
+            // Handle the case where no image is provided
+            res.json({ error: true, message: 'Image is required' });
+        }
+    } catch (error) {
+        console.error('Error creating reader:', error);
+        res.status(500).json({ error: 'Error creating reader' });
+    }
+});
+
+// Route to fetch user data by user ID
+app.get('/user_data', authenticate, authorize(['reader']), async (req, res) => {
+    const { user_id } = req.query;
+
+    try {
+        // Fetch user data by ID, excluding the password
+        const user = await Reader.findById(user_id).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ error: true, message: 'User not found' });
+        }
+
+        // Send user data as JSON response
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ error: true, message: 'Internal Server Error' });
+    }
+});
+
+app.post('/logout', authenticate, authorize(['reader']), async (req, res) => {
+    try {
+        // Destroy the session
+        await new Promise((resolve, reject) => {
+            req.session.destroy((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+
+        console.log('session destroyed');
+
+        res.json({ success: true, message: 'Logout successful' });
+    } catch (error) {
+        console.error('Error destroying session:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+app.post('/log_in', async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    try {
+        const reader = await Reader.findOne({ email: email });
+
+        if (reader) {
+            const passwordMatch = await bcrypt.compare(password, reader.password);
+            if (passwordMatch) {
+
+                //Set session values
+                req.session.isAuthenticated = true;
+                req.session.userRole = "reader";
+                req.session.userId = reader._id.toString();
+                req.session.firstName = reader.firstName;
+                req.session.middleName = reader.middleName;
+                req.session.lastName = reader.lastName;
+                req.session.email = reader.email;
+                req.session.imageUrl = reader.imageUrl;
+
+                await new Promise((resolve, reject) => {
+                    req.session.save((err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+
+                res.json({
+                    success: true,
+                    message: 'Reader created successfully',
+                    isAuthenticated: req.session.isAuthenticated,
+                    userRole: req.session.userRole,
+                    id: req.session.userId,
+                    firstName: req.session.firstName,
+                    middleName: req.session.middleName,
+                    lastName: req.session.lastName,
+                    email: req.session.email,
+                    imageUrl: req.session.imageUrl
+                });
+                console.log('Reader logged in successfully');
+            } else {
+                res.json({ error: true, message: 'Invalid password' });
+                console.log('Invalid password');
+            }
+        } else {
+            res.json({ error: true, message: 'Reader not found' });
+            console.log('Reader not found');
+        }
+    } catch (error) {
+        console.error('Error logging in reader:', error);
+        res.json({ error: true, message: 'Error logging in reader' });
+    }
+});
+
+// Route to increase likes count
+app.post('/likes/increase/:postId/:tableName', authenticate, authorize(['reader']), async (req, res) => {
+    const postId = req.params.postId;
+    const postType = req.params.tableName;
+    const user = req.body.user
+    let post;
+
+    try {
+        switch (postType) {
+            case 'my_journey_post':
+                post = await My_journey_post.findById(postId);
+                break;
+            case 'finance_post':
+                post = await Finance_post.findById(postId);
+                break;
+            case 'philosophy_post':
+                post = await Philosophy_post.findById(postId);
+                break;
+            case 'science_post':
+                post = await Science_post.findById(postId);
+                break;
+            case 'technology_post':
+                post = await Technology_post.findById(postId);
+                break;
+            case 'art_post':
+                post = await Art_post.findById(postId);
+                break;
+            case 'politics_post':
+                post = await Politics_post.findById(postId);
+                break;
+            case 'daily_quote':
+                post = await Daily_quote.findById(postId);
+                break;
+            case 'politics_hero_post':
+                post = await Politics_hero_post.findById(postId);
+                break;
+            case 'finance_slide_post':
+                post = await Finance_slide_post.findById(postId);
+                break;
+            case 'philosophy_article_post':
+                post = await Philosophy_article_post.findById(postId);
+                break;
+            case 'science_article_post':
+                post = await Science_article_post.findById(postId);
+                break;
+            case 'technology_body_post':
+                post = await Technology_body_post.findById(postId);
+                break;
+            case 'technology_box_post':
+                post = await Technology_box_post.findById(postId);
+                break;
+            case 'art_body_post':
+                post = await Art_body_post.findById(postId);
+                break;
+            case 'politics_body_post':
+                post = await Politics_body_post.findById(postId);
+                break;
+            default:
+                res.status(400).json({ error: 'Invalid post type' });
+        }
+
+        if (post) {
+            post.likesCount++;
+            post.likes.push(user);
+
+            const updatedPost = await post.save();
+
+            res.status(200).json({ success: true, message: 'Likes count increased successfully', updatedPost });
+        }
+    } catch (error) {
+        console.error('Error updating likes count:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to increase likes count
+app.post('/likes/decrease/:postId/:tableName', authenticate, authorize(['reader']), async (req, res) => {
+    const postId = req.params.postId;
+    const postType = req.params.tableName;
+    const user = req.body.user
+    let post;
+
+    try {
+        switch (postType) {
+            case 'my_journey_post':
+                post = await My_journey_post.findById(postId);
+                break;
+            case 'finance_post':
+                post = await Finance_post.findById(postId);
+                break;
+            case 'philosophy_post':
+                post = await Philosophy_post.findById(postId);
+                break;
+            case 'science_post':
+                post = await Science_post.findById(postId);
+                break;
+            case 'technology_post':
+                post = await Technology_post.findById(postId);
+                break;
+            case 'art_post':
+                post = await Art_post.findById(postId);
+                break;
+            case 'politics_post':
+                post = await Politics_post.findById(postId);
+                break;
+            case 'daily_quote':
+                post = await Daily_quote.findById(postId);
+                break;
+            case 'politics_hero_post':
+                post = await Politics_hero_post.findById(postId);
+                break;
+            case 'finance_slide_post':
+                post = await Finance_slide_post.findById(postId);
+                break;
+            case 'philosophy_article_post':
+                post = await Philosophy_article_post.findById(postId);
+                break;
+            case 'science_article_post':
+                post = await Science_article_post.findById(postId);
+                break;
+            case 'technology_body_post':
+                post = await Technology_body_post.findById(postId);
+                break;
+            case 'technology_box_post':
+                post = await Technology_box_post.findById(postId);
+                break;
+            case 'art_body_post':
+                post = await Art_body_post.findById(postId);
+                break;
+            case 'politics_body_post':
+                post = await Politics_body_post.findById(postId);
+                break;
+            default:
+                res.status(400).json({ error: 'Invalid post type' });
+        }
+
+        if (post) {
+            post.likesCount--;
+            const index = post.likes.findIndex((like) => like.userId === user.userId);
+            if (index > -1) {
+                post.likes.splice(index, 1);
+            }
+
+            const updatedPost = await post.save();
+
+            res.status(200).json({ success: true, message: 'Likes count decreased successfully', updatedPost });
+        }
+    } catch (error) {
+        console.error('Error updating likes count:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.post('/shares/:postId/:tableName', authenticate, authorize(['reader']), async (req, res) => {
+    const postId = req.params.postId;
+    const postType = req.params.tableName;
+    const user = req.body.user
+    let post;
+
+    try {
+        switch (postType) {
+            case 'my_journey_post':
+                post = await My_journey_post.findById(postId);
+                break;
+            case 'finance_post':
+                post = await Finance_post.findById(postId);
+                break;
+            case 'philosophy_post':
+                post = await Philosophy_post.findById(postId);
+                break;
+            case 'science_post':
+                post = await Science_post.findById(postId);
+                break;
+            case 'technology_post':
+                post = await Technology_post.findById(postId);
+                break;
+            case 'art_post':
+                post = await Art_post.findById(postId);
+                break;
+            case 'politics_post':
+                post = await Politics_post.findById(postId);
+                break;
+            case 'daily_quote':
+                post = await Daily_quote.findById(postId);
+                break;
+            case 'politics_hero_post':
+                post = await Politics_hero_post.findById(postId);
+                break;
+            case 'finance_slide_post':
+                post = await Finance_slide_post.findById(postId);
+                break;
+            case 'philosophy_article_post':
+                post = await Philosophy_article_post.findById(postId);
+                break;
+            case 'science_article_post':
+                post = await Science_article_post.findById(postId);
+                break;
+            case 'technology_body_post':
+                post = await Technology_body_post.findById(postId);
+                break;
+            case 'technology_box_post':
+                post = await Technology_box_post.findById(postId);
+                break;
+            case 'art_body_post':
+                post = await Art_body_post.findById(postId);
+                break;
+            case 'politics_body_post':
+                post = await Politics_body_post.findById(postId);
+                break;
+            default:
+                res.status(400).json({ error: 'Invalid post type' });
+        }
+
+        if (post) {
+            post.sharesCount++;
+            post.shares.push(user);
+            const updatedPost = await post.save();
+            res.status(200).json({ success: true, message: 'Post shared successfully', updatedPost });
+        } else {
+            res.status(404).json({ error: 'Post not found' });
+        }
+    } catch (error) {
+        console.error('Error sharing post:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to increase likes count
+app.post('/comments/add/:postId/:tableName', authenticate, authorize(['reader']), async (req, res) => {
+    const postId = req.params.postId;
+    const postType = req.params.tableName;
+    const comment = req.body.comment;
+    let post;
+
+    try {
+        switch (postType) {
+            case 'my_journey_post':
+                post = await My_journey_post.findById(postId);
+                break;
+            case 'finance_post':
+                post = await Finance_post.findById(postId);
+                break;
+            case 'philosophy_post':
+                post = await Philosophy_post.findById(postId);
+                break;
+            case 'science_post':
+                post = await Science_post.findById(postId);
+                break;
+            case 'technology_post':
+                post = await Technology_post.findById(postId);
+                break;
+            case 'art_post':
+                post = await Art_post.findById(postId);
+                break;
+            case 'politics_post':
+                post = await Politics_post.findById(postId);
+                break;
+            case 'daily_quote':
+                post = await Daily_quote.findById(postId);
+                break;
+            case 'politics_hero_post':
+                post = await Politics_hero_post.findById(postId);
+                break;
+            case 'finance_slide_post':
+                post = await Finance_slide_post.findById(postId);
+                break;
+            case 'philosophy_article_post':
+                post = await Philosophy_article_post.findById(postId);
+                break;
+            case 'science_article_post':
+                post = await Science_article_post.findById(postId);
+                break;
+            case 'technology_body_post':
+                post = await Technology_body_post.findById(postId);
+                break;
+            case 'technology_box_post':
+                post = await Technology_box_post.findById(postId);
+                break;
+            case 'art_body_post':
+                post = await Art_body_post.findById(postId);
+                break;
+            case 'politics_body_post':
+                post = await Politics_body_post.findById(postId);
+                break;
+            default:
+                res.status(400).json({ error: 'Invalid post type' });
+        }
+
+        if (post) {
+            post.comments.unshift(comment);
+            post.commentsCount = post.comments.length;
+
+            const updatedPost = await post.save();
+
+            res.json({ success: true, updatedPost });
+        }
+    } catch (error) {
+        console.error('Error updating commmets count:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

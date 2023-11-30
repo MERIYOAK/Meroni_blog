@@ -15,9 +15,15 @@
     object-fit: cover;
 }
 
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .philosophy_content {
     position: absolute;
-}
+} 
 
 .philo_title {
     display: inline-block;
@@ -81,6 +87,12 @@ body.dark-theme .philo_title:hover {
         width: 300px;
         height: 300px;
     }
+}
+
+@media screen and (max-width: 508px) {
+    .notable_figures {
+        margin-top: 8rem;
+    } 
 }
 
 @media screen and (max-width: 440px) {

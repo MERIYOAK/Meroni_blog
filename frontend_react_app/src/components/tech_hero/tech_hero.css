@@ -11,7 +11,9 @@
 .tech_hero_content {
     position: absolute;
     color: var(--color-white);
-    top: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
     width: 100%;
     padding: 1rem;
@@ -23,8 +25,8 @@
 }
 
 .tech_hero_content .void2 {
-    background-color: var(--color-white);
-
+    height: 1px;
+    background-color: var(--color-white) ;
 }
 
 .tech_hero_content_container {
@@ -70,6 +72,11 @@
     font-size: .7rem;
 }
 
+@media screen and (max-width: 1200px) {
+    .tech_hero_right p {
+        font-size: .9rem;
+    }
+}
 @media screen and (max-width: 700px) {
     .tech_hero_content_container {
         grid-template-columns: 1fr;

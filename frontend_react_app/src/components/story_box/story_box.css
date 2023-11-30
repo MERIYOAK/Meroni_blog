@@ -1,8 +1,10 @@
 .story_box {
-    margin-top: 4rem;
+    margin: 4rem auto 0;
+    max-width: 80%;
     padding: 1rem;
     background: var(--color-bg-variant);
     border-radius: 1rem;
+    position: relative;
 }
 
 .title_container {
@@ -42,6 +44,7 @@
 
 .note {
     margin-bottom: 1rem;
+
 }
 
 /***dark-theme***/
@@ -57,6 +60,17 @@ body.dark-theme .story_box {
     .image_container {
         height: 17rem;
     }
+
+    .note {
+      font-size: .9rem;
+    
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .story_box {
+        max-width: 90%;
+    }   
 }
 
 @media screen and (max-width: 900px) {

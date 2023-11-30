@@ -3,6 +3,7 @@ import "./nav.css";
 import { FaBars } from "react-icons/fa";
 import { TbLetterX } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useAuth } from '../../AuthContext';
 
 function Nav() {
   useEffect(() => {
@@ -42,9 +43,12 @@ function Nav() {
     };
   }, []);
 
+  const { state } = useAuth();
+  const { isAuthenticated, user } = state;
+
   return (
     <header className="header">
-      <Link to="/" onClick={handleMenuClose} className="logo">Meroni</Link>
+      <Link to="/" className="logo">Meroni</Link>
       <nav
         className={isSmallScreen && !isMenuOpen ? "navbar__hidden" : "navbar"}
       >
@@ -55,6 +59,17 @@ function Nav() {
         <Link to="/tech" onClick={handleMenuClose}>Tech</Link>
         <Link to="/art" onClick={handleMenuClose}>Art</Link>
         <Link to="/politics" onClick={handleMenuClose}>Politics</Link>
+        {isAuthenticated ? (
+          <Link to="/user_profile" onClick={handleMenuClose} >
+            {user.imageUrl ? (
+              <img src={user.imageUrl} alt="Profile" className="profile_picture" />
+            ) : null}
+          </Link>
+        ) : (
+          <Link to="/sign_up" onClick={handleMenuClose} className="btn-primary btn-secondary">
+            Sign Up
+          </Link>
+        )}
       </nav>
       <div className="mobile__menu">
         {!isMenuOpen && (

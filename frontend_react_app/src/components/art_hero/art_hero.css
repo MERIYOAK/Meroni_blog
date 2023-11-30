@@ -3,6 +3,7 @@
 }
 
 .art_hero_content {
+    color: var(--color-white) !important;
     position: absolute;
     top: 50%; /* Move the top of the element to the vertical center */
     left: 50%; /* Move the left side of the element to the horizontal center */
@@ -19,6 +20,7 @@
 }
 
 .art_hero_content li a {
+    color: var(--color-white) !important;
     transition: var(--transition-variant);
 }
 

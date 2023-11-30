@@ -1,0 +1,70 @@
+/* sign_up.css */
+
+.sign-up-container {
+    margin: 6rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 350px;
+    width: 100%;
+    background-color: var(--color-bg-variant);
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    text-align: center;
+}
+
+
+#welcome-description {
+    color: var(--color-grey);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    margin: 1.3rem 0;
+}
+
+label {
+    margin-bottom: .5rem;
+}
+
+input {
+    padding: .5rem;
+    margin-bottom: 1rem;
+    border-radius: .5rem;
+    outline: 2px solid var(--color-grey);
+    
+}
+
+input:focus {
+    outline-color: var(--color-primary);
+}
+
+button {
+    margin: 0 auto 1rem;
+}
+
+.log_in-link {
+    color: var(--color-primary) !important;
+    cursor: pointer;
+}
+
+.log_in-link:hover {
+    text-decoration: underline;
+}
+
+/***dark-theme***/
+body.dark-theme .container {
+    background-color: var(--color-bg2-variant);
+}
+
+body.dark-theme #welcome-description {
+    color: var(--color-light);
+}

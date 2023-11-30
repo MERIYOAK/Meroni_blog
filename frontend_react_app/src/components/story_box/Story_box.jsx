@@ -1,11 +1,12 @@
 import React from 'react';
 import './story_box.css';
+import Reactions from '../reactions/reactions';
 
 function Story_box(props) {
     return (
         <>
             {props.post ? (
-                <div className='story_box container'>
+                <div className='story_box '>
                     <div className='title_container'>
                         <strong className='story_box_title'>{props.post.title}</strong>
                         <br />
@@ -27,6 +28,7 @@ function Story_box(props) {
                                     {props.post.content.conclude}
                                 </p>
                             </div>
+                            <Reactions post={props.post} />
                             <a href={props.post.authorURL} className='btn' target='blank'>More about the author</a>
                         </div>
                     </div>

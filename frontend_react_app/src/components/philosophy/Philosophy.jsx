@@ -6,7 +6,7 @@ import VideoBackground from '../../assets/philosophy_video.mp4'
 
 function Philosophy(props) {
     return (
-        <div>
+        <div >
             <div className='philo_intro'>
                 <div className="video-background">
                     <video autoPlay muted loop>
@@ -25,7 +25,7 @@ function Philosophy(props) {
                     </div>
                 </div>
             </div>
-            <h4>Notable figuers in Philosophy</h4>
+            <h4 className='notable_figures'>Notable figuers in Philosophy</h4>
             <div className='void3'></div>
             <div className='philosophy_article_container'>
                 {props.philosophy_article_posts && props.philosophy_article_posts.map((post) => (

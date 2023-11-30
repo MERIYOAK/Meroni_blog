@@ -28,8 +28,7 @@ function TechSwiper(props) {
         <Swiper
             breakpoints={breakpoints}
             className='slide'
-            modules={[Navigation, Pagination]}
-            navigation
+            modules={[Pagination]}
             pagination={{
                 clickable: true,
             }}

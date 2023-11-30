@@ -1,4 +1,3 @@
-
 .footer {
   position: relative;
   width: 100%;
@@ -10,7 +9,7 @@
   align-items: center;
   flex-direction: column;
   row-gap: 1rem;
-  margin-top: 8rem;
+  margin-top: 10rem;
 }
 
 .social-icon,
@@ -35,7 +34,7 @@
 }
 
 .menu__link {
-  font-size: 1rem;
+  font-size: .9rem;
   color: #fff;
   margin: 0 10px;
   display: inline-block;

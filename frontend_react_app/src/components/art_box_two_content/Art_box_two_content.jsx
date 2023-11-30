@@ -8,7 +8,7 @@ function Art_box_two_content(props) {
                 <div className='void3'></div>
                 <span>{props.post.type}</span>
                 <h3>{props.post.title}</h3>
-                <p>{props.post.content}</p>
+                <p className='art_body_two_content'>{props.post.content}</p>
                 <span>
                     <a href={props.post.link} target='_blank'>by {props.post.writer} | {props.post.date}</a>
                 </span>
