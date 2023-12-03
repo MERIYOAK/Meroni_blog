@@ -14,6 +14,21 @@ import cors from "cors";
 import multer from "multer";
 import { handleImage } from "./handleImage.js";
 import MongoStore from 'connect-mongo';
+import { checkLoginAttempts, loginAttempts, MAX_LOGIN_ATTEMPTS, TIME_FRAME_IN_MINUTES } from './loginAttempts.js';
+import { User, Reader } from './src/models/user.js';
+// import authenticate from "./src/middlewares/authenticate.js";
+// import authorize from "./src/middlewares/authorize.js";
+import { My_journey_post, Finance_post, Philosophy_post, Science_post, Technology_post, Art_post, Politics_post } from "./src/models/post.js";
+import { Daily_quote, Politics_hero_post } from "./src/models/quote.js";
+import { Finance_slide_post } from "./src/models/slide_post.js";
+import { Philosophy_article_post, Science_article_post } from "./src/models/article.js";
+import { Technology_body_post } from "./src/models/body_post.js";
+import { Technology_box_post } from "./src/models/box_post.js";
+import { Art_body_post } from "./src/models/body_post_two.js";
+import { Politics_body_post } from "./src/models/body_post_three.js";
+// import default_router from "./src/routes/default_routers.js";
+// import fetch_posts from "./src/routes/fetch_posts.js";
+// import editorial_privileges from "./src/routes/editorial_privileges.js";
 
 // Load environment variables from .env file
 configDotenv();
@@ -24,20 +39,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const upload = multer();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(methodOverride('_method'));
-app.set("view engine", "ejs");
-app.use(express.static("../frontend_react_app/dist"));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/public', express.static(path.join(__dirname, 'public'), { 'Content-Type': 'text/css' }));
-
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: 'GET, POST, PUT, DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-}));
+mongoose.connect(process.env.MONGODB_URI).then(() => {
+    console.log("Connected to MongoDB");
+}).catch((err) => {
+    console.log("Error connecting to MongoDB:", err);
+});
 
 // Replace 'your-mongodb-uri' with your MongoDB connection URI
 const mongoStore = new MongoStore({
@@ -57,6 +63,37 @@ app.use(session({
         //sameSite: 'Strict',
     },
 }));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(methodOverride('_method'));
+app.set("view engine", "ejs");
+app.use(express.static("../frontend_react_app/dist"));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/public', express.static(path.join(__dirname, 'public'), { 'Content-Type': 'text/css' }));
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET, POST, PUT, DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+}));
+
+// app.use(authenticate);
+// app.use(authorize);
+// app.use('/', default_router);
+// app.use('/finance', default_router);
+// app.use('/philosophy', default_router);
+// app.use('/science', default_router);
+// app.use('/tech', default_router);
+// app.use('/art', default_router);
+// app.use('/politics', default_router);
+// app.use('/sign_up', default_router);
+// app.use('/user_profile', default_router);
+// app.use('/log_in', default_router);
+// app.use('/log_out', default_router);
+// app.use('/posts', fetch_posts);
+// app.use('/editorial_privileges', editorial_privileges);
 
 // Middleware for authentication
 const authenticate = (req, res, next) => {
@@ -82,24 +119,18 @@ const authorize = (roles) => {
     };
 };
 
-mongoose.connect(process.env.MONGODB_URI).then(() => {
-    console.log("Connected to MongoDB");
-}).catch((err) => {
-    console.log("Error connecting to MongoDB:", err);
-});
+// const userSchema = new mongoose.Schema({
+//     id: Number,
+//     firstName: String,
+//     middleName: String,
+//     lastName: String,
+//     email: String,
+//     password: String,
+//     imageUrl: String,
+// });
 
-const userSchema = new mongoose.Schema({
-    id: Number,
-    firstName: String,
-    middleName: String,
-    lastName: String,
-    email: String,
-    password: String,
-    imageUrl: String,
-});
-
-const User = new mongoose.model("User", userSchema);
-const Reader = new mongoose.model("Reader", userSchema);
+// const User = new mongoose.model("User", userSchema);
+// const Reader = new mongoose.model("Reader", userSchema);
 
 const createInitialUser = async () => {
     try {
@@ -137,169 +168,169 @@ const createInitialUser = async () => {
 createInitialUser();
 
 
-// const likesSchema = new mongoose.Schema({
-//     count: { type: Number, default: 0 }
+// // const likesSchema = new mongoose.Schema({
+// //     count: { type: Number, default: 0 }
+// // });
+
+// // const Likes = mongoose.model('Likes', likesSchema);
+
+// const my_journey_post_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     title: String,
+//     content: {
+//         intro: String,
+//         body: String,
+//         conclude: String
+//     },
+//     image: String,
+//     date: String,
+//     authorURL: String,
+//     likesCount: { type: Number, default: 0 }, // New field to store likes count
+//     likes: {
+//         type: [
+//             {
+//                 userId: String,
+//             }
+//         ],
+//         default: []
+//     },
+//     commentsCount: { type: Number, default: 0 },
+//     comments: {
+//         type: [
+//             {
+//                 comment: String,
+//                 userId: String,
+//                 userFirstName: String,
+//                 userMiddleName: String,
+//                 userImage: String,
+//                 date: String
+//             }
+//         ],
+//         default: []
+//     },
+//     sharesCount: { type: Number, default: 0 },
+//     shares: {
+//         type: [
+//             {
+//                 userId: String
+//             }
+//         ],
+//         default: []
+//     }
 // });
 
-// const Likes = mongoose.model('Likes', likesSchema);
+// const My_journey_post = mongoose.model("my_journey_post", my_journey_post_schema);
+// const Finance_post = mongoose.model("finance_post", my_journey_post_schema);
+// const Philosophy_post = mongoose.model("philosophy_post", my_journey_post_schema);
+// const Science_post = mongoose.model("science_post", my_journey_post_schema);
+// const Technology_post = mongoose.model("technology_post", my_journey_post_schema);
+// const Art_post = mongoose.model("art_post", my_journey_post_schema);
+// const Politics_post = mongoose.model("politics_post", my_journey_post_schema);
 
-const my_journey_post_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    title: String,
-    content: {
-        intro: String,
-        body: String,
-        conclude: String
-    },
-    image: String,
-    date: String,
-    authorURL: String,
-    likesCount: { type: Number, default: 0 }, // New field to store likes count
-    likes: {
-        type: [
-            {
-                userId: String,
-            }
-        ],
-        default: []
-    },
-    commentsCount: { type: Number, default: 0 },
-    comments: {
-        type: [
-            {
-                comment: String,
-                userId: String,
-                userFirstName: String,
-                userMiddleName: String,
-                userImage: String,
-                date: String
-            }
-        ],
-        default: []
-    },
-    sharesCount: { type: Number, default: 0 },
-    shares: {
-        type: [
-            {
-                userId: String
-            }
-        ],
-        default: []
-    }
-});
+// // const likeSchema = new mongoose.Schema({
+// //     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+// //     userId: String,
+// //     timestamp: String
+// // });
 
-const My_journey_post = mongoose.model("my_journey_post", my_journey_post_schema);
-const Finance_post = mongoose.model("finance_post", my_journey_post_schema);
-const Philosophy_post = mongoose.model("philosophy_post", my_journey_post_schema);
-const Science_post = mongoose.model("science_post", my_journey_post_schema);
-const Technology_post = mongoose.model("technology_post", my_journey_post_schema);
-const Art_post = mongoose.model("art_post", my_journey_post_schema);
-const Politics_post = mongoose.model("politics_post", my_journey_post_schema);
+// // const Like = mongoose.model('Like', likeSchema);
 
-// const likeSchema = new mongoose.Schema({
-//     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-//     userId: String,
-//     timestamp: String
+// //mongoose.model('Post', my_journey_post_schema);
+
+// const daily_quote_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     quote: String,
+//     author: String
 // });
 
-// const Like = mongoose.model('Like', likeSchema);
+// const Daily_quote = mongoose.model("daily_quote", daily_quote_schema);
+// const Politics_hero_post = mongoose.model("politics_hero_post", daily_quote_schema);
 
-//mongoose.model('Post', my_journey_post_schema);
+// const slide_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     image: String,
+//     URL: String,
+//     title: String
+// });
 
-const daily_quote_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    quote: String,
-    author: String
-});
+// const Finance_slide_post = mongoose.model("finance_slide_post", slide_schema);
 
-const Daily_quote = mongoose.model("daily_quote", daily_quote_schema);
-const Politics_hero_post = mongoose.model("politics_hero_post", daily_quote_schema);
+// const article_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     title: String,
+//     date: String,
+//     image: String,
+//     content: String,
+//     goToURL: String
+// });
 
-const slide_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    image: String,
-    URL: String,
-    title: String
-});
+// const Philosophy_article_post = mongoose.model("philosophy_article_post", article_schema);
+// const Science_article_post = mongoose.model("science_article_post", article_schema);
 
-const Finance_slide_post = mongoose.model("finance_slide_post", slide_schema);
+// const body_post_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     main_title: String,
+//     sub_title: String,
+//     main_link: String,
+//     image: String,
+//     article_title: String,
+//     article_content: String,
+//     article_link: String,
+//     date: String,
+//     author_name: String,
+//     authorURL: String
+// });
 
-const article_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    title: String,
-    date: String,
-    image: String,
-    content: String,
-    goToURL: String
-});
+// const Technology_body_post = mongoose.model("technology_body_post", body_post_schema);
 
-const Philosophy_article_post = mongoose.model("philosophy_article_post", article_schema);
-const Science_article_post = mongoose.model("science_article_post", article_schema);
+// const box_post_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     image: String,
+//     title: String,
+//     link: String,
+//     author_name: String,
+//     authorURL: String,
+// });
 
-const body_post_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    main_title: String,
-    sub_title: String,
-    main_link: String,
-    image: String,
-    article_title: String,
-    article_content: String,
-    article_link: String,
-    date: String,
-    author_name: String,
-    authorURL: String
-});
+// const Technology_box_post = mongoose.model("technology_box_post", box_post_schema);
 
-const Technology_body_post = mongoose.model("technology_body_post", body_post_schema);
+// const body_post2_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     image: String,
+//     type: String,
+//     title: String,
+//     content: String,
+//     link: String,
+//     date: String,
+//     writer: String,
 
-const box_post_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    image: String,
-    title: String,
-    link: String,
-    author_name: String,
-    authorURL: String,
-});
+// });
 
-const Technology_box_post = mongoose.model("technology_box_post", box_post_schema);
+// const Art_body_post = mongoose.model("art_body_post", body_post2_schema);
 
-const body_post2_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    image: String,
-    type: String,
-    title: String,
-    content: String,
-    link: String,
-    date: String,
-    writer: String,
+// const body_post3_schema = new mongoose.Schema({
+//     tableName: String,
+//     id: Number,
+//     title: String,
+//     line: String,
+//     link: String,
+//     brands: {
+//         icon: String,
+//         link: String
+//     },
+//     image1: String,
+//     image2: String,
+//     image3: String
+// });
 
-});
-
-const Art_body_post = mongoose.model("art_body_post", body_post2_schema);
-
-const body_post3_schema = new mongoose.Schema({
-    tableName: String,
-    id: Number,
-    title: String,
-    line: String,
-    link: String,
-    brands: {
-        icon: String,
-        link: String
-    },
-    image1: String,
-    image2: String,
-    image3: String
-});
-
-const Politics_body_post = mongoose.model("politics_body_post", body_post3_schema);
+// const Politics_body_post = mongoose.model("politics_body_post", body_post3_schema);
 
 const handleRequest = (req, res) => {
     try {
@@ -378,7 +409,7 @@ app.get('/editorial_privileges', (req, res) => {
     }
 });
 
-app.post('/verify_credentials', async (req, res) => {
+app.post('/editorial_privileges', async (req, res) => {
     const { username, password } = req.body;
 
     try {
@@ -1552,7 +1583,7 @@ app.get('/user_data', authenticate, authorize(['reader']), async (req, res) => {
     }
 });
 
-app.post('/logout', authenticate, authorize(['reader']), async (req, res) => {
+app.post('/logout', async (req, res) => {
     try {
         // Destroy the session
         await new Promise((resolve, reject) => {
@@ -1578,58 +1609,71 @@ app.post('/logout', authenticate, authorize(['reader']), async (req, res) => {
 app.post('/log_in', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
+    const userId = req.body.userId;
+    const attempts = checkLoginAttempts(userId);
 
-    try {
-        const reader = await Reader.findOne({ email: email });
+    if (attempts <= MAX_LOGIN_ATTEMPTS) {
+        try {
+            const reader = await Reader.findOne({ email: email });
 
-        if (reader) {
-            const passwordMatch = await bcrypt.compare(password, reader.password);
-            if (passwordMatch) {
+            if (reader) {
+                const passwordMatch = await bcrypt.compare(password, reader.password);
+                if (passwordMatch) {
 
-                //Set session values
-                req.session.isAuthenticated = true;
-                req.session.userRole = "reader";
-                req.session.userId = reader._id.toString();
-                req.session.firstName = reader.firstName;
-                req.session.middleName = reader.middleName;
-                req.session.lastName = reader.lastName;
-                req.session.email = reader.email;
-                req.session.imageUrl = reader.imageUrl;
+                    //Set session values
+                    req.session.isAuthenticated = true;
+                    req.session.userRole = "reader";
+                    req.session.userId = reader._id.toString();
+                    req.session.firstName = reader.firstName;
+                    req.session.middleName = reader.middleName;
+                    req.session.lastName = reader.lastName;
+                    req.session.email = reader.email;
+                    req.session.imageUrl = reader.imageUrl;
 
-                await new Promise((resolve, reject) => {
-                    req.session.save((err) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve();
-                        }
+                    await new Promise((resolve, reject) => {
+                        req.session.save((err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
                     });
-                });
 
-                res.json({
-                    success: true,
-                    message: 'Reader created successfully',
-                    isAuthenticated: req.session.isAuthenticated,
-                    userRole: req.session.userRole,
-                    id: req.session.userId,
-                    firstName: req.session.firstName,
-                    middleName: req.session.middleName,
-                    lastName: req.session.lastName,
-                    email: req.session.email,
-                    imageUrl: req.session.imageUrl
-                });
-                console.log('Reader logged in successfully');
+                    res.json({
+                        success: true,
+                        message: 'Reader created successfully',
+                        isAuthenticated: req.session.isAuthenticated,
+                        userRole: req.session.userRole,
+                        id: req.session.userId,
+                        firstName: req.session.firstName,
+                        middleName: req.session.middleName,
+                        lastName: req.session.lastName,
+                        email: req.session.email,
+                        imageUrl: req.session.imageUrl
+                    });
+                    console.log('Reader logged in successfully');
+                } else {
+                    res.json({ error: true, message: 'Invalid password' });
+                    console.log('Invalid password');
+                }
             } else {
-                res.json({ error: true, message: 'Invalid password' });
-                console.log('Invalid password');
+                res.json({ error: true, message: 'Reader not found' });
+                console.log('Reader not found');
             }
-        } else {
-            res.json({ error: true, message: 'Reader not found' });
-            console.log('Reader not found');
+        } catch (error) {
+            console.error('Error logging in reader:', error);
+            res.json({ error: true, message: 'Error logging in reader' });
         }
-    } catch (error) {
-        console.error('Error logging in reader:', error);
-        res.json({ error: true, message: 'Error logging in reader' });
+        return 'Login successful';
+    } else {
+        const waitTimeMinutes = TIME_FRAME_IN_MINUTES; // Adjust this as needed
+        res.json({
+            error: true,
+            message: `Login attempts exceeded. Please try again after ${waitTimeMinutes} minutes.`,
+            waitTimeMinutes: waitTimeMinutes,
+        });
+        return 'Login attempts exceeded. Please try again later.';
     }
 });
 

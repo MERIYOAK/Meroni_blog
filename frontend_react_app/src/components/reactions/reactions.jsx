@@ -11,6 +11,10 @@ function reactions(props) {
     const [liked, setLiked] = useState(props.post.likes.some((like) => like.userId === sessionStorage.getItem('userId')));
 
     const handleLikeClick = async () => {
+        if (sessionStorage.getItem('userId') === null) {
+            window.location.href = '/sign_up';
+            return;
+        }
         if (!liked) {
             try {
                 const response = await axios.post(`http://localhost:3000/likes/increase/${props.post._id}/${props.post.tableName}`, {
@@ -167,7 +171,7 @@ function reactions(props) {
                                         <img src={comment.userImage} alt='user image' />
                                     </div>
                                     <div className='comment_content'>
-                                        <strong>{comment.firstName} {comment.middleName}</strong>
+                                        <strong>{comment.userFirstName} {comment.userMiddleName}</strong>
                                         <p>{comment.comment}</p>
                                         <strong>{timeAgo(new Date(comment.date))}</strong>
                                     </div>

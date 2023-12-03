@@ -447,7 +447,6 @@ function App() {
         setPoliticsPosts(response.data.politics_posts);
         setBlackBodyContent(response.data.black_body_content);
         setHeroContentBoxPosts(response.data.hero_content_box_posts);
-        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -470,6 +469,8 @@ function App() {
       dispatch({ type: 'LOGOUT' });
     }
 
+    setLoading(false);
+
   }, []);
 
   return (
@@ -491,7 +492,7 @@ function App() {
           </Routes>
         )}
       </Suspense>
-      <Footer />
+      {!loading && <Footer />}
     </Router >
   )
 }
