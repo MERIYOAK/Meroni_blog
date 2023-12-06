@@ -8,9 +8,9 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     imageUrl: String,
+    role: String
 });
 
 const User = new mongoose.model("User", userSchema);
-const Reader = new mongoose.model("Reader", userSchema);
 
-export { User, Reader };
+export { User };

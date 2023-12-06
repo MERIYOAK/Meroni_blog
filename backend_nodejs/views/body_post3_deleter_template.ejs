@@ -1,4 +1,4 @@
-<%- include('partials/footer.ejs') %>
+<%- include('partials/header.ejs') %>
     <h1>Body Post Deleter</h1>
     <form action="/deleteMyPost/<%= post.id %>/<%= post.tableName %>?_method=DELETE" method="POST">
         <input type="hidden" name="_method" value="DELETE">

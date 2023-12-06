@@ -12,3 +12,4 @@ const authorize = (roles) => {
 };
 
 export default authorize
+

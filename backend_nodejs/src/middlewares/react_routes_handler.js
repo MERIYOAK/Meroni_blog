@@ -7,7 +7,6 @@ const __dirname = dirname(__filename);
 
 const handleRequest = (req, res) => {
     try {
-        console.log('Serving React app...');
         res.sendFile(path.join(__dirname, '../../../frontend_react_app/dist', 'index.html'));
     } catch (error) {
         console.log(error);

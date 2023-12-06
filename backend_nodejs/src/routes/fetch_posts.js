@@ -11,7 +11,6 @@ import { Politics_body_post } from "../models/body_post_three.js";
 const fetch_posts = express();
 
 fetch_posts.get('/posts', async (req, res) => {
-    console.log('Fetching posts...');
     try {
         const my_journey_posts = await My_journey_post.find().sort({ id: -1 });
         const daily_quote = await Daily_quote.findOne().sort({ _id: -1 });

@@ -3,8 +3,6 @@ import handleRequest from "../middlewares/react_routes_handler.js";
 
 const default_router = express();
 
-default_router.use(handleRequest);
-
 default_router.get("/", handleRequest);
 default_router.get("/finance", handleRequest);
 default_router.get("/philosophy", handleRequest);
