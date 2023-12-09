@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './story_box.css';
 import Reactions from '../../post/reactions/reactions';
 
 function Story_box(props) {
+    const [showFullContent, setShowFullContent] = useState(false);
+
+    const toggleContent = () => {
+        setShowFullContent(!showFullContent);
+    };
     return (
         <>
             {props.post ? (
@@ -19,14 +24,24 @@ function Story_box(props) {
                         <div className='box_container'>
                             <div className='notes_container'>
                                 <p className='note'>
-                                    {props.post.content.intro}
+                                    {showFullContent ? props.post.content.intro : `${props.post.content.intro.slice(0, 1000)}...`}
+                                    {!showFullContent && props.post.content.intro.length > 100 && (
+                                        <a className='read-btn' onClick={toggleContent}>
+                                            read more
+                                        </a>
+                                    )}
                                 </p>
-                                <p className='note'>
-                                    {props.post.content.body}
-                                </p>
-                                <p className='note'>
-                                    {props.post.content.conclude}
-                                </p>
+                                {showFullContent && (
+                                    <>
+                                        <p className='note'>{props.post.content.body}</p>
+                                        <p className='note'>{props.post.content.conclude}</p>
+                                        {showFullContent && (
+                                            <a className='read-btn' onClick={toggleContent}>
+                                                read less
+                                            </a>
+                                        )}
+                                    </>
+                                )}
                             </div>
                             <Reactions post={props.post} />
                             <a href={props.post.authorURL} className='btn' target='blank'>More about the author</a>

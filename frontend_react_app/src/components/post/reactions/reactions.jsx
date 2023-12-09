@@ -17,8 +17,9 @@ function reactions(props) {
         }
         if (!liked) {
             try {
-                const response = await axios.post(`http://localhost:3000/likes/increase/${props.post._id}/${props.post.tableName}`, {
+                const response = await axios.post('http://localhost:3000/likes/increase', {
                     user: {
+                        postId: props.post._id,
                         userId: sessionStorage.getItem('userId'),
                     },
                 });
@@ -31,8 +32,9 @@ function reactions(props) {
             }
         } else {
             try {
-                const response = await axios.post(`http://localhost:3000/likes/decrease/${props.post._id}/${props.post.tableName}`, {
+                const response = await axios.post('http://localhost:3000/likes/decrease', {
                     user: {
+                        postId: props.post._id,
                         userId: sessionStorage.getItem('userId'),
                     },
                 });
@@ -61,6 +63,7 @@ function reactions(props) {
         e.preventDefault();
 
         const commentObject = {
+            postId: props.post._id,
             userId: sessionStorage.getItem('userId'),
             userImage: sessionStorage.getItem('imageUrl'),
             userFirstName: sessionStorage.getItem('firstName'),
@@ -70,7 +73,7 @@ function reactions(props) {
         };
 
         try {
-            const response = await axios.post(`http://localhost:3000/comments/add/${props.post._id}/${props.post.tableName}`, {
+            const response = await axios.post('http://localhost:3000/comments/add', {
                 comment: commentObject,
             });
 
@@ -101,8 +104,9 @@ function reactions(props) {
                 await navigator.share(shareData);
 
                 try {
-                    const response = await axios.post(`http://localhost:3000/shares/${props.post._id}/${props.post.tableName}`, {
+                    const response = await axios.post('http://localhost:3000/shares', {
                         user: {
+                            postId: props.post._id,
                             userId: sessionStorage.getItem('userId'),
                         },
                     });

@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
     <h1>Add a Box Post</h1>
-    <form action="/addPost" method="POST">
+    <form action="/addPost?postType=<%= postType %>" method="POST">
         <label for="title">Title:</label>
         <input type="text" name="title" id="title" required><br>
 
@@ -15,11 +15,6 @@
 
         <label for="authorURL">Author URL:</label>
         <input type="text" name="authorURL" id="authorURL" required><br>
-
-        <select id="postType" name="postType" class="postType">
-            <option value="" disabled selected>Select Article Type</option>
-            <option value="technology_box_post">Technology Box Post</option>
-        </select>
 
         <button type="submit">Add Box Post</button>
     </form>

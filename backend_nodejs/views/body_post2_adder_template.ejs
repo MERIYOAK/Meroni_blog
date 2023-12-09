@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
     <h1>Add a Body Post</h1>
-    <form action="/addPost" method="POST">
+    <form action="/addPost?postType=<%= postType %>" method="POST">
 
         <label for="image">Image URL:</label>
         <input type="text" name="image" id="image" required><br>
@@ -22,12 +22,7 @@
 
         <label for="writer">Writer:</label>
         <input type="text" name="writer" id="writer" required><br>
-
-        <select id="postType" name="postType" class="postType">
-            <option value="" disabled selected>Select Article Type</option>
-            <option value="art_body_post">Art Body Post</option>
-        </select>
-
+        
         <button type="submit">Add Body Post</button>
     </form>
 <%- include('partials/footer.ejs') %>

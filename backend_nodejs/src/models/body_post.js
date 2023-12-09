@@ -15,6 +15,6 @@ const body_post_schema = new mongoose.Schema({
     authorURL: String
 });
 
-const Technology_body_post = mongoose.model("technology_body_post", body_post_schema);
+const Body_post = mongoose.model("Body_post", body_post_schema);
 
-export { Technology_body_post };
+export { Body_post };

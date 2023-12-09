@@ -1,12 +1,12 @@
 import express from 'express'
-import { My_journey_post, Finance_post, Philosophy_post, Science_post, Technology_post, Art_post, Politics_post } from "../models/post.js";
-import { Daily_quote, Politics_hero_post } from "../models/quote.js";
-import { Finance_slide_post } from "../models/slide_post.js";
-import { Philosophy_article_post, Science_article_post } from "../models/article.js";
-import { Technology_body_post } from "../models/body_post.js";
-import { Technology_box_post } from "../models/box_post.js";
-import { Art_body_post } from "../models/body_post_two.js";
-import { Politics_body_post } from "../models/body_post_three.js";
+import { Post } from "../models/post.js";
+import { Quote } from "../models/quote.js";
+import { Slide } from "../models/slide_post.js";
+import { Article } from "../models/article.js";
+import { Body_post } from "../models/body_post.js";
+import { Box_post } from "../models/box_post.js";
+import { Body_post2 } from "../models/body_post_two.js";
+import { Body_post3 } from "../models/body_post_three.js";
 
 const delete_post = express();
 
@@ -32,52 +32,36 @@ delete_post.get('/postDeleter', async (req, res) => {
             try {
                 switch (postType) {
                     case 'my_journey_post':
-                        post = await My_journey_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'finance_post':
-                        post = await Finance_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'philosophy_post':
-                        post = await Philosophy_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'science_post':
-                        post = await Science_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'technology_post':
-                        post = await Technology_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'art_post':
-                        post = await Art_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'politics_post':
-                        post = await Politics_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Post.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'daily_quote':
-                        post = await Daily_quote.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'politics_hero_post':
-                        post = await Politics_hero_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Quote.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'finance_slide_post':
-                        post = await Finance_slide_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Slide.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'philosophy_article_post':
-                        post = await Philosophy_article_post.findOne({ id: parseInt(postId) }).exec();
-                        break;
                     case 'science_article_post':
-                        post = await Science_article_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Article.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'technology_body_post':
-                        post = await Technology_body_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Body_post.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'technology_box_post':
-                        post = await Technology_box_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Box_post.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'art_body_post':
-                        post = await Art_body_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Body_post2.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     case 'politics_body_post':
-                        post = await Politics_body_post.findOne({ id: parseInt(postId) }).exec();
+                        post = await Body_post3.findOne({ id: parseInt(postId), tableName: postType }).exec();
                         break;
                     default:
                         res.status(400).json({ error: 'Invalid post type' });
@@ -143,68 +127,41 @@ delete_post.delete('/deleteMyPost/:id/:tableName', async (req, res) => {
 
     try {
         switch (postType) {
-            case 'my_journey_post': {
-                post = await My_journey_post.findOneAndRemove({ id: postId });
+            case 'my_journey_post':
+            case 'finance_post':
+            case 'philosophy_post':
+            case 'science_post':
+            case 'technology_post':
+            case 'art_post':
+            case 'politics_post':
+                post = await Post.findOneAndRemove({ id: postId });
                 break;
-            }
-            case 'finance_post': {
-                post = await Finance_post.findOneAndRemove({ id: postId });
+            case 'daily_quote':
+            case 'politics_hero_post':
+                post = await Quote.findOneAndRemove({ id: postId });
                 break;
-            }
-            case 'philosophy_post': {
-                post = await Philosophy_post.findOneAndRemove({ id: postId });
-                break;
-            }
-            case 'science_post': {
-                post = await Science_post.findOneAndRemove({ id: postId });
-                break;
-            }
-            case 'technology_post': {
-                post = await Technology_post.findOneAndRemove({ id: postId });
-                break;
-            }
-            case 'art_post': {
-                post = await Art_post.findOneAndRemove({ id: postId });
-                break;
-            }
-            case 'politics_post': {
-                post = await Politics_post.findOneAndRemove({ id: postId });
-                break;
-            }
-            case 'daily_quote': {
-                post = await Daily_quote.findOneAndRemove({ id: postId });
-                break;
-            }
-            case 'politics_hero_post': {
-                post = await Politics_hero_post.findOneAndRemove({ id: postId });
-                break;
-            }
             case 'finance_slide_post': {
-                post = await Finance_slide_post.findOneAndRemove({ id: postId });
+                post = await Slide.findOneAndRemove({ id: postId });
                 break;
             }
-            case 'philosophy_article_post': {
-                post = await Philosophy_article_post.findOneAndRemove({ id: postId });
+            case 'philosophy_article_post':
+            case 'science_article_post':
+                post = await Article.findOneAndRemove({ id: postId });
                 break;
-            }
-            case 'science_article_post': {
-                post = await Science_article_post.findOneAndRemove({ id: postId });
-                break;
-            }
             case 'technology_body_post': {
-                post = await Technology_body_post.findOneAndRemove({ id: postId });
+                post = await Body_post.findOneAndRemove({ id: postId });
                 break;
             }
             case 'technology_box_post': {
-                post = await Technology_box_post.findOneAndRemove({ id: postId });
+                post = await Box_post.findOneAndRemove({ id: postId });
                 break;
             }
             case 'art_body_post': {
-                post = await Art_body_post.findOneAndRemove({ id: postId });
+                post = await Body_post2.findOneAndRemove({ id: postId });
                 break;
             }
             case 'politics_body_post': {
-                post = await Politics_body_post.findOneAndRemove({ id: postId });
+                post = await Body_post3.findOneAndRemove({ id: postId });
                 break;
             }
             default:

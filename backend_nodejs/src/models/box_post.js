@@ -10,6 +10,6 @@ const box_post_schema = new mongoose.Schema({
     authorURL: String,
 });
 
-const Technology_box_post = mongoose.model("technology_box_post", box_post_schema);
+const Box_post = mongoose.model("Box_post", box_post_schema);
 
-export { Technology_box_post };
+export { Box_post };

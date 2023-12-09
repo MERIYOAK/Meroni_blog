@@ -1,90 +1,50 @@
-import express from 'express'
-import { My_journey_post, Finance_post, Philosophy_post, Science_post, Technology_post, Art_post, Politics_post } from "../models/post.js";
-import { Daily_quote, Politics_hero_post } from "../models/quote.js";
-import { Finance_slide_post } from "../models/slide_post.js";
-import { Philosophy_article_post, Science_article_post } from "../models/article.js";
-import { Technology_body_post } from "../models/body_post.js";
-import { Technology_box_post } from "../models/box_post.js";
-import { Art_body_post } from "../models/body_post_two.js";
-import { Politics_body_post } from "../models/body_post_three.js";
+import express from 'express';
+import { Post } from '../models/post.js';
+import { Like } from '../models/reactions.js';
+import { populateReactions } from './fetch_posts.js';
 
 const decrease_like = express();
 
-decrease_like.post('/likes/decrease/:postId/:tableName', async (req, res) => {
-    const postId = req.params.postId;
-    const postType = req.params.tableName;
-    const user = req.body.user
-    let post;
-
+decrease_like.post('/likes/decrease', async (req, res) => {
     try {
-        switch (postType) {
-            case 'my_journey_post':
-                post = await My_journey_post.findById(postId);
-                break;
-            case 'finance_post':
-                post = await Finance_post.findById(postId);
-                break;
-            case 'philosophy_post':
-                post = await Philosophy_post.findById(postId);
-                break;
-            case 'science_post':
-                post = await Science_post.findById(postId);
-                break;
-            case 'technology_post':
-                post = await Technology_post.findById(postId);
-                break;
-            case 'art_post':
-                post = await Art_post.findById(postId);
-                break;
-            case 'politics_post':
-                post = await Politics_post.findById(postId);
-                break;
-            case 'daily_quote':
-                post = await Daily_quote.findById(postId);
-                break;
-            case 'politics_hero_post':
-                post = await Politics_hero_post.findById(postId);
-                break;
-            case 'finance_slide_post':
-                post = await Finance_slide_post.findById(postId);
-                break;
-            case 'philosophy_article_post':
-                post = await Philosophy_article_post.findById(postId);
-                break;
-            case 'science_article_post':
-                post = await Science_article_post.findById(postId);
-                break;
-            case 'technology_body_post':
-                post = await Technology_body_post.findById(postId);
-                break;
-            case 'technology_box_post':
-                post = await Technology_box_post.findById(postId);
-                break;
-            case 'art_body_post':
-                post = await Art_body_post.findById(postId);
-                break;
-            case 'politics_body_post':
-                post = await Politics_body_post.findById(postId);
-                break;
-            default:
-                res.status(400).json({ error: 'Invalid post type' });
-        }
+        const postId = req.body.user.postId;
+        const userId = req.body.user.userId;
 
-        if (post) {
-            post.likesCount--;
-            const index = post.likes.findIndex((like) => like.userId === user.userId);
-            if (index > -1) {
-                post.likes.splice(index, 1);
+        // Find the like in the Like collection based on postId and userId
+        const like = await Like.findOne({ postId, userId });
+
+        if (like) {
+            // Delete the found like
+            await like.deleteOne();
+
+            // Decrease the likesCount in the corresponding post
+            const post = await Post.findById(postId);
+
+            if (post) {
+                post.likesCount--;
+
+                // Save the updated post
+                const updatedPost = await post.save();
+
+                // Populate the updated post with likes
+                const populatedPosts = await populateReactions([updatedPost]);
+                const populatedPost = populatedPosts[0];
+
+                res.status(200).json({
+                    success: true,
+                    message: 'Like deleted successfully',
+                    updatedPost: populatedPost,
+                });
+            } else {
+                res.status(404).json({ error: 'Post not found' });
             }
-
-            const updatedPost = await post.save();
-
-            res.status(200).json({ success: true, message: 'Likes count decreased successfully', updatedPost });
+        } else {
+            res.status(404).json({ error: 'Like not found' });
         }
     } catch (error) {
-        console.error('Error updating likes count:', error);
+        console.error('Error deleting like:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-export default decrease_like
+export default decrease_like;

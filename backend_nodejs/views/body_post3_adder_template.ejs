@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
     <h1>Add a Body Post</h1>
-    <form action="/addPost" method="POST">
+    <form action="/addPost?postType=<%= postType %>" method="POST">
 
         <label for="title">Title:</label>
         <input type="text" name="title" id="title" required><br>
@@ -25,11 +25,6 @@
 
         <label for="image3">Image3 URL:</label>
         <input type="text" name="image3" id="image3" required><br>
-
-        <select id="postType" name="postType" class="postType">
-            <option value="" disabled selected>Select Post Type</option>
-            <option value="politics_body_post">Politics Body Post</option>
-        </select>
 
         <button type="submit">Add Body Post</button>
     </form>

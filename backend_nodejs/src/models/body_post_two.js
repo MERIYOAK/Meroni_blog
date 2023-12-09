@@ -13,6 +13,6 @@ const body_post2_schema = new mongoose.Schema({
 
 });
 
-const Art_body_post = mongoose.model("art_body_post", body_post2_schema);
+const Body_post2 = mongoose.model("Body_post2", body_post2_schema);
 
-export { Art_body_post };
+export { Body_post2 };

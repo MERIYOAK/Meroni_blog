@@ -10,7 +10,6 @@ const article_schema = new mongoose.Schema({
     goToURL: String
 });
 
-const Philosophy_article_post = mongoose.model("philosophy_article_post", article_schema);
-const Science_article_post = mongoose.model("science_article_post", article_schema);
+const Article = mongoose.model("Article", article_schema);
 
-export { Philosophy_article_post, Science_article_post };
+export { Article };

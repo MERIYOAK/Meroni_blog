@@ -15,6 +15,6 @@ const body_post3_schema = new mongoose.Schema({
     image3: String
 });
 
-const Politics_body_post = mongoose.model("politics_body_post", body_post3_schema);
+const Body_post3 = mongoose.model("Body_post3", body_post3_schema);
 
-export { Politics_body_post };;
+export { Body_post3 };;

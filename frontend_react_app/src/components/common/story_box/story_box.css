@@ -40,6 +40,7 @@
 
 .notes_container {
     padding: 1rem;
+    margin-bottom: 2rem;
 }
 
 .note {
@@ -47,9 +48,46 @@
 
 }
 
+.read-btn {
+    cursor: pointer;
+    width: fit-content;
+    position: relative;
+    top: 1rem;
+    background-color: transparent;
+    border-top: 1px solid var(--color-black);
+    border-bottom: 1px solid var(--color-black);
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    padding: .2rem ;
+    font-size: .7rem;
+    transition: var(--transition);
+}
+
+.read-btn:hover {
+    border-right: 1px solid var(--color-black);
+    border-left: 1px solid var(--color-black);
+    border-top:  1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+
+
 /***dark-theme***/
 body.dark-theme .story_box {
     background: var(--color-bg2-variant);
+}
+
+body.dark-theme  .read-btn {
+    border-top: 1px solid var(--color-white) ;
+    border-bottom: 1px solid var(--color-white);
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+} 
+
+body.dark-theme .read-btn:hover {
+    border-right: 1px solid var(--color-white);
+    border-left: 1px solid var(--color-white);
+    border-top:  1px solid transparent;
+    border-bottom: 1px solid transparent;
 }
 
 @media screen and (max-width: 1250px) {
