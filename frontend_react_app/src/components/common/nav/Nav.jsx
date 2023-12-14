@@ -4,26 +4,50 @@ import { FaBars } from "react-icons/fa";
 import { TbLetterX } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../../context/AuthContext';
+import { BiSolidUserCircle } from "react-icons/bi";
 
 function Nav() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
+  const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
+  const [visible, setVisible] = useState(true);
+
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll2 = () => {
+      const currentScrollPos = window.scrollY;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    if (isSmallScreen) {
+      window.addEventListener('scroll', handleScroll2);
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll2);
+    };
+  }, [prevScrollPos, isSmallScreen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const nav = document.querySelector("header");
+      if (window.scrollY > 0) {
+        nav.classList.add("window-scroll");
+      } else {
+        nav.classList.remove("window-scroll");
+      }
+    };
+
+    if (!isSmallScreen) {
+      window.addEventListener("scroll", handleScroll);
+    }
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isSmallScreen]);
 
-  const handleScroll = () => {
-    const nav = document.querySelector("header");
-    if (window.scrollY > 0) {
-      nav.classList.add("window-scroll");
-    } else {
-      nav.classList.remove("window-scroll");
-    }
-  };
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
 
   function handleMenuOpen() {
     setIsMenuOpen(true);
@@ -47,8 +71,8 @@ function Nav() {
   const { isAuthenticated, user } = state;
 
   return (
-    <header className="header">
-      <Link to="/" className="logo">Meroni</Link>
+    <header className={`header ${visible ? 'visible' : 'hidden'}`}>
+      <Link to="/" className="logo">Meroni<span className="logo_span">blog</span></Link>
       <nav
         className={isSmallScreen && !isMenuOpen ? "navbar__hidden" : "navbar"}
       >
@@ -59,17 +83,6 @@ function Nav() {
         <Link to="/tech" onClick={handleMenuClose}>Tech</Link>
         <Link to="/art" onClick={handleMenuClose}>Art</Link>
         <Link to="/politics" onClick={handleMenuClose}>Politics</Link>
-        {isAuthenticated ? (
-          <Link to="/user_profile" onClick={handleMenuClose} >
-            {user.imageUrl ? (
-              <img src={user.imageUrl} alt="Profile" className="profile_picture" />
-            ) : null}
-          </Link>
-        ) : (
-          <Link to="/sign_up" onClick={handleMenuClose} className="btn-primary btn-secondary">
-            Sign Up
-          </Link>
-        )}
       </nav>
       <div className="mobile__menu">
         {!isMenuOpen && (
@@ -81,6 +94,19 @@ function Nav() {
           <button className="close__menu" onClick={handleMenuClose}>
             <TbLetterX />
           </button>
+        )}
+      </div>
+      <div className="profile">
+        {isAuthenticated ? (
+          <Link to="/user_profile" onClick={handleMenuClose} >
+            {user.imageUrl ? (
+              <img src={user.imageUrl} alt="Profile" className="profile_picture" />
+            ) : null}
+          </Link>
+        ) : (
+          <Link to="/sign_up" onClick={handleMenuClose}>
+            <BiSolidUserCircle className="profile_picture" />
+          </Link>
         )}
       </div>
     </header>

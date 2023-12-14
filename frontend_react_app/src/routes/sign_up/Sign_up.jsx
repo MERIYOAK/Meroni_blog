@@ -104,6 +104,8 @@ function Sign_up() {
                 sessionStorage.setItem('email', responseData.email);
                 sessionStorage.setItem('imageUrl', responseData.imageUrl);
                 localStorage.setItem('userId', responseData.id);
+                localStorage.setItem('accessToken', responseData.accessToken);
+                localStorage.setItem('refreshToken', responseData.refreshToken);
                 navigate('/');
             }
         } catch (error) {
@@ -183,6 +185,10 @@ function Sign_up() {
                 sessionStorage.setItem('email', responseData.email);
                 sessionStorage.setItem('imageUrl', responseData.imageUrl);
                 localStorage.setItem('userId', responseData.id);
+                localStorage.setItem('accessToken', responseData.accessToken);
+                localStorage.setItem('refreshToken', responseData.refreshToken);
+                setEmail('');
+                setPassword('');
                 navigate('/');
             } else if (responseData.userRole === 'pending') {
                 setLoginButtonDisabled(false);

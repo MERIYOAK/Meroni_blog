@@ -62,30 +62,30 @@ retrieve_post.get("/allPost", async (req, res) => {
                 case 'technology_post':
                 case 'art_post':
                 case 'politics_post':
-                    res.render('all_posts', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'philosophy_article_post':
                 case 'science_article_post':
-                    res.render('all_articles', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'technology_body_post':
-                    res.render('all_body_posts', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'art_body_post':
-                    res.render('all_body_post2', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'politics_body_post':
-                    res.render('all_body_post3', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'technology_box_post':
-                    res.render('all_box_posts', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'politics_hero_post':
                 case 'daily_quote':
-                    res.render('all_small_posts', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 case 'finance_slide_post':
-                    res.render('all_slides', { posts: allPosts });
+                    res.json({ posts: allPosts });
                     break;
                 default:
                     res.status(400).json({ error: 'Invalid post type' });

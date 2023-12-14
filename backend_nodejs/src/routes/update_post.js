@@ -10,16 +10,6 @@ import { Body_post3 } from "../models/body_post_three.js";
 
 const update_post = express();
 
-// used to render id input page based on post type
-update_post.get("/updatePost", (req, res) => {
-    try {
-        res.render("post_updater");
-    } catch (error) {
-        console.error("Error rendering post updater:", error);
-        res.status(500).send("Error rendering post updater.");
-    }
-});
-
 // used to render post updater template based on postId
 update_post.get('/postUpdater', async (req, res) => {
     const postId = req.query.postId;
@@ -66,42 +56,7 @@ update_post.get('/postUpdater', async (req, res) => {
             }
 
             if (post) {
-                switch (postType) {
-                    case 'my_journey_post':
-                    case 'finance_post':
-                    case 'philosophy_post':
-                    case 'science_post':
-                    case 'technology_post':
-                    case 'art_post':
-                    case 'politics_post':
-                        res.render('post_updater_template', { post });
-                        break;
-                    case 'daily_quote':
-                    case 'politics_hero_post':
-                        res.render('daily_quote_updater_template', { post });
-                        break;
-                    case 'finance_slide_post':
-                        res.render('slide_updater_template', { post });
-                        break;
-                    case 'philosophy_article_post':
-                    case 'science_article_post':
-                        res.render('article_updater_template', { post });
-                        break;
-                    case 'technology_body_post':
-                        res.render('body_post_updater_template', { post });
-                        break;
-                    case 'technology_box_post':
-                        res.render('box_post_updater_template', { post });
-                        break;
-                    case 'art_body_post':
-                        res.render('body_post2_updater_template', { post });
-                        break;
-                    case 'politics_body_post':
-                        res.render('body_post3_updater_template', { post });
-                        break;
-                    default:
-                        res.status(400).json({ error: 'Invalid post type' });
-                }
+                res.json({ success: true, message: 'Post found', post });
             } else {
                 res.status(404).json({ error: 'Post not found' });
             }
@@ -243,7 +198,7 @@ update_post.post('/updateMyPost/:id/:tableName', async (req, res) => {
             }
 
             await post.save();
-            res.render('post_updated_confirmation');
+            res.json({ success: true, message: 'Post updated successfully' });
         }
     } catch (error) {
         console.error('Error updating post:', error);

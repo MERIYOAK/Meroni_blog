@@ -8,13 +8,23 @@ header {
     align-items: center;
     background: transparent;
     height: 4rem;
+    border-bottom-left-radius: .8rem;
+    border-bottom-right-radius: .8rem;
 }
 
 .logo {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-black);
     cursor: default;
+}
+
+.logo_span {
+    background-color: var(--color-special);
+    padding: 0 .3rem;
+    color: var(--color-black) !important;
+    border-radius: .6rem;
+    font-size: 1.3rem;
 }
 
 .navbar {
@@ -35,11 +45,10 @@ header {
     color: var(--color-grey);
 }
 
-.btn-secondary {
-    background-color: var(--color-special) !important;
-}
-
 .profile_picture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 2.5rem !important;
     height: 2.5rem !important;
     border-radius: 50% !important;
@@ -64,30 +73,54 @@ header {
 
 /******************media queries (tablets) ****************/
 @media screen and (max-width: 1200px) {
-    .logo {
-        margin-left: -5rem;
+    .header.visible {
+        background: var(--color-bg-variant);
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+        transition: var(--transition);
+    } 
+
+    body.dark-theme  .header.visible {
+        background: var(--color-bg2-variant);
+        box-shadow: 0 1rem 2rem rgba(255, 255, 255, 0.5);
     }
+    
+    .header.hidden {
+        transform: translateY(-4rem); 
+        transition: var(--transition);
+    }
+
+    .logo {
+        order: 2;
+    }
+
+
     .mobile__menu {
+        order: 1;
         display: flex; 
     }
 
+    .profile {
+        order: 3;
+    }
+
     .mobile__menu button {
-        font-size: 1.8rem;
-        border-radius: 20%;
+        font-size: 1.6rem;
         cursor: pointer;
         background: transparent;
         color: var(--color-black);   
-        margin: .5rem -5rem 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .navbar {
         position: fixed;
         top: 5rem;
-        right: 5%;
+        left: 5%;
         height: fit-content;
         flex-direction: column;
         width: 18rem; 
-        gap: 2px;
+        gap: 10px;
     }
 
     .navbar__hidden {
@@ -128,25 +161,20 @@ header {
 
     .navbar * {
         background: var(--color-bg-variant);
-        height: 4.5rem;
+        height: 4rem;
         width: 80%;
         display: grid;
         place-items: center;
-        margin-bottom: .5rem;
         border-radius: .5rem;
         animation: animateNavItems 1s linear forwards;
         animation-delay: calc(.1s * var(--i));
-        transform-origin: top right;
+        transform-origin: top left;
         opacity: 0;
-    }
-
-    .navbar .btn-primary {
-        background-color: var(--color-special) !important;
     }
 
     @keyframes animateNavItems {
         from {
-            transform: rotateZ(-90deg) rotateX(90deg) scale(0.1)
+            transform: rotateZ(90deg) rotateX(90deg) scale(0.1)
         } 
 
         to {
@@ -162,9 +190,10 @@ header {
 
 }
 
-@media screen and (max-width: 376px) {
-    .logo {
-        margin-left: -3rem;
+@media screen and (max-width: 550px) {
+    header {
+        justify-content: space-between;
+        padding:  0 1rem;
     }
 }
 

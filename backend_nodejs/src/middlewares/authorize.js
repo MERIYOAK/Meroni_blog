@@ -2,7 +2,7 @@
 const authorize = (roles) => {
     return (req, res, next) => {
         if (roles.includes(req.session.userRole)) {
-            console.log('Authorized');
+            console.log('Authorized : userRole ' + req.session.userRole);
             next();
         } else {
             console.log('Not authorized');

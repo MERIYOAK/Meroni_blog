@@ -73,4 +73,7 @@ body.dark-theme .mobile__menu button {
 
 body.dark-theme .window-scroll {
     background: var(--color-bg2-variant);
+    box-shadow: 0 1rem 2rem rgba(255, 255, 255, 0.5);
 }
+
+

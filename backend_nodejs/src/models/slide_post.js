@@ -8,6 +8,6 @@ const slide_schema = new mongoose.Schema({
     title: String
 });
 
-const Slide = mongoose.model("finance_slide_post", slide_schema);
+const Slide = mongoose.model("Slide", slide_schema);
 
 export { Slide };

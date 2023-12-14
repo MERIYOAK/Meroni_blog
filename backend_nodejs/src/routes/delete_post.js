@@ -10,18 +10,6 @@ import { Body_post3 } from "../models/body_post_three.js";
 
 const delete_post = express();
 
-
-// used to render id input page based on post type
-delete_post.get("/deletePost", (req, res) => {
-    try {
-        res.render("post_deleter");
-    } catch (error) {
-        console.error('Error rendering post deleter template:', error);
-        res.status(500).json({ error: 'Error rendering post deleter template' });
-    }
-});
-
-// used to render post deleter template based on postId
 delete_post.get('/postDeleter', async (req, res) => {
     const postId = req.query.postId;
     const postType = req.query.postType;
@@ -67,42 +55,7 @@ delete_post.get('/postDeleter', async (req, res) => {
                         res.status(400).json({ error: 'Invalid post type' });
                 }
                 if (post) {
-                    switch (postType) {
-                        case 'my_journey_post':
-                        case 'finance_post':
-                        case 'philosophy_post':
-                        case 'science_post':
-                        case 'technology_post':
-                        case 'art_post':
-                        case 'politics_post':
-                            res.render('post_deleter_template', { post });
-                            break;
-                        case 'daily_quote':
-                        case 'politics_hero_post':
-                            res.render('daily_quote_deleter_template', { post });
-                            break;
-                        case 'finance_slide_post':
-                            res.render('slide_deleter_template', { post });
-                            break;
-                        case 'philosophy_article_post':
-                        case 'science_article_post':
-                            res.render('article_deleter_template', { post });
-                            break;
-                        case 'technology_body_post':
-                            res.render('body_post_deleter_template', { post });
-                            break;
-                        case 'technology_box_post':
-                            res.render('box_post_deleter_template', { post });
-                            break;
-                        case 'art_body_post':
-                            res.render('body_post2_deleter_template', { post });
-                            break;
-                        case 'politics_body_post':
-                            res.render('body_post3_deleter_template', { post });
-                            break;
-                        default:
-                            res.status(400).json({ error: 'Invalid post type' });
-                    }
+                    res.json({ success: true, message: 'Post found', post });
                 } else {
                     res.status(404).json({ error: 'Post not found' });
                 }
@@ -124,7 +77,6 @@ delete_post.delete('/deleteMyPost/:id/:tableName', async (req, res) => {
     const postId = req.params.id;
     const postType = req.params.tableName;
     let post;
-
     try {
         switch (postType) {
             case 'my_journey_post':
@@ -171,7 +123,7 @@ delete_post.delete('/deleteMyPost/:id/:tableName', async (req, res) => {
         if (!post) {
             res.status(404).json({ error: 'Post not found' });
         } else {
-            res.render('post_deleted_confirmation');
+            res.json({ success: true, message: 'Post deleted successfully' });
         }
     } catch (error) {
         console.error('Error deleting post:', error);

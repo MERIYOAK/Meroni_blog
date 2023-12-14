@@ -2,8 +2,6 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import ejs from "ejs";
-import methodOverride from 'method-override';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -18,7 +16,6 @@ import Admin_creator from "./src/controllers/Admin_creator.js";
 import default_router from "./src/routes/default_routers.js";
 import fetch_posts from "./src/routes/fetch_posts.js";
 import add_post from "./src/routes/add_post.js";
-import crud from './src/routes/crud.js'
 import update_post from "./src/routes/update_post.js";
 import delete_post from "./src/routes/delete_post.js";
 import retrieve_post from "./src/routes/retrieve_post.js";
@@ -31,6 +28,8 @@ import decrease_like from "./src/routes/decrease_like.js";
 import shares from "./src/routes/shares.js";
 import add_comment from "./src/routes/add_comment.js";
 import pending_editors from "./src/routes/pending_editors.js";
+import verifyToken from "./src/middlewares/verify_token.js";
+import refresh_token from "./src/routes/refresh_token.js";
 
 // Load environment variables from .env file
 configDotenv();
@@ -40,9 +39,9 @@ const port = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const upload = multer();
-const reqiuredRolesForModeration = ['admin'];
-const requiredRolesForPostCRUD = ['admin', 'editor'];
-const requiredRolesForReactionCRUD = ['admin', 'editor', 'reader', 'pending'];
+const reqiuredRolesForModeration = process.env.REQUIRED_ROLES_FOR_MODERATION.split(',');
+const requiredRolesForPostCRUD = process.env.REQUIRED_ROLES_FOR_POST_CRUD.split(',');
+const requiredRolesForReactionCRUD = process.env.REQUIRED_ROLES_FOR_REACTION_CRUD.split(',');
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB");
@@ -50,7 +49,6 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Error connecting to MongoDB:", err);
 });
 
-// Replace 'your-mongodb-uri' with your MongoDB connection URI
 const mongoStore = new MongoStore({
     mongoUrl: process.env.MONGODB_URI,
     collection: 'sessions',
@@ -71,18 +69,16 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(methodOverride('_method'));
-app.set("view engine", "ejs");
 app.use(express.static("../frontend_react_app/dist"));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/public', express.static(path.join(__dirname, 'public'), { 'Content-Type': 'text/css' }));
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: 'GET, POST, PUT, DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-}));
+// app.use(cors({
+//     origin: 'http://localhost:5173',
+//     methods: 'GET, POST, PUT, DELETE',
+//     credentials: true,
+//     optionsSuccessStatus: 204,
+// }));
 
 Admin_creator.createAdmin();
 
@@ -90,8 +86,11 @@ app.use(default_router);
 app.use(fetch_posts);
 app.use(upload.single('image'), sign_up);
 app.use(login);
+app.use(refresh_token);
 
-app.use([authenticate, authorize(requiredRolesForReactionCRUD)],
+const authAndAuthorize = [authenticate, verifyToken];
+
+app.use([...authAndAuthorize, authorize(requiredRolesForReactionCRUD)],
     user_data,
     logout,
     increase_like,
@@ -99,12 +98,11 @@ app.use([authenticate, authorize(requiredRolesForReactionCRUD)],
     shares,
     add_comment);
 
-app.use([authenticate, authorize(requiredRolesForPostCRUD)],
+app.use([...authAndAuthorize, authorize(requiredRolesForPostCRUD)],
     add_post,
-    crud,
     retrieve_post);
 
-app.use([authenticate, authorize(reqiuredRolesForModeration)],
+app.use([...authAndAuthorize, authorize(reqiuredRolesForModeration)],
     update_post,
     delete_post,
     pending_editors);

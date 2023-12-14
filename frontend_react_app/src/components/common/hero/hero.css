@@ -35,10 +35,11 @@
     transform: translate(-50%, -50%);
 }
 
-@media screen and (max-width: 669px) {
+@media screen and (max-width: 550px) {
     .my_image img{
-        width: 100vw;
-        border-radius: 0%;
+         width: 100%;
+         border-radius: 0%;
+       
     }
 
     .my_image {

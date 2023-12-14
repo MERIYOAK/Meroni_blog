@@ -1,14 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './reactions.css'
 import { BiSolidLike, BiSolidCommentDetail } from 'react-icons/bi';
 import { BsShareFill } from 'react-icons/bs';
 import axios from 'axios'
 import { timeAgo } from './relativeTimer';
 import { Helmet } from 'react-helmet';
-
+import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 function reactions(props) {
     const [likes, setLikes] = useState(props.post.likesCount);
     const [liked, setLiked] = useState(props.post.likes.some((like) => like.userId === sessionStorage.getItem('userId')));
+    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+    const refreshToken = localStorage.getItem('refreshToken');
+    const [displayComments, setDisplayComments] = useState(false);
+    const [newComment, setNewComment] = useState("");
+    const [commentsCount, setCommentsCount] = useState(props.post.commentsCount);
+    const [comments, setComments] = useState(props.post.comments);
+    const [userCommented, setUserCommented] = useState(props.post.comments.some((like) => like.userId === sessionStorage.getItem('userId')));
+    const [shared, setShared] = useState(props.post.shares.some((like) => like.userId === sessionStorage.getItem('userId')));
+    const [sharedCount, setSharedCount] = useState(props.post.sharesCount);
+
 
     const handleLikeClick = async () => {
         if (sessionStorage.getItem('userId') === null) {
@@ -17,43 +27,71 @@ function reactions(props) {
         }
         if (!liked) {
             try {
-                const response = await axios.post('http://localhost:3000/likes/increase', {
-                    user: {
-                        postId: props.post._id,
-                        userId: sessionStorage.getItem('userId'),
+                const response = await axios.post('http://localhost:3000/likes/increase',
+                    {
+                        user: {
+                            postId: props.post._id,
+                            userId: sessionStorage.getItem('userId'),
+                        },
                     },
-                });
-                const updatedPost = response.data.updatedPost;
+                    {
+                        method: 'POST', // Move 'method' here
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'authorization': `Bearer ${accessToken}`,
+                        }
+                    }
+                );
 
-                setLikes(updatedPost.likesCount);
-                setLiked(true);
+                const updatedPost = response.data.updatedPost;
+                if (updatedPost) {
+                    setLikes(updatedPost.likesCount);
+                    setLiked(true);
+                }
             } catch (error) {
-                console.error('Error increasing likes:', error);
+                if (error.response && error.response.status === 401 && error.response.data === 'Access token has expired') {
+
+                    await handleTokenRefresh(setAccessToken, refreshToken);
+
+                } else {
+                    console.error('Error while increasing likes:', error);
+                }
             }
         } else {
             try {
-                const response = await axios.post('http://localhost:3000/likes/decrease', {
-                    user: {
-                        postId: props.post._id,
-                        userId: sessionStorage.getItem('userId'),
-                    },
-                });
-                const updatedPost = response.data.updatedPost;
+                const response = await axios.post('http://localhost:3000/likes/decrease',
+                    {
+                        user: {
+                            postId: props.post._id,
+                            userId: sessionStorage.getItem('userId'),
+                        },
 
-                setLikes(updatedPost.likesCount);
-                setLiked(false);
+                    },
+                    {
+                        method: 'POST', // Move 'method' here
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'authorization': `Bearer ${accessToken}`,
+                        }
+                    });
+                const updatedPost = response.data.updatedPost;
+                if (updatedPost) {
+                    setLikes(updatedPost.likesCount);
+                    setLiked(false);
+                }
             } catch (error) {
-                console.error('Error decreasing likes:', error);
+                if (error.response && error.response.status === 401 && error.response.data === 'Access token has expired') {
+
+                    await handleTokenRefresh(setAccessToken, refreshToken);
+
+                } else {
+                    console.error('Error while decreasing likes:', error);
+                }
             }
         }
     };
-
-
-    const [displayComments, setDisplayComments] = useState(false);
-    const [newComment, setNewComment] = useState("");
-    const [commentsCount, setCommentsCount] = useState(props.post.commentsCount);
-    const [comments, setComments] = useState(props.post.comments);
-    const [userCommented, setUserCommented] = useState(props.post.comments.some((like) => like.userId === sessionStorage.getItem('userId')));
 
     const handleCommentClick = () => {
         setDisplayComments(!displayComments);
@@ -73,23 +111,36 @@ function reactions(props) {
         };
 
         try {
-            const response = await axios.post('http://localhost:3000/comments/add', {
-                comment: commentObject,
-            });
+            const response = await axios.post('http://localhost:3000/comments/add',
+                {
+                    comment: commentObject
+                },
+                {
+                    method: 'POST', // Move 'method' here
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': `Bearer ${accessToken}`,
+                    }
+                });
 
             const updatedPost = response.data.updatedPost;
-
-            setComments(updatedPost.comments);
-            setCommentsCount(updatedPost.commentsCount);
-            setNewComment('');
-            setUserCommented(true);
+            if (updatedPost) {
+                setComments(updatedPost.comments);
+                setCommentsCount(updatedPost.commentsCount);
+                setNewComment('');
+                setUserCommented(true);
+            }
         } catch (error) {
-            console.error('Error adding comment:', error);
+            if (error.response && error.response.status === 401 && error.response.data === 'Access token has expired') {
+
+                await handleTokenRefresh(setAccessToken, refreshToken);
+
+            } else {
+                console.error('Error while adding comment:', error);
+            }
         }
     };
-
-    const [shared, setShared] = useState(props.post.shares.some((like) => like.userId === sessionStorage.getItem('userId')));
-    const [sharedCount, setSharedCount] = useState(props.post.sharesCount);
 
     const handleShareClick = async () => {
         const shareData = {
@@ -104,19 +155,36 @@ function reactions(props) {
                 await navigator.share(shareData);
 
                 try {
-                    const response = await axios.post('http://localhost:3000/shares', {
-                        user: {
-                            postId: props.post._id,
-                            userId: sessionStorage.getItem('userId'),
+                    const response = await axios.post('http://localhost:3000/shares',
+                        {
+                            user: {
+                                postId: props.post._id,
+                                userId: sessionStorage.getItem('userId'),
+                            }
+
                         },
-                    });
+                        {
+                            method: 'POST', // Move 'method' here
+                            credentials: 'include',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'authorization': `Bearer ${accessToken}`,
+                            }
+                        });
 
                     const updatedPost = response.data.updatedPost;
-
-                    setSharedCount(updatedPost.sharesCount);
-                    setShared(true);
+                    if (updatedPost) {
+                        setSharedCount(updatedPost.sharesCount);
+                        setShared(true);
+                    }
                 } catch (error) {
-                    console.error('Error updating shares on the server:', error);
+                    if (error.response && error.response.status === 401 && error.response.data === 'Access token has expired') {
+
+                        await handleTokenRefresh(setAccessToken, refreshToken);
+
+                    } else {
+                        console.error('Error while increasing shares:', error);
+                    }
                 }
             } catch (error) {
                 console.log('Error sharing:', error);

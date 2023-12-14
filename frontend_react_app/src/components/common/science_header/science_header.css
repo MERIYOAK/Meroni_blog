@@ -2,6 +2,16 @@
     position: relative;
 }
 
+.video-background  {
+    height: 100vh;
+}
+
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .science_header_content_container {
     position: absolute;
     top: 50%;

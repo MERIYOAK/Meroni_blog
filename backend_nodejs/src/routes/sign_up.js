@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
 import handleImage from "../controllers/handleImage.js";
+import generateTokens from '../controllers/token_generator.js';
 
 const sign_up = express();
 
@@ -50,6 +51,8 @@ sign_up.post('/sign_up', async (req, res) => {
             try {
                 await newUser.save();
 
+                const { accessToken, refreshToken } = generateTokens(newUser);
+
                 //Set session values
                 req.session.isAuthenticated = true;
                 req.session.userRole = newUser.role;
@@ -59,6 +62,8 @@ sign_up.post('/sign_up', async (req, res) => {
                 req.session.lastName = newUser.lastName;
                 req.session.email = newUser.email;
                 req.session.imageUrl = newUser.imageUrl;
+                req.session.accessToken = accessToken;
+                req.session.refreshToken = refreshToken;
 
                 await new Promise((resolve, reject) => {
                     req.session.save((err) => {
@@ -83,7 +88,9 @@ sign_up.post('/sign_up', async (req, res) => {
                         middleName: req.session.middleName,
                         lastName: req.session.lastName,
                         email: req.session.email,
-                        imageUrl: req.session.imageUrl
+                        imageUrl: req.session.imageUrl,
+                        accessToken: req.session.accessToken,
+                        refreshToken: req.session.refreshToken
                     });
                     console.log('User created successfully');
                 } else if (role === 'pending') {
@@ -97,7 +104,9 @@ sign_up.post('/sign_up', async (req, res) => {
                         middleName: req.session.middleName,
                         lastName: req.session.lastName,
                         email: req.session.email,
-                        imageUrl: req.session.imageUrl
+                        imageUrl: req.session.imageUrl,
+                        accessToken: req.session.accessToken,
+                        refreshToken: req.session.refreshToken
                     });
                     console.log('Editor created successfully, please wait for approval');
                 }

@@ -16,7 +16,6 @@ const Footer = lazy(() => import('./components/common/footer/Footer'));
 const Sign_up = lazy(() => import('./routes/sign_up/Sign_up'));
 const User_profile = lazy(() => import('./routes/user_profile/User_profile'));
 import { useAuth } from './context/AuthContext';
-
 function App() {
   //Initialize state to store fetched data
   const [loading, setLoading] = useState(true);
@@ -80,6 +79,7 @@ function App() {
     }
 
     setLoading(false);
+
 
   }, []);
 

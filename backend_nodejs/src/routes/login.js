@@ -1,7 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
-import { checkLoginAttempts, loginAttempts, MAX_LOGIN_ATTEMPTS, TIME_FRAME_IN_MINUTES } from '../controllers/loginAttempts.js';
+import { checkLoginAttempts, MAX_LOGIN_ATTEMPTS, TIME_FRAME_IN_MINUTES } from '../controllers/loginAttempts.js';
+import generateTokens from '../controllers/token_generator.js';
 
 const login = express();
 
@@ -19,6 +20,8 @@ login.post('/log_in', async (req, res) => {
                 const passwordMatch = await bcrypt.compare(password, user.password);
                 if (passwordMatch) {
 
+                    const { accessToken, refreshToken } = generateTokens(user);
+
                     //Set session values
                     req.session.isAuthenticated = true;
                     req.session.userRole = user.role;
@@ -28,6 +31,8 @@ login.post('/log_in', async (req, res) => {
                     req.session.lastName = user.lastName;
                     req.session.email = user.email;
                     req.session.imageUrl = user.imageUrl;
+                    req.session.accessToken = accessToken;
+                    req.session.refreshToken = refreshToken;
 
                     await new Promise((resolve, reject) => {
                         req.session.save((err) => {
@@ -49,9 +54,10 @@ login.post('/log_in', async (req, res) => {
                         middleName: req.session.middleName,
                         lastName: req.session.lastName,
                         email: req.session.email,
-                        imageUrl: req.session.imageUrl
+                        imageUrl: req.session.imageUrl,
+                        accessToken: req.session.accessToken,
+                        refreshToken: req.session.refreshToken
                     });
-                    console.log('User logged in successfully');
                 } else {
                     res.json({ error: true, message: 'Invalid password' });
                     console.log('Invalid password');
@@ -75,5 +81,6 @@ login.post('/log_in', async (req, res) => {
         return 'Login attempts exceeded. Please try again later.';
     }
 });
+
 
 export default login;

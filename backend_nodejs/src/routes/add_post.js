@@ -13,7 +13,7 @@ const add_post = express();
 
 add_post.get("/addPost", (req, res) => {
     const postType = req.query.type;
-
+    console.log(postType);
     try {
         switch (postType) {
             case 'my_journey_post':
@@ -60,7 +60,7 @@ add_post.get("/addPost", (req, res) => {
 
 add_post.post("/addPost", async (req, res) => {
     const postType = req.query.postType;
-
+    console.log(postType);
     try {
         let lastPost;
         let newPost;
@@ -251,7 +251,7 @@ add_post.post("/addPost", async (req, res) => {
 
         if (newPost) {
             await newPost.save();
-            res.render('post_added_confirmation');
+            res.json({ success: true, message: 'Post saved successfully' });
         }
     } catch (error) {
         console.error("Error saving post or quote:", error);
