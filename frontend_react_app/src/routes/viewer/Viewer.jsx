@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../updater/updater.css'
 import axios from 'axios';
-import All_posts from '../all_posts/All_posts';
+import All_posts from '../../components/post/templates/all_posts/All_posts';
 import { MdClose } from 'react-icons/md';
 import handleTokenRefresh from '../../hooks/silentTokenRefresher';
 

@@ -17,6 +17,11 @@ function Sign_up() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [image, setImage] = useState(null);
+    const [birthdate, setBirthdate] = useState('');
+    const [telephone, setTelephone] = useState('');
+    const [country, setCountry] = useState('');
+    const [city, setCity] = useState('');
+    const [bio, setBio] = useState('');
     const [isLoginButtonDisabled, setLoginButtonDisabled] = useState(false)
     const [showCountdown, setShowCountdown] = useState(false);
     const [countdown, setCountdown] = useState(0);
@@ -68,6 +73,11 @@ function Sign_up() {
             formData.append('password', password);
             formData.append('image', image);
             formData.append('role', role);
+            formData.append('birthDate', birthdate);
+            formData.append('telephone', telephone);
+            formData.append('country', country);
+            formData.append('city', city);
+            formData.append('bio', bio);
 
             const response = await axios.post('http://localhost:3000/sign_up', formData, {
                 headers: {
@@ -207,66 +217,125 @@ function Sign_up() {
         }
     }, [countdown]);
     return (
-        showSignUp ? (
+        !showSignUp ? (
             <div className="sign-up-container">
-                <div className="container">
+                <div className="welcome-image-container">
+                    <img className="welcome-image" src="https://thumbs.dreamstime.com/z/welcome-to-sign-up-cartoon-figurine-welcoming-you-d-rendered-illustration-isolated-white-72746148.jpg" alt="Welcome" />
+                </div>
+                <div className="sign-up-form-container">
                     <h3 id="welcome-title">Welcome to Meroni Blog</h3>
                     <p id="welcome-description">Please register to continue </p>
+                    <p className='alternative-text'>Already have an account? <a className="log_in-link" onClick={handleClick}>Login</a></p>
 
-                    <form onSubmit={handleSignUp} className="login-form">
-                        <label htmlFor="firstName">First Name:</label>
-                        <input type="text" id="firstName" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+                    <form onSubmit={handleSignUp} className="sign-in-form">
+                        <div className='fill-up'>
+                            <div className='left-side'>
+                                <input type="text" id="firstName" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} required placeholder='First Name : ' />
 
-                        <label htmlFor="middleName">Middle Name:</label>
-                        <input type="text" id="middleName" name="middleName" value={middleName} onChange={(e) => setMiddleName(e.target.value)} required />
+                                <input type="text" id="middleName" name="middleName" value={middleName} onChange={(e) => setMiddleName(e.target.value)} required placeholder='Middle Name :' />
 
-                        <label htmlFor="lastName">Last Name:</label>
-                        <input type="text" id="lastName" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+                                <input type="text" id="lastName" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required placeholder='Last Name :' />
 
-                        <label htmlFor="email">Username: </label>
-                        <input type="text"
-                            id="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder='example: jhon'
-                            required />
+                                <input type="text"
+                                    id="email"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder='Username :'
+                                    required />
 
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder='Password :' />
 
-                        <label htmlFor="image">Profile Image:</label>
-                        <input type="file" id="image" name="image" onChange={(e) => setImage(e.target.files[0])} accept="image/*" required />
-
-                        <label htmlFor="confirmPassword">Confirm Password:</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-
-                        {isContributorClicked && (
-                            <div>
-                                <p>To become an editor, you need to register as a contributor, and yout status will be pending. After approval, you will be able to become an editor. </p>
-                                <label htmlFor="editor"><p>Please check the box: </p></label>
-                                <input type="checkbox" id="editor" name="editor" checked={isEditor} onChange={() => setIsEditor(!isEditor)} />
+                                <input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required placeholder='Confirm Password :' />
+                                <div className='profile-image_input_container'>
+                                    <label htmlFor="image" id='image-label'>Profile Image : </label>
+                                    <input type="file" id="image" name="image" onChange={(e) => setImage(e.target.files[0])} accept="image/*" required placeholder='Profile Image :' />
+                                </div>
                             </div>
-                        )}
+                            <div className='right-side'>
+                                <div className='birthdate'>
+                                    <label htmlFor="birthdate" id='birthdate-label'>birth date : </label>
+                                    <input
+                                        type="date"
+                                        id="birthdate"
+                                        name="birthdate"
+                                        required
+                                        value={birthdate}
+                                        onChange={(e) => setBirthdate(e.target.value)} />
+                                </div>
 
-                        <button type="submit" className='btn-primary' >Sign up</button>
-                        <p>Already have an account? <a className="log_in-link" onClick={handleClick}>Login</a></p>
+                                <input
+                                    type="tel"
+                                    id="telephone"
+                                    name="telephone"
+                                    required
+                                    placeholder='Telephone :'
+                                    value={telephone}
+                                    onChange={(e) => setTelephone(e.target.value)} />
 
-                        {!isEditor && !isContributorClicked && (
-                            <a onClick={() => setIsContributorClicked(true)}><p>Become a contributor</p></a>
-                        )}
+                                <input
+                                    type="text"
+                                    id="country"
+                                    name="country"
+                                    value={country}
+                                    onChange={(e) => setCountry(e.target.value)}
+                                    placeholder="Country where you live : "
+                                    required
+                                />
+
+                                <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                    placeholder="Your city : "
+                                    required
+                                />
+                                <textarea
+                                    id="bio"
+                                    name="bio"
+                                    rows="4"
+                                    cols="50"
+                                    placeholder="Tell us about yourself"
+                                    maxLength={250}
+                                    value={bio}
+                                    onChange={(e) => setBio(e.target.value)}
+                                    required
+                                ></textarea>
+
+                            </div>
+                        </div>
+
+                        <div className='bottom-side'>
+                            {isContributorClicked && (
+                                <div className='contributor-info'>
+                                    <p>To become an editor, you need to register as a contributor, and your status will be pending. After approval, you will be able to become an editor. </p>
+                                    <div className='contributor-checkbox'>
+                                        <label htmlFor="editor"><p>Please check the box: </p></label>
+                                        <input type="checkbox" id="editor" name="editor" checked={isEditor} onChange={() => setIsEditor(!isEditor)} />
+                                    </div>
+                                </div>
+                            )}
+
+                            <button type="submit" className='btn-primary sign-up-btn' >Sign up</button>
+
+                            {!isEditor && !isContributorClicked && (
+                                <a onClick={() => setIsContributorClicked(true)}><p id='contributor'>Become a contributor</p></a>
+                            )}
+                        </div>
                     </form>
 
                 </div>
             </div>
         ) : (
-            <div className={!showCountdown ? 'sign-up-container' : 'overlay sign-up-container'}>
-                <div className="container">
+            <div className={!showCountdown ? 'login-container' : 'overlay login-container'}>
+                <div className="login-form-container">
                     <h3 id="welcome-title">Welcome to Meroni Blog</h3>
                     <p id="welcome-description">Please login to continue </p>
 
+
                     <form onSubmit={handleLogin} className="login-form">
-                        <label htmlFor="email">Email:</label>
                         <input
                             type="email"
                             name="email"
@@ -274,10 +343,9 @@ function Sign_up() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder='example: xxx@meroni.com'
+                            placeholder='Email'
                         /><br />
 
-                        <label htmlFor="password">Password:</label>
                         <input
                             type="password"
                             name="password"
@@ -285,11 +353,11 @@ function Sign_up() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            placeholder='Enter your password'
+                            placeholder='Password'
                         /><br />
-                        <button type="submit" className='btn-primary' disabled={isLoginButtonDisabled} style={isLoginButtonDisabled ? { display: 'none' } : {}}>Log in</button>
+                        <button type="submit" className='btn-primary sign-up-btn log-in-btn' disabled={isLoginButtonDisabled} style={isLoginButtonDisabled ? { display: 'none' } : {}}>Log in</button>
+                        <p className='alternative-text login-text'>I don't have an account? <a className="log_in-link" onClick={handleClick}>Sign up</a></p>
 
-                        <p>I don't have an account? <a className="log_in-link" onClick={handleClick}>Sign up</a></p>
                     </form>
                 </div>
                 {showCountdown && (

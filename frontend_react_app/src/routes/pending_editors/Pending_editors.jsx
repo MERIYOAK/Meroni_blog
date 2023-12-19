@@ -97,7 +97,7 @@ function Pending_editors() {
 
     return (
         <div>
-            <div className="pending-editors profile_details" >
+            <div className="pending-editors" >
                 <h3>Pending Editors</h3>
                 {pendingEditors.length > 0 ? (
                     <div className="pending-editors-list">

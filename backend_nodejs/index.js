@@ -73,12 +73,12 @@ app.use(express.static("../frontend_react_app/dist"));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/public', express.static(path.join(__dirname, 'public'), { 'Content-Type': 'text/css' }));
 
-// app.use(cors({
-//     origin: 'http://localhost:5173',
-//     methods: 'GET, POST, PUT, DELETE',
-//     credentials: true,
-//     optionsSuccessStatus: 204,
-// }));
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET, POST, PUT, DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+}));
 
 Admin_creator.createAdmin();
 

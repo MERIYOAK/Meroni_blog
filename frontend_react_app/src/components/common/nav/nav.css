@@ -61,8 +61,12 @@ header {
 /********************change navbar style on scroll*****************/
 .window-scroll {
     background: var(--color-bg-variant);
-    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.9);
 }
+body.dark-theme .window-scroll {
+    background: var(--color-bg2-variant);
+    box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.9) !important; 
+} 
 
 @media screen and (max-width: 2000px) {
     header {
@@ -75,13 +79,13 @@ header {
 @media screen and (max-width: 1200px) {
     .header.visible {
         background: var(--color-bg-variant);
-        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+        box-shadow:5px 5px 10px rgba(0, 0, 0, 0.9);
         transition: var(--transition);
     } 
 
     body.dark-theme  .header.visible {
         background: var(--color-bg2-variant);
-        box-shadow: 0 1rem 2rem rgba(255, 255, 255, 0.5);
+        box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.9);
     }
     
     .header.hidden {

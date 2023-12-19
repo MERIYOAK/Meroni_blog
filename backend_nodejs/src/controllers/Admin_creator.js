@@ -18,6 +18,11 @@ const createAdmin = async () => {
                     imageUrl: 'http://localhost:3000/uploads/Meron.jpg',
                     password: hash,
                     role: 'admin',
+                    birthDate: '1990-01-01',
+                    telephone: '1234567890',
+                    country: 'USA',
+                    city: 'New York',
+                    bio: 'Hello, I am an admin!',
                 });
 
                 try {

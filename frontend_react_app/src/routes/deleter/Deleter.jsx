@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../updater/updater.css';
-import Post_template from '../post_template/Post_template';
-import Article_template from '../article_template/Article_template';
-import Slide_template from '../slide_template/Slide_template';
-import Box_post_template from '../box_post_template/Box_post_template';
-import Body_post_template from '../body_post_template/Body_post_template';
-import Body_post2_template from '../body_post2_template/Body_post2_template';
-import Body_post3_template from '../body_post3_template/Body_post3_template';
-import Small_post_template from '../small_post_template/Small_post_template';
+import Post_template from '../../components/post/templates/post_template/Post_template';
+import Article_template from '../../components/post/templates/article_template/Article_template';
+import Slide_template from '../../components/post/templates/slide_template/Slide_template';
+import Box_post_template from '../../components/post/templates/box_post_template/Box_post_template';
+import Body_post_template from '../../components/post/templates/body_post_template/Body_post_template';
+import Body_post2_template from '../../components/post/templates/body_post2_template/Body_post2_template';
+import Body_post3_template from '../../components/post/templates/body_post3_template/Body_post3_template';
+import Small_post_template from '../../components/post/templates/small_post_template/Small_post_template';
 import { MdClose } from "react-icons/md";
 import handleTokenRefresh from '../../hooks/silentTokenRefresher';
 

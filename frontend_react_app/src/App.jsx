@@ -1,6 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react'
 import './App.css'
-import LoadingSpinner from './utils/loading_spinner/LoadingSpinner';
+import Loader from './utils/loader/Loader';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import Nav from './components/common/nav/Nav';
@@ -87,7 +87,7 @@ function App() {
     <Router>
       <Nav />
       <Toggler />
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<Loader />}>
         {!loading && (
           <Routes>
             <Route path="/" element={<My_journey my_journey_posts={my_journey_posts} daily_quote_post={daily_quote_post} />} />

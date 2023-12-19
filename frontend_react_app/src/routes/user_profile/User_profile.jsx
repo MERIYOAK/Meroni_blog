@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Updater from '../updater/Updater';
 import Deleter from '../deleter/Deleter';
-import LoadingSpinner from '../../utils/loading_spinner/LoadingSpinner';
+import Loader from '../../utils/loader/Loader.jsx'
 import handleTokenRefresh from '../../hooks/silentTokenRefresher';
 import Adder from '../adder/Adder.jsx';
 import Viewer from '../viewer/Viewer.jsx';
@@ -23,6 +23,8 @@ function User_profile() {
     const [deleteButtonSelected, setDeleteButtonSelected] = useState(false);
     const [addButtonSelected, setAddButtonSelected] = useState(false);
     const [viewButtonSelected, setViewButtonSelected] = useState(false);
+    const [activeButton, setActiveButton] = useState('profile');
+
 
     const handleUpdateButton = () => {
         setUpdateButtonSelected(!updateButtonSelected);
@@ -113,24 +115,139 @@ function User_profile() {
         }
     };
 
+    const renderProfileContent = () => {
+        switch (activeButton) {
+            case 'profile':
+                return (
+                    <form>
+                        <div className='profile-full'>
+                            <div className="form-group row">
+                                <label className="form-control-label">First name</label>
+                                <div className="row-fill">
+                                    <input className="form-control" type="text" value={userData.firstName} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Middle name</label>
+                                <div className="row-fill">
+                                    <input className="form-control" type="text" value={userData.middleName} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Last name</label>
+                                <div className="row-fill">
+                                    <input className="form-control" type="text" value={userData.lastName} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Role</label>
+                                <div className="col">
+                                    <input className="form-control" type="text" value={userData.role} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Email</label>
+                                <div className="col">
+                                    <input className="form-control" type="email" value={userData.email} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Birth date</label>
+                                <div className="col">
+                                    <input className="form-control" type="text" value={userData.birthDate} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Telephone</label>
+                                <div className="col">
+                                    <input className="form-control" type="text" value={userData.telephone} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className=" form-control-label">Country</label>
+                                <div className="col">
+                                    <input className="form-control" type="text" value={userData.country} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">City</label>
+                                <div className="col">
+                                    <input className="form-control" type="text" value={userData.city} readOnly />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="form-control-label">Bio</label>
+                                <div className="col">
+                                    <textarea className="form-control-textarea" type="text" value={userData.bio} readOnly></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                );
+            case 'notifications':
+                return (
+                    <div>
+                        <p>Welcome to the notifications page.</p>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    const handleButtonClick = (button) => {
+        setActiveButton(button);
+    };
+
+    const handleSaveChanges = () => {
+        // Implement logic to save changes
+        alert('Changes saved!');
+    };
+
     return (
         <>
             <div className="profile-container">
                 {loading ? (
-                    <LoadingSpinner />
+                    <Loader />
                 ) : (
-                    <div className="profile_details">
-                        <img className="profile-image" src={userData.imageUrl} alt="User Profile" />
+                    <div className="profile-wrapper">
+                        <div className="profile-header">
+                            <div className='profile-image-container'>
+                                <img className="profile-image" src={userData.imageUrl} alt="User Profile" />
+                                <p>{userData.firstName} {userData.middleName}  {userData.lastName}</p>
+                                <p><strong id='role-text'>Role: </strong>{userData.role}</p>
+                            </div>
+                            <div className="user-info ">
+                                <div className='user-info-container'>
+                                    <p id='role-text'>Email Address</p>
+                                    <strong>{userData.email}</strong>
+                                </div>
+                                <div className='user-info-container'>
+                                    <p id='role-text'>Telephone Number</p>
+                                    <strong>{userData.telephone}</strong>
+                                </div>
+                                <a onClick={handleLogout} className="btn profile-logout">Logout</a>
+                            </div>
 
-                        <div className="user-info">
-                            <p><strong>First Name:</strong> {userData.firstName}</p>
-                            <p><strong>Middle Name:</strong> {userData.middleName}</p>
-                            <p><strong>Last Name:</strong> {userData.lastName}</p>
-                            <p><strong>Email:</strong> {userData.email}</p>
-                            <p><strong>Role:</strong> {userData.role}</p>
+
                         </div>
-
-                        <a onClick={handleLogout} className="btn">Logout</a>
+                        <div className="profile-posts">
+                            <div className="profile-btn-container">
+                                <button
+                                    className={`profile-btn ${activeButton === 'profile' ? 'active-btn' : ''}`}
+                                    onClick={() => handleButtonClick('profile')}
+                                >
+                                    Profile
+                                </button>
+                                <button
+                                    className={`profile-btn ${activeButton === 'notifications' ? 'active-btn' : ''}`}
+                                    onClick={() => handleButtonClick('notifications')}
+                                >
+                                    Notifications
+                                </button>
+                            </div>
+                            {renderProfileContent()}
+                        </div>
                     </div>
                 )}
             </div>

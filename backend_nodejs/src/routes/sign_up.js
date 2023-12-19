@@ -7,17 +7,15 @@ import generateTokens from '../controllers/token_generator.js';
 const sign_up = express();
 
 sign_up.post('/sign_up', async (req, res) => {
-    const { email, password, firstName, middleName, lastName, role } = req.body;
-
+    const { email, password, firstName, middleName, lastName, role, birthDate, telephone, country, city, bio } = req.body;
     const userEmail = `${email.toLowerCase()}@meroni.com`;
-    console.log(userEmail);
     try {
         if (req.file) {
-            const userExists = await User.findOne({ email: email });
+            const userExists = await User.findOne({ email: userEmail });
 
             if (userExists) {
                 res.json({ error: true, message: 'User already exists' });
-                console.log('User already exists');
+                console.log('User Name already exists');
             }
 
             const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
@@ -45,7 +43,12 @@ sign_up.post('/sign_up', async (req, res) => {
                 middleName,
                 lastName,
                 imageUrl: imageUrl,
-                role: role
+                role: role,
+                birthDate,
+                telephone,
+                country,
+                city,
+                bio
             });
 
             try {
