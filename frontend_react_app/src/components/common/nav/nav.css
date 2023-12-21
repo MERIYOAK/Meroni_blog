@@ -121,7 +121,6 @@ body.dark-theme .window-scroll {
         position: fixed;
         top: 5rem;
         left: 5%;
-        height: fit-content;
         flex-direction: column;
         width: 18rem; 
         gap: 10px;
@@ -174,6 +173,7 @@ body.dark-theme .window-scroll {
         animation-delay: calc(.1s * var(--i));
         transform-origin: top left;
         opacity: 0;
+        border : 1px solid var(--color-special);
     }
 
     @keyframes animateNavItems {

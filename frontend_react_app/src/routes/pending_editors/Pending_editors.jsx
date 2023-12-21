@@ -32,7 +32,7 @@ function Pending_editors() {
                 }
             }
         };
-        if (role === 'admin') {
+        if (role === 'Admin') {
             fetchPendingEditors();
         }
     }, [role]);

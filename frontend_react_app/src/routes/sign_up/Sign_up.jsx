@@ -13,7 +13,8 @@ function Sign_up() {
     const [firstName, setFirstName] = useState('');
     const [middleName, setMiddleName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    const [emailOrUsername, setEmailOrUsername] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [image, setImage] = useState(null);
@@ -37,13 +38,15 @@ function Sign_up() {
             e.preventDefault();
 
             // After handling other form fields, set the role based on the checkbox
-            const role = isEditor ? 'pending' : 'reader';
+            const role = isEditor ? 'Pending' : 'Reader';
 
             // Capitalize the first letter of each name
             const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
             const capitalizedMiddleName = middleName.charAt(0).toUpperCase() + middleName.slice(1);
             const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
-
+            const capitalizedCountry = country.charAt(0).toUpperCase() + country.slice(1);
+            const capitalizedCity = city.charAt(0).toUpperCase() + city.slice(1);
+            const capitalizedBio = bio.charAt(0).toUpperCase() + bio.slice(1);
             // Validate password length
             if (password.length < 8) {
                 alert('Password must be at least 8 characters long.');
@@ -69,15 +72,15 @@ function Sign_up() {
             formData.append('firstName', capitalizedFirstName);
             formData.append('middleName', capitalizedMiddleName);
             formData.append('lastName', capitalizedLastName);
-            formData.append('email', email);
+            formData.append('username', username);
             formData.append('password', password);
             formData.append('image', image);
             formData.append('role', role);
             formData.append('birthDate', birthdate);
             formData.append('telephone', telephone);
-            formData.append('country', country);
-            formData.append('city', city);
-            formData.append('bio', bio);
+            formData.append('country', capitalizedCountry);
+            formData.append('city', capitalizedCity);
+            formData.append('bio', capitalizedBio);
 
             const response = await axios.post('http://localhost:3000/sign_up', formData, {
                 headers: {
@@ -112,6 +115,7 @@ function Sign_up() {
                 sessionStorage.setItem('middleName', responseData.middleName);
                 sessionStorage.setItem('lastName', responseData.lastName);
                 sessionStorage.setItem('email', responseData.email);
+                sessionStorage.setItem('username', responseData.username);
                 sessionStorage.setItem('imageUrl', responseData.imageUrl);
                 localStorage.setItem('userId', responseData.id);
                 localStorage.setItem('accessToken', responseData.accessToken);
@@ -133,7 +137,7 @@ function Sign_up() {
             const userId = localStorage.getItem('userId');
 
             const response = await axios.post('http://localhost:3000/log_in', {
-                email,
+                emailOrUsername,
                 password,
                 userId,
             }, {
@@ -160,7 +164,7 @@ function Sign_up() {
                     // Clear the interval and hide the countdown
                     clearInterval(countdownInterval);
                     setShowCountdown(false);
-                    setEmail('');
+                    setEmailOrUsername('');
                     setPassword('');
                 } else {
                     alert(responseData.message);
@@ -197,7 +201,7 @@ function Sign_up() {
                 localStorage.setItem('userId', responseData.id);
                 localStorage.setItem('accessToken', responseData.accessToken);
                 localStorage.setItem('refreshToken', responseData.refreshToken);
-                setEmail('');
+                setEmailOrUsername('');
                 setPassword('');
                 navigate('/');
             } else if (responseData.userRole === 'pending') {
@@ -237,10 +241,10 @@ function Sign_up() {
                                 <input type="text" id="lastName" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required placeholder='Last Name :' />
 
                                 <input type="text"
-                                    id="email"
-                                    name="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    id="username"
+                                    name="username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                     placeholder='Username :'
                                     required />
 
@@ -310,7 +314,7 @@ function Sign_up() {
                         <div className='bottom-side'>
                             {isContributorClicked && (
                                 <div className='contributor-info'>
-                                    <p>To become an editor, you need to register as a contributor, and your status will be pending. After approval, you will be able to become an editor. </p>
+                                    <p>If you want to contribute to the platform and become an Editor please fill the checkbox and wait for the admin to approve!</p>
                                     <div className='contributor-checkbox'>
                                         <label htmlFor="editor"><p>Please check the box: </p></label>
                                         <input type="checkbox" id="editor" name="editor" checked={isEditor} onChange={() => setIsEditor(!isEditor)} />
@@ -337,13 +341,13 @@ function Sign_up() {
 
                     <form onSubmit={handleLogin} className="login-form">
                         <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="text"
+                            name="emailOrUsername"
+                            id="emailOrUsername"
+                            value={emailOrUsername}
+                            onChange={(e) => setEmailOrUsername(e.target.value)}
                             required
-                            placeholder='Email'
+                            placeholder='Email or Username'
                         /><br />
 
                         <input

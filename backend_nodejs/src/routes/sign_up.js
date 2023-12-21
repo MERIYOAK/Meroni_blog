@@ -3,12 +3,14 @@ import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
 import handleImage from "../controllers/handleImage.js";
 import generateTokens from '../controllers/token_generator.js';
+import multer from 'multer';
 
 const sign_up = express();
+const upload = multer();
 
-sign_up.post('/sign_up', async (req, res) => {
-    const { email, password, firstName, middleName, lastName, role, birthDate, telephone, country, city, bio } = req.body;
-    const userEmail = `${email.toLowerCase()}@meroni.com`;
+sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
+    const { username, password, firstName, middleName, lastName, role, birthDate, telephone, country, city, bio } = req.body;
+    const userEmail = `${username.toLowerCase()}@meroni.com`;
     try {
         if (req.file) {
             const userExists = await User.findOne({ email: userEmail });
@@ -42,6 +44,7 @@ sign_up.post('/sign_up', async (req, res) => {
                 firstName,
                 middleName,
                 lastName,
+                username,
                 imageUrl: imageUrl,
                 role: role,
                 birthDate,
@@ -80,7 +83,7 @@ sign_up.post('/sign_up', async (req, res) => {
                     });
                 });
 
-                if (role === 'reader') {
+                if (role === 'Reader') {
                     res.json({
                         success: true,
                         message: 'User created successfully',
@@ -96,7 +99,7 @@ sign_up.post('/sign_up', async (req, res) => {
                         refreshToken: req.session.refreshToken
                     });
                     console.log('User created successfully');
-                } else if (role === 'pending') {
+                } else if (role === 'Pending') {
                     res.json({
                         success: true,
                         message: 'Editor created successfully, please wait for approval',

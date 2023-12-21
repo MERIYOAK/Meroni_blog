@@ -8,7 +8,6 @@ import { dirname } from 'path';
 import path from 'path';
 import { config as configDotenv } from "dotenv";
 import cors from "cors";
-import multer from "multer";
 import MongoStore from 'connect-mongo';
 import authenticate from "./src/middlewares/authenticate.js";
 import authorize from "./src/middlewares/authorize.js";
@@ -30,6 +29,8 @@ import add_comment from "./src/routes/add_comment.js";
 import pending_editors from "./src/routes/pending_editors.js";
 import verifyToken from "./src/middlewares/verify_token.js";
 import refresh_token from "./src/routes/refresh_token.js";
+import change_profile_image from "./src/routes/change_profile_image.js";
+import change_profile from "./src/routes/change_profile.js";
 
 // Load environment variables from .env file
 configDotenv();
@@ -38,7 +39,6 @@ const app = express();
 const port = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const upload = multer();
 const reqiuredRolesForModeration = process.env.REQUIRED_ROLES_FOR_MODERATION.split(',');
 const requiredRolesForPostCRUD = process.env.REQUIRED_ROLES_FOR_POST_CRUD.split(',');
 const requiredRolesForReactionCRUD = process.env.REQUIRED_ROLES_FOR_REACTION_CRUD.split(',');
@@ -84,30 +84,33 @@ Admin_creator.createAdmin();
 
 app.use(default_router);
 app.use(fetch_posts);
-app.use(upload.single('image'), sign_up);
+app.use(sign_up);
 app.use(login);
 app.use(refresh_token);
 
 const authAndAuthorize = [authenticate, verifyToken];
 
 app.use([...authAndAuthorize, authorize(requiredRolesForReactionCRUD)],
+    //app.use(verifyToken,
     user_data,
     logout,
     increase_like,
     decrease_like,
     shares,
-    add_comment);
+    add_comment,
+    change_profile,
+    change_profile_image);
 
 app.use([...authAndAuthorize, authorize(requiredRolesForPostCRUD)],
+    //app.use(verifyToken,
     add_post,
     retrieve_post);
 
 app.use([...authAndAuthorize, authorize(reqiuredRolesForModeration)],
+    //app.use(verifyToken,
     update_post,
     delete_post,
     pending_editors);
-
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

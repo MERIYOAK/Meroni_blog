@@ -7,14 +7,16 @@ import generateTokens from '../controllers/token_generator.js';
 const login = express();
 
 login.post('/log_in', async (req, res) => {
-    const email = req.body.email;
+    const emailOrUsername = req.body.emailOrUsername;
     const password = req.body.password;
     const userId = req.body.userId;
     const attempts = checkLoginAttempts(userId);
 
     if (attempts <= MAX_LOGIN_ATTEMPTS) {
         try {
-            const user = await User.findOne({ email: email });
+            const user = await User.findOne(
+                { $or: [{ email: emailOrUsername }, { username: emailOrUsername }] }
+            );
 
             if (user) {
                 const passwordMatch = await bcrypt.compare(password, user.password);

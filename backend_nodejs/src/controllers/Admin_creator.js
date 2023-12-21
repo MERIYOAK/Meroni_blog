@@ -14,15 +14,16 @@ const createAdmin = async () => {
                     firstName: process.env.FIRST_NAME,
                     middleName: process.env.MIDDLE_NAME,
                     lastName: process.env.LAST_NAME,
+                    username: 'meron',
                     email: process.env.EMAIL,
-                    imageUrl: 'http://localhost:3000/uploads/Meron.jpg',
+                    imageUrl: 'http://localhost:3000/uploads/meron.jpeg',
                     password: hash,
-                    role: 'admin',
-                    birthDate: '1990-01-01',
-                    telephone: '1234567890',
-                    country: 'USA',
-                    city: 'New York',
-                    bio: 'Hello, I am an admin!',
+                    role: 'Admin',
+                    birthDate: '1993-10-01',
+                    telephone: '+244 922 706 107',
+                    country: 'Angola',
+                    city: 'Luanda',
+                    bio: 'Hello, I am the admin!',
                 });
 
                 try {

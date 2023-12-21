@@ -37,13 +37,14 @@
 #firstName,
 #middleName,
 #lastName,
-#email,
+#username,
 #password,
 #confirmPassword,
 #birthdate,
 #telephone,
 #country,
-#city{
+#city,
+#emailOrUsername {
     padding: .5rem;
     background: transparent;
     outline: none;
@@ -200,14 +201,15 @@ body.dark-theme .sign-up-container {
 body.dark-theme  #firstName,
 body.dark-theme #middleName,
 body.dark-theme  #lastName,
-body.dark-theme #email,
+body.dark-theme #username,
 body.dark-theme #password,
 body.dark-theme #confirmPassword,
 body.dark-theme #image,
 body.dark-theme #birthdate,
 body.dark-theme #telephone,
 body.dark-theme #country,
-body.dark-theme #city{
+body.dark-theme #city,
+body.dark-theme #emailOrUsername{
     border-bottom: 1px solid var(--color-white);
 }
 
@@ -253,7 +255,7 @@ body.dark-theme input, body.dark-theme textarea {
     flex-direction: column;
 }
 
-.login-form #email,
+.login-form #emailOrUsername,
 .login-form #password {
     width: 100%;
 }
