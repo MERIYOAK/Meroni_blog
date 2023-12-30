@@ -1,0 +1,47 @@
+
+.profile-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.profile-btn-container {
+    padding: .5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.profile-btn {
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    background-color: var(--color-bg-variant);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.9);
+    transition: var(--transition);
+}
+
+.active-btn {
+    box-shadow: none;
+    background-color: var(--color-primary);
+    color: var(--color-black);
+}
+
+.profile-btn:hover {
+   box-shadow: none !important;
+    cursor: pointer;
+}
+
+ body.dark-theme .profile-btn {
+    background-color: var(--color-bg2-variant);
+    box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.9);
+}
+
+body.dark-theme .profile-btn {
+   color: var(--color-white);
+}
+
+body.dark-theme .active-btn {
+    box-shadow: none;
+    background-color: var(--color-primary);
+    color: var(--color-black);
+}

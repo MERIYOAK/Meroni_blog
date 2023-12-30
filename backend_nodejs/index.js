@@ -31,6 +31,9 @@ import verifyToken from "./src/middlewares/verify_token.js";
 import refresh_token from "./src/routes/refresh_token.js";
 import change_profile_image from "./src/routes/change_profile_image.js";
 import change_profile from "./src/routes/change_profile.js";
+import increase_comment_like from "./src/routes/increase_comment_like.js";
+import decrease_comment_like from "./src/routes/decrease_comment_like.js";
+import add_reply from "./src/routes/add_reply.js";
 
 // Load environment variables from .env file
 configDotenv();
@@ -99,7 +102,10 @@ app.use([...authAndAuthorize, authorize(requiredRolesForReactionCRUD)],
     shares,
     add_comment,
     change_profile,
-    change_profile_image);
+    change_profile_image,
+    increase_comment_like,
+    decrease_comment_like,
+    add_reply);
 
 app.use([...authAndAuthorize, authorize(requiredRolesForPostCRUD)],
     //app.use(verifyToken,

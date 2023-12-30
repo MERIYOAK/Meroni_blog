@@ -87,22 +87,24 @@ function App() {
     <Router>
       <Nav />
       <Toggler />
-      <Suspense fallback={<Loader />}>
-        {!loading && (
-          <Routes>
-            <Route path="/" element={<My_journey my_journey_posts={my_journey_posts} daily_quote_post={daily_quote_post} />} />
-            <Route path="/finance" element={<Finance finance_posts={finance_posts} Slides={Slides} />} />
-            <Route path="/philosophy" element={<Philosophy philosophy_posts={philosophy_posts} philosophy_article_posts={philosophy_article_posts} />} />
-            <Route path="/science" element={<Science sci_hero_posts={sci_hero_posts} science_posts={science_posts} />} />
-            <Route path="/tech" element={<Tech tech_posts={tech_posts} tech_trending_box_posts={tech_trending_box_posts} tech_body_posts={tech_body_posts} />} />
-            <Route path="/art" element={<Art art_body_posts={art_body_posts} art_story_box_posts={art_posts} />} />
-            <Route path="/politics" element={<Politics politics_posts={politics_posts} black_body_content={black_body_content} hero_content_box_posts={hero_content_box_posts} />} />
-            <Route path="/sign_up" element={<Sign_up />} />
-            <Route path="/user_profile" element={<User_profile />} />
-          </Routes>
-        )}
-      </Suspense>
-      {!loading && <Footer />}
+      <div style={{ minHeight: '80vh' }}>
+        <Suspense fallback={<Loader />}>
+          {!loading && (
+            <Routes>
+              <Route path="/" element={<My_journey my_journey_posts={my_journey_posts} daily_quote_post={daily_quote_post} />} />
+              <Route path="/finance" element={<Finance finance_posts={finance_posts} Slides={Slides} />} />
+              <Route path="/philosophy" element={<Philosophy philosophy_posts={philosophy_posts} philosophy_article_posts={philosophy_article_posts} />} />
+              <Route path="/science" element={<Science sci_hero_posts={sci_hero_posts} science_posts={science_posts} />} />
+              <Route path="/tech" element={<Tech tech_posts={tech_posts} tech_trending_box_posts={tech_trending_box_posts} tech_body_posts={tech_body_posts} />} />
+              <Route path="/art" element={<Art art_body_posts={art_body_posts} art_story_box_posts={art_posts} />} />
+              <Route path="/politics" element={<Politics politics_posts={politics_posts} black_body_content={black_body_content} hero_content_box_posts={hero_content_box_posts} />} />
+              <Route path="/sign_up" element={<Sign_up />} />
+              <Route path="/user_profile" element={<User_profile />} />
+            </Routes>
+          )}
+        </Suspense>
+      </div>
+      <Footer />
     </Router >
   )
 }

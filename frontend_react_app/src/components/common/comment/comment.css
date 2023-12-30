@@ -1,0 +1,184 @@
+
+.user_comment {
+    margin-top: .5rem;
+    background-color: var(--color-bg-variant);
+    padding: .5rem;
+    border-radius: 5px;
+    box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.5);
+}
+
+.comment {
+    display: grid;
+    grid-template-columns: 10% auto;
+    gap: 1rem;
+}
+
+.comment_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment_content {
+    overflow: hidden;
+    height: auto;
+}
+
+.comment_content strong {
+    font-size: .8rem;
+    padding: .5rem;
+}
+
+.comment_content p {
+    font-size: .8rem;
+    padding: .5rem;
+    overflow: hidden; 
+    height: auto; 
+    word-wrap: break-word; 
+}
+
+.comment_actions_container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+    margin-top: .5rem;
+    padding: 0 .5rem;
+}
+
+.comment_action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+
+}
+
+.comment_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: .9rem;
+}
+
+.comment_number {
+    font-size: .9rem;
+
+}
+
+.comment_form_container {
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem 0;
+}
+
+.character_count {
+    font-size: .8rem;
+    margin: 0 auto;
+}
+
+.character_count.exceeded {
+    color: red; /* Color for exceeded character count */
+}
+
+.liked {
+    color: var(--color-primary);
+}
+
+.reply_container {
+    margin: 1rem 0 0 2rem;
+}
+
+.reply_form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10% auto 15%;
+    gap: 1rem;
+}
+
+.reply_form img {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+}
+
+.reply_form button{
+    padding: .2rem;
+    border-radius: 45%;
+    border: 1px solid var(--color-light);
+}
+
+.reply_form input {
+    padding: 0;
+    background: transparent;
+    border:  none ;
+    border-bottom: 1px solid var(--color-black);
+}
+
+.reply_form input:focus {
+    border-bottom: 1px solid var(--color-special);
+}
+
+.reply {
+    background-color: var(--color-bg);
+    border-radius: .5rem;
+    padding: .8rem;
+    margin: .5rem 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10% auto;
+    gap: 1rem;
+}
+
+.reply_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.reply_image img{
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+}
+
+.reply_content {
+    overflow: hidden;
+    height: auto;
+}
+
+.reply_content strong {
+    font-size: .8rem;
+    padding: .5rem;
+}
+
+.reply_content p {
+    font-size: .8rem;
+    padding: .5rem;
+    overflow: hidden; 
+    height: auto; 
+    word-wrap: break-word; 
+}
+
+.no_comments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .9rem;
+}
+
+/***dark-theme***/
+body.dark-theme .user_comment {
+    background-color: var(--color-bg2-variant);
+    box-shadow: 4px 6px 6px rgba(255, 255, 255, 0.5);
+}
+
+body.dark-theme .reply_form input {
+    border-bottom: 1px solid var(--color-white);
+    color: var(--color-white);
+}
+
+body.dark-theme .reply {
+    background-color: var(--color-bg2);
+}

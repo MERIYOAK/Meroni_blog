@@ -10,7 +10,13 @@ import handleTokenRefresh from '../../hooks/silentTokenRefresher';
 import Adder from '../adder/Adder.jsx';
 import Viewer from '../viewer/Viewer.jsx';
 import Pending_editors from '../pending_editors/Pending_editors.jsx';
-import { MdOutlineAddAPhoto } from "react-icons/md";
+import Profile_image from '../../components/common/profile_image/Profile_image.jsx';
+import Profile_posts from '../../components/common/profile_posts/Profile_posts.jsx';
+import Add_button from '../../components/post/add_button/Add_button.jsx';
+import Update_button from '../../components/post/update_button/Update_button.jsx';
+import Delete_button from '../../components/post/delete_button/Delete_button.jsx';
+import Retrieve_button from '../../components/post/retrieve_button/Retrieve_button.jsx';
+
 function User_profile() {
     const navigate = useNavigate();
     const { state } = useAuth();
@@ -24,33 +30,24 @@ function User_profile() {
     const [deleteButtonSelected, setDeleteButtonSelected] = useState(false);
     const [addButtonSelected, setAddButtonSelected] = useState(false);
     const [viewButtonSelected, setViewButtonSelected] = useState(false);
-    const [activeButton, setActiveButton] = useState('profile');
-    const [firstName, setFirstName] = useState('');
-    const [middleName, setMiddleName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [birthDate, setBirthDate] = useState('');
-    const [telephone, setTelephone] = useState('');
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
-    const [bio, setBio] = useState('');
-    const [formChanges, setFormChanges] = useState(false);
-    const [isEditor, setIsEditor] = useState(false);
 
-
-    const handleUpdateButton = () => {
-        setUpdateButtonSelected(!updateButtonSelected);
+    const updateUserData = (newUserData) => {
+        setUserData(newUserData);
     };
 
-    const handleDeleteButton = () => {
-        setDeleteButtonSelected(!deleteButtonSelected);
-    };
-
-    const handleAddPostButton = () => {
+    const updateAddButton = () => {
         setAddButtonSelected(!addButtonSelected);
     };
 
-    const handleViewPostButton = () => {
+    const updateUpdateButton = () => {
+        setUpdateButtonSelected(!updateButtonSelected);
+    };
+
+    const updateDeleteButton = () => {
+        setDeleteButtonSelected(!deleteButtonSelected);
+    };
+
+    const updateViewButton = () => {
         setViewButtonSelected(!viewButtonSelected);
     };
 
@@ -71,15 +68,6 @@ function User_profile() {
 
                     if (response.data.success) {
                         setUserData(response.data.user);
-                        setFirstName(response.data.user.firstName);
-                        setMiddleName(response.data.user.middleName);
-                        setLastName(response.data.user.lastName);
-                        setUsername(response.data.user.username);
-                        setBirthDate(response.data.user.birthDate);
-                        setTelephone(response.data.user.telephone);
-                        setCountry(response.data.user.country);
-                        setCity(response.data.user.city);
-                        setBio(response.data.user.bio);
                         setLoading(false);
                     }
 
@@ -137,283 +125,6 @@ function User_profile() {
         }
     };
 
-    const formatBirthDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-    };
-
-
-
-    const renderProfileContent = () => {
-        switch (activeButton) {
-            case 'profile':
-                return (
-                    <div className='profile-full'>
-                        <div className="form-group row">
-                            <label className="form-control-label">First name</label>
-                            <div className="form-control"> {userData.firstName} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Middle name</label>
-                            <div className="form-control"> {userData.middleName} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Last name</label>
-                            <div className="form-control">{userData.lastName} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">User name</label>
-                            <div className="form-control">{userData.username} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Role</label>
-                            <div className="form-control">{userData.role} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Email</label>
-                            <div className="form-control">{userData.email} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Birth date</label>
-                            <div className="form-control">{formatBirthDate(userData.birthDate)}</div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Telephone</label>
-                            <div className="form-control">{userData.telephone} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className=" form-control-label">Country</label>
-                            <div className="form-control">{userData.country} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">City</label>
-                            <div className="form-control">{userData.city} </div>
-                        </div>
-                        <div className="form-group row">
-                            <label className="form-control-label">Bio</label>
-                            <div className="form-control-textarea" >{userData.bio} </div>
-                        </div>
-                    </div>
-                );
-            case 'notifications':
-                return (
-                    <div className='profile-full'>
-                        <p>Welcome to the notifications page.</p>
-                    </div>
-                );
-            case 'edit':
-                return (
-                    <form onSubmit={handleSaveChanges}>
-                        <div className='profile-full'>
-                            <div className="form-group row">
-                                <label className="form-control-label">First name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={firstName}
-                                    onChange={(e) => { setFirstName(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">Middle name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={middleName}
-                                    onChange={(e) => { setMiddleName(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">Last name</label>
-                                <input type="text"
-                                    className="form-control"
-                                    value={lastName}
-                                    onChange={(e) => { setLastName(e.target.value); handleInputChange(); }} />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">User name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={username}
-                                    onChange={(e) => { setUsername(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">Birth date</label>
-                                <input type="date"
-                                    className="form-control"
-                                    value={birthDate}
-                                    onChange={(e) => { setBirthDate(e.target.value); handleInputChange(); }} />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">Telephone</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={telephone}
-                                    onChange={(e) => { setTelephone(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            <div className="form-group row">
-                                <label className=" form-control-label">Country</label>
-                                <input type="text"
-                                    className="form-control"
-                                    value={country}
-                                    onChange={(e) => { setCountry(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">City</label>
-                                <input type="text"
-                                    className="form-control"
-                                    value={city}
-                                    onChange={(e) => { setCity(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            <div className="form-group row">
-                                <label className="form-control-label">Bio</label>
-                                <input type="text"
-                                    className="form-control-textarea"
-                                    value={bio}
-                                    onChange={(e) => { setBio(e.target.value); handleInputChange(); }}
-                                />
-                            </div>
-                            {userData.role === 'Reader' && (
-                                <div className='form-control-label'>
-                                    <p>If you want to contribute to the platform and become an Editor please fill the checkbox and wait for the admin to approve!</p>
-                                    <div className='contributor-checkbox'>
-                                        <label htmlFor="editor"><p>Please check the box: </p></label>
-                                        <input type="checkbox" id="editor" name="editor" checked={isEditor} onChange={(e) => { setIsEditor(!isEditor); handleInputChange(); }} />
-                                    </div>
-                                </div>
-                            )}
-                            <div className='btn-container'>
-                                <button type="submit" className="btn-primary">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                );
-            default:
-                return null;
-        }
-    };
-
-    const handleInputChange = () => {
-        // Set formChanges to true when there are changes in the form
-        setFormChanges(true);
-    };
-
-    const handleButtonClick = (button) => {
-        setActiveButton(button);
-    };
-
-    const handleSaveChanges = async () => {
-        if (!formChanges) {
-            alert('Nothing to save!');
-        } else if (formChanges) {
-            try {
-                const role = isEditor ? 'Pending' : 'Reader';
-                console.log(role);
-                setLoading(true);
-                const response = await axios.post('http://localhost:3000/user-edit-profile',
-                    {
-                        firstName,
-                        middleName,
-                        lastName,
-                        username,
-                        birthDate,
-                        telephone,
-                        country,
-                        city,
-                        bio,
-                        role,
-                        email: userData.email,
-                    },
-                    {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${accessToken}`,
-                        },
-                    });
-
-                if (response.data.success) {
-                    setUserData(response.data.user);
-                    setFirstName(response.data.user.firstName);
-                    setMiddleName(response.data.user.middleName);
-                    setLastName(response.data.user.lastName);
-                    setBirthDate(response.data.user.birthDate);
-                    setTelephone(response.data.user.telephone);
-                    setCountry(response.data.user.country);
-                    setCity(response.data.user.city);
-                    setBio(response.data.user.bio);
-                    setFormChanges(false);
-                    setLoading(false);
-                } else if (response.data.message) {
-                    alert(response.data.message);
-                    setLoading(false);
-                }
-            } catch (error) {
-                if (error.response && error.response.status === 401 && error.response.data === 'Access token has expired') {
-                    await handleTokenRefresh(setAccessToken, refreshToken);
-                } else {
-                    console.error('Error fetching user data:', error);
-                    setLoading(false);
-                }
-            }
-            //}
-        }
-    };
-
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        setSelectedImage(file);
-    };
-
-    const handleImageUpload = async () => {
-        try {
-            if (!selectedImage) {
-                console.error('No image selected');
-                return;
-            }
-            const formData = new FormData();
-            formData.append('image', selectedImage);
-            formData.append('email', userData.email);
-            setLoading(true);
-            const response = await axios.post('http://localhost:3000/user-edit-profile-image',
-                formData,
-                {
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${accessToken}`,
-                    },
-                });
-            if (response.data.success) {
-                setUserData(response.data.user);
-                sessionStorage.setItem('imageUrl', response.data.user.imageUrl);
-                setSelectedImage(null);
-                setLoading(false);
-            } else {
-                console.error('Error uploading image:', response.data.message);
-                setLoading(false);
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 401 && error.response.data === 'Access token has expired') {
-                await handleTokenRefresh(setAccessToken, refreshToken);
-            } else {
-                console.error('Error fetching user data:', error);
-                setLoading(false);
-            }
-        }
-    };
-
     return (
         <>
             <div className="profile-container">
@@ -423,27 +134,7 @@ function User_profile() {
                     <div className="profile-wrapper">
                         <div className="profile-header">
                             <div className='profile-image-container'>
-                                <div className="profile-image">
-                                    <img src={userData.imageUrl} alt="User Profile" />
-                                    <div className="profile-image-overlay">
-                                        <div id="imageContainer">
-                                            <div id="editIcon">
-                                                <label htmlFor="imageInput">
-                                                    <MdOutlineAddAPhoto className='image-icon' />
-                                                </label>
-                                                <input type="file"
-                                                    name="image"
-                                                    accept="image/*"
-                                                    id="imageInput"
-                                                    onChange={handleImageChange}
-                                                    style={{ display: 'none' }}
-                                                />
-                                            </div>
-                                        </div>
-                                        {selectedImage && <button onClick={handleImageUpload} className="image-upload">Change Profile Image</button>}
-                                    </div>
-                                </div>
-
+                                <Profile_image userData={userData} updateUserData={updateUserData} />
                                 <p>{userData.firstName} {userData.middleName}  {userData.lastName}</p>
                                 <p><strong id='role-text'>Role: </strong>{userData.role}</p>
                             </div>
@@ -459,30 +150,7 @@ function User_profile() {
                                 <a onClick={handleLogout} className="btn profile-logout">Logout</a>
                             </div>
                         </div>
-                        <div className="profile-posts">
-                            <div className="profile-btn-container">
-                                <button
-                                    className={`profile-btn ${activeButton === 'profile' ? 'active-btn' : ''}`}
-                                    onClick={() => handleButtonClick('profile')}
-                                >
-                                    Profile
-                                </button>
-                                <button
-                                    className={`profile-btn ${activeButton === 'notifications' ? 'active-btn' : ''}`}
-                                    onClick={() => handleButtonClick('notifications')}
-                                >
-                                    Notifications
-                                </button>
-                                <button
-                                    className={`profile-btn ${activeButton === 'edit' ? 'active-btn' : ''}`}
-                                    onClick={() => handleButtonClick('edit')}
-                                >
-                                    Edit
-                                </button>
-
-                            </div>
-                            {renderProfileContent()}
-                        </div>
+                        <Profile_posts userData={userData} updateUserData={updateUserData} />
                     </div>
                 )}
             </div>
@@ -491,30 +159,18 @@ function User_profile() {
                 <>
                     <Pending_editors />
                     <ul className='privileges'>
-                        <li>
-                            <a id="addPost" onClick={handleAddPostButton} className="btn">Add Post</a>
-                        </li>
-                        <li>
-                            <a id="updatePost" onClick={handleUpdateButton} className="btn">Update Post</a>
-                        </li>
-                        <li>
-                            <a id="deletePost" onClick={handleDeleteButton} className="btn">Delete Post</a>
-                        </li>
-                        <li>
-                            <a id="viewPost" onClick={handleViewPostButton} className="btn">View Post</a>
-                        </li>
+                        <Add_button updateAddButton={updateAddButton} />
+                        <Update_button updateUpdateButton={updateUpdateButton} />
+                        <Delete_button updateDeleteButton={updateDeleteButton} />
+                        <Retrieve_button updateViewButton={updateViewButton} />
                     </ul>
                 </>
             ) : null}
 
             {userData.role === "Editor" ? (
                 <ul className='privileges'>
-                    <li>
-                        <a id="addPost" onClick={handleAddPostButton} className="btn">Add Post</a>
-                    </li>
-                    <li>
-                        <a id="viewPost" onClick={handleViewPostButton} className="btn">View Post</a>
-                    </li>
+                    <Add_button updateAddButton={updateAddButton} />
+                    <Retrieve_button updateViewButton={updateViewButton} />
                 </ul>
             ) : null}
 

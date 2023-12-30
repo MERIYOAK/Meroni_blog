@@ -40,8 +40,14 @@
     box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.5);
     position: absolute;
     z-index: 11111;
-    max-height: 500px;
+    max-height: 700px;
     overflow-y: auto;  
+}
+
+.comment_form_container {
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem 0;
 }
 
 .comment_container img {
@@ -55,11 +61,9 @@
     display: grid;
     grid-template-columns: 10% auto 10%;
     gap: 1rem;
-    margin: 1.5rem 0;
 }
 
 .comment_form input, .comment_form button{
-    height: 80%;
     padding: .5rem;
     border-radius: 5px;
     border: 1px solid var(--color-light);
@@ -69,38 +73,20 @@
     border-color: var(--color-special);
 }
 
-.user_comment {
-    margin-top: .5remrem;
+.character_count {
+    font-size: .8rem;
+    margin: 0 auto;
 }
 
-.comment {
-    display: grid;
-    grid-template-columns: 10% auto;
-    gap: 1rem;
-}
+.character_count.exceeded {
+    color: red; /* Color for exceeded character count */
+  }
 
-.comment_image {
+.no_comments {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.comment_content {
-    overflow: hidden;
-    height: auto;
-}
-
-.comment_content strong {
-    font-size: .8rem;
-    padding: .5rem;
-}
-
-.comment_content p {
-    font-size: .8rem;
-    padding: .5rem;
-    overflow: hidden; 
-    height: auto; 
-    word-wrap: break-word; 
+    font-size: .9rem;
 }
 
 @media screen and (max-width: 450px) {
@@ -123,6 +109,12 @@
 body.dark-theme .comment_container {
     background: var(--color-bg2);
 }
+
+body.dark-theme .comment_form input {
+    background: var(--color-bg2);
+    color: var(--color-white);
+}
+
 
 
 

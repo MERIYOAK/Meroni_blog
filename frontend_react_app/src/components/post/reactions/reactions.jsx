@@ -3,9 +3,9 @@ import './reactions.css'
 import { BiSolidLike, BiSolidCommentDetail } from 'react-icons/bi';
 import { BsShareFill } from 'react-icons/bs';
 import axios from 'axios'
-import { timeAgo } from './relativeTimer';
 import { Helmet } from 'react-helmet';
 import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
+import Comment from '../../common/comment/Comment';
 function reactions(props) {
     const [likes, setLikes] = useState(props.post.likesCount);
     const [liked, setLiked] = useState(props.post.likes.some((like) => like.userId === sessionStorage.getItem('userId')));
@@ -18,8 +18,6 @@ function reactions(props) {
     const [userCommented, setUserCommented] = useState(props.post.comments.some((like) => like.userId === sessionStorage.getItem('userId')));
     const [shared, setShared] = useState(props.post.shares.some((like) => like.userId === sessionStorage.getItem('userId')));
     const [sharedCount, setSharedCount] = useState(props.post.sharesCount);
-
-
     const handleLikeClick = async () => {
         if (sessionStorage.getItem('userId') === null) {
             window.location.href = '/sign_up';
@@ -106,7 +104,7 @@ function reactions(props) {
             userImage: sessionStorage.getItem('imageUrl'),
             userFirstName: sessionStorage.getItem('firstName'),
             userMiddleName: sessionStorage.getItem('middleName'),
-            comment: newComment,
+            comment: newComment.slice(0, 300),
             date: new Date(),
         };
 
@@ -195,6 +193,8 @@ function reactions(props) {
         }
     };
 
+
+
     return (
         <>
             <div>
@@ -203,53 +203,55 @@ function reactions(props) {
                         <div className={`icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
                             <BiSolidLike />
                         </div>
-                        <span>{likes}</span>
+                        {likes > 0 && <span>{likes}</span>}
                     </div>
                     <div className='action'>
                         <div className={`icon ${userCommented ? 'liked' : ''}`} onClick={handleCommentClick}>
                             <BiSolidCommentDetail />
                         </div>
-                        <span>{commentsCount}</span>
+                        {commentsCount > 0 && <span>{commentsCount}</span>}
                     </div>
                     <div className='action'>
                         <div className={`icon ${shared ? 'liked' : ''}`} onClick={handleShareClick}>
                             <BsShareFill />
                         </div>
-                        <span>{sharedCount}</span>
+                        {sharedCount > 0 && <span>{sharedCount}</span>}
                     </div>
                 </div>
                 {displayComments && (
                     <div className='comment_container'>
                         {sessionStorage.getItem('isAuthenticated') === 'true' && (
-                            <form className='comment_form' onSubmit={handleCommentSubmitClick} method='POST'>
-                                <img src={sessionStorage.getItem('imageUrl')} alt='meron' />
-                                <input
-                                    type='text'
-                                    placeholder='Add a comment...'
-                                    value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
-                                    required
-                                />
-                                <button type='submit' className='btn-primary'>
-                                    Post
-                                </button>
-                            </form>
-                        )}
-                        {comments.map((comment, index) => (
-                            <div className='user_comment' key={index}>
-                                <div className='void3'></div>
-                                <div className='comment'>
-                                    <div className='comment_image'>
-                                        <img src={comment.userImage} alt='user image' />
-                                    </div>
-                                    <div className='comment_content'>
-                                        <strong>{comment.userFirstName} {comment.userMiddleName}</strong>
-                                        <p>{comment.comment}</p>
-                                        <strong>{timeAgo(new Date(comment.date))}</strong>
-                                    </div>
-                                </div>
+                            <div className='comment_form_container'>
+                                <form className='comment_form' onSubmit={handleCommentSubmitClick} method='POST'>
+                                    <img src={sessionStorage.getItem('imageUrl')} alt='meron' />
+                                    <input
+                                        type='text'
+                                        placeholder='Add a comment...'
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
+                                        required
+
+                                    />
+                                    <button type='submit' className='btn-primary'>
+                                        Post
+                                    </button>
+                                </form>
+                                <span className={newComment.length > 300 ? 'character_count exceeded' : 'character_count'}>
+                                    {300 - newComment.length} {newComment.length > 300 ? 'characters exceeded' : 'characters remaining'}
+                                </span>
                             </div>
-                        ))}
+                        )}
+                        {comments.length > 0 ? (
+                            <>
+                                {comments.slice().reverse().map((comment) => (
+                                    <Comment key={comment._id} comment={comment} />
+                                ))}
+                            </>
+                        ) : (
+                            <div className='no_comments'>
+                                <p >No comments yet</p>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
