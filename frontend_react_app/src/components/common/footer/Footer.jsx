@@ -53,7 +53,7 @@ function Footer() {
                 <li className="menu__item"><Link className="menu__link" to='/art'>Art</Link></li>
                 <li className="menu__item"><Link className="menu__link" to='/politics'>Politics</Link></li>
             </ul>
-            <p>&copy;2023 Meroni | All Rights Reserved</p>
+            <p>&copy;{new Date().getFullYear()} Meroni | All Rights Reserved</p>
             <div className='go_to_top_container'>
                 <a onClick={() => window.scrollTo(0, 0)} className='go_to_top'><span className='up'>&uarr;</span></a>
             </div>
