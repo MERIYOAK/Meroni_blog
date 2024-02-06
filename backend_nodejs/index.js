@@ -46,14 +46,14 @@ const reqiuredRolesForModeration = process.env.REQUIRED_ROLES_FOR_MODERATION.spl
 const requiredRolesForPostCRUD = process.env.REQUIRED_ROLES_FOR_POST_CRUD.split(',');
 const requiredRolesForReactionCRUD = process.env.REQUIRED_ROLES_FOR_REACTION_CRUD.split(',');
 
-mongoose.connect("mongodb+srv://meron:07448717@meroniblogcluster.783omu1.mongodb.net/MeroniDB?retryWrites=true&w=majority").then(() => {
+mongoose.connect("process.env.MONGODB_URI").then(() => {
     console.log("Connected to MongoDB");
 }).catch((err) => {
     console.log("Error connecting to MongoDB:", err);
 });
 
 const mongoStore = new MongoStore({
-    mongoUrl: "mongodb+srv://meron:07448717@meroniblogcluster.783omu1.mongodb.net/MeroniDB?retryWrites=true&w=majority",
+    mongoUrl: "process.env.MONGODB_URI",
     collection: 'sessions',
     ttl: process.env.SESSION_TTL,
 });
