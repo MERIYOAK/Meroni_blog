@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Toggler.css";
+import "./toggler.css";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 function Toggler() {
