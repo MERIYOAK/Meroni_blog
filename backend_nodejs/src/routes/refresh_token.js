@@ -16,11 +16,7 @@ refresh_token.post('/refresh-token', (req, res) => {
         const newAccessToken = jwt.sign({
             userId: decoded.userId,
             userRole: decoded.userRole,
-            firstName: decoded.firstName,
-            middleName: decoded.middleName,
-            lastName: decoded.lastName,
-            email: decoded.email
-        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3m' });
+        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
 
         res.json({ success: true, accessToken: newAccessToken });
     } catch (error) {

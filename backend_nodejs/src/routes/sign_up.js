@@ -10,7 +10,7 @@ const upload = multer();
 
 sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
     const { username, password, firstName, middleName, lastName, role, birthDate, telephone, country, city, bio } = req.body;
-    const userEmail = `${username.toLowerCase()}@meroni.com`;
+    const userEmail = `${username.toLowerCase()}@meronblog.com`;
     try {
         if (req.file) {
             const userExists = await User.findOne({ email: userEmail });

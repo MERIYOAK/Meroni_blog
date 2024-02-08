@@ -7,8 +7,8 @@ import path from 'path';
 
 const change_profile_image = express();
 const upload = multer();
-const __dirname = 'C:\\Users\\HP\\Desktop\\meron\\vscode\\Meroni_blog\\backend_nodejs\\';
-
+//const __dirname = 'C:\\Users\\HP\\Desktop\\meron\\vscode\\Meroni_blog\\backend_nodejs\\';
+const __dirname = path.resolve();
 
 change_profile_image.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
