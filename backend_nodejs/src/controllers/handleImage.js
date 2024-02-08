@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { BASE_API_URL } from '../../config';
+import { BASE_API_URL } from '../../config.js';
 
 // Assume images will be stored in the 'uploads' directory
 const UPLOADS_DIR = 'uploads';
