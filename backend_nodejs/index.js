@@ -73,7 +73,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cors({
-    origin: ['https://meronblog.onrender.com'],
+    origin: ['http://localhost:5173', 'https://meronblog.onrender.com'],
     methods: 'GET, POST, PUT, DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
