@@ -4,12 +4,15 @@ import { MdOutlineAddAPhoto } from "react-icons/md";
 import axios from 'axios';
 import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 import Loader from '../../../utils/loader/Loader';
+import BASE_URL from '../../../../config';
 
 function Profile_image({ userData, updateUserData }) {
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
     const refreshToken = localStorage.getItem('refreshToken');
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -27,13 +30,16 @@ function Profile_image({ userData, updateUserData }) {
             formData.append('image', selectedImage);
             formData.append('email', userData.email);
             setLoading(true);
-            const response = await axios.post('http://localhost:3000/user-edit-profile-image',
+
+            const response = await axios.post(`${BASE_URL}/user-edit-profile-image`,
                 formData,
                 {
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${accessToken}`,
+                        'sessionId': sessionId,
+                        'userRole': userRole
                     },
                 });
             if (response.data.success) {

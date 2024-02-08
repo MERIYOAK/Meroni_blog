@@ -6,6 +6,8 @@ import axios from 'axios'
 import { Helmet } from 'react-helmet';
 import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 import Comment from '../../common/comment/Comment';
+import BASE_URL from '../../../../config';
+
 function reactions(props) {
     const [likes, setLikes] = useState(props.post.likesCount);
     const [liked, setLiked] = useState(props.post.likes.some((like) => like.userId === sessionStorage.getItem('userId')));
@@ -18,6 +20,9 @@ function reactions(props) {
     const [userCommented, setUserCommented] = useState(props.post.comments.some((like) => like.userId === sessionStorage.getItem('userId')));
     const [shared, setShared] = useState(props.post.shares.some((like) => like.userId === sessionStorage.getItem('userId')));
     const [sharedCount, setSharedCount] = useState(props.post.sharesCount);
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
+
     const handleLikeClick = async () => {
         if (sessionStorage.getItem('userId') === null) {
             window.location.href = '/sign_up';
@@ -25,7 +30,7 @@ function reactions(props) {
         }
         if (!liked) {
             try {
-                const response = await axios.post('http://localhost:3000/likes/increase',
+                const response = await axios.post(`${BASE_URL}/likes/increase`,
                     {
                         user: {
                             postId: props.post._id,
@@ -38,6 +43,8 @@ function reactions(props) {
                         headers: {
                             'Content-Type': 'application/json',
                             'authorization': `Bearer ${accessToken}`,
+                            'sessionId': sessionId,
+                            'userRole': userRole
                         }
                     }
                 );
@@ -58,13 +65,12 @@ function reactions(props) {
             }
         } else {
             try {
-                const response = await axios.post('http://localhost:3000/likes/decrease',
+                const response = await axios.post(`${BASE_URL}/likes/decrease`,
                     {
                         user: {
                             postId: props.post._id,
                             userId: sessionStorage.getItem('userId'),
                         },
-
                     },
                     {
                         method: 'POST', // Move 'method' here
@@ -72,6 +78,8 @@ function reactions(props) {
                         headers: {
                             'Content-Type': 'application/json',
                             'authorization': `Bearer ${accessToken}`,
+                            'sessionId': sessionId,
+                            'userRole': userRole
                         }
                     });
                 const updatedPost = response.data.updatedPost;
@@ -109,7 +117,7 @@ function reactions(props) {
         };
 
         try {
-            const response = await axios.post('http://localhost:3000/comments/add',
+            const response = await axios.post(`${BASE_URL}/comments/add`,
                 {
                     comment: commentObject
                 },
@@ -119,6 +127,8 @@ function reactions(props) {
                     headers: {
                         'Content-Type': 'application/json',
                         'authorization': `Bearer ${accessToken}`,
+                        'sessionId': sessionId,
+                        'userRole': userRole
                     }
                 });
 
@@ -153,7 +163,7 @@ function reactions(props) {
                 await navigator.share(shareData);
 
                 try {
-                    const response = await axios.post('http://localhost:3000/shares',
+                    const response = await axios.post(`${BASE_URL}/shares`,
                         {
                             user: {
                                 postId: props.post._id,
@@ -167,6 +177,8 @@ function reactions(props) {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'authorization': `Bearer ${accessToken}`,
+                                'sessionId': sessionId,
+                                'userRole': userRole
                             }
                         });
 
@@ -220,7 +232,7 @@ function reactions(props) {
                 </div>
                 {displayComments && (
                     <div className='comment_container'>
-                        {sessionStorage.getItem('isAuthenticated') === 'true' && (
+                        {localStorage.getItem('isAuthenticated') === 'true' && (
                             <div className='comment_form_container'>
                                 <form className='comment_form' onSubmit={handleCommentSubmitClick} method='POST'>
                                     <img src={sessionStorage.getItem('imageUrl')} alt='meron' />

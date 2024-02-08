@@ -11,24 +11,29 @@ import Body_post3_template from '../../components/post/templates/body_post3_temp
 import Small_post_template from '../../components/post/templates/small_post_template/Small_post_template';
 import { MdClose } from "react-icons/md";
 import handleTokenRefresh from '../../hooks/silentTokenRefresher';
+import BASE_URL from '../../../config';
 
 function Deleter() {
-    const token = localStorage.getItem('token');
     const [postId, setPostId] = useState('');
     const [postType, setPostType] = useState('');
     const [postElement, setPostElement] = useState(null);
     const [isDeleterVisible, setIsDeleterVisible] = useState(true);
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
     const refreshToken = localStorage.getItem('refreshToken');
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.get(`http://localhost:3000/postDeleter?postId=${postId}&postType=${postType}`, {
+            const response = await axios.get(`${BASE_URL}/postDeleter?postId=${postId}&postType=${postType}`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
+                    'SessionID': sessionId,
+                    'UserRole': userRole,
                 },
             });
 

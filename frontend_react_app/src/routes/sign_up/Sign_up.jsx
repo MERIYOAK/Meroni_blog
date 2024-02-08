@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import CountdownOverlay from '../../components/auth/countDownOverlay/countDownOverlay';
-
+import BASE_URL from '../../../config';
 
 function Sign_up() {
     const navigate = useNavigate();
@@ -82,7 +82,8 @@ function Sign_up() {
             formData.append('city', capitalizedCity);
             formData.append('bio', capitalizedBio);
 
-            const response = await axios.post('http://localhost:3000/sign_up', formData, {
+
+            const response = await axios.post(`${BASE_URL}/sign_up`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -107,9 +108,7 @@ function Sign_up() {
                         imageUrl: responseData.imageUrl,
                     },
                 });
-
-                sessionStorage.setItem('isAuthenticated', true);
-                sessionStorage.setItem('userRole', responseData.userRole);
+                // Store non-sensitive information in sessionStorage
                 sessionStorage.setItem('userId', responseData.id);
                 sessionStorage.setItem('firstName', responseData.firstName);
                 sessionStorage.setItem('middleName', responseData.middleName);
@@ -117,6 +116,11 @@ function Sign_up() {
                 sessionStorage.setItem('email', responseData.email);
                 sessionStorage.setItem('username', responseData.username);
                 sessionStorage.setItem('imageUrl', responseData.imageUrl);
+
+                // Store senstive information in localStorage
+                localStorage.setItem('sessionId', responseData.sessionId);
+                localStorage.setItem('isAuthenticated', true);
+                localStorage.setItem('userRole', responseData.userRole);
                 localStorage.setItem('userId', responseData.id);
                 localStorage.setItem('accessToken', responseData.accessToken);
                 localStorage.setItem('refreshToken', responseData.refreshToken);
@@ -136,7 +140,7 @@ function Sign_up() {
 
             const userId = localStorage.getItem('userId');
 
-            const response = await axios.post('http://localhost:3000/log_in', {
+            const response = await axios.post(`${BASE_URL}/log_in`, {
                 emailOrUsername,
                 password,
                 userId,
@@ -189,15 +193,19 @@ function Sign_up() {
                     },
                 });
 
-                // Use sessionStorage instead of localStorage
-                sessionStorage.setItem('isAuthenticated', true);
-                sessionStorage.setItem('userRole', responseData.userRole);
+
+                // Store non-sensitive information in sessionStorage
                 sessionStorage.setItem('userId', responseData.id);
                 sessionStorage.setItem('firstName', responseData.firstName);
                 sessionStorage.setItem('middleName', responseData.middleName);
                 sessionStorage.setItem('lastName', responseData.lastName);
                 sessionStorage.setItem('email', responseData.email);
                 sessionStorage.setItem('imageUrl', responseData.imageUrl);
+
+                // Store senstive information in localStorage
+                localStorage.setItem('sessionId', responseData.sessionId);
+                localStorage.setItem('isAuthenticated', true);
+                localStorage.setItem('userRole', responseData.userRole);
                 localStorage.setItem('userId', responseData.id);
                 localStorage.setItem('accessToken', responseData.accessToken);
                 localStorage.setItem('refreshToken', responseData.refreshToken);

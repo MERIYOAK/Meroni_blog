@@ -16,6 +16,7 @@ import Add_button from '../../components/post/add_button/Add_button.jsx';
 import Update_button from '../../components/post/update_button/Update_button.jsx';
 import Delete_button from '../../components/post/delete_button/Delete_button.jsx';
 import Retrieve_button from '../../components/post/retrieve_button/Retrieve_button.jsx';
+import BASE_URL from '../../../config.js';
 
 function User_profile() {
     const navigate = useNavigate();
@@ -30,6 +31,8 @@ function User_profile() {
     const [deleteButtonSelected, setDeleteButtonSelected] = useState(false);
     const [addButtonSelected, setAddButtonSelected] = useState(false);
     const [viewButtonSelected, setViewButtonSelected] = useState(false);
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
 
     const updateUserData = (newUserData) => {
         setUserData(newUserData);
@@ -57,12 +60,14 @@ function User_profile() {
         } else {
             const fetchUserData = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:3000/user_data/?user_id=${user.id}`, {
+                    const response = await axios.get(`${BASE_URL}/user_data/?user_id=${user.id}`, {
                         method: 'GET',
                         credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${accessToken}`,
+                            'SessionID': sessionId,
+                            'UserRole': userRole,
                         },
                     });
 
@@ -87,7 +92,7 @@ function User_profile() {
 
     const handleLogout = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/logout',
+            const response = await axios.post(`${BASE_URL}/logout`,
                 {},  // Empty data payload
                 {
                     method: 'POST',
@@ -95,23 +100,20 @@ function User_profile() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'SessionID': sessionId,
+                        'UserRole': userRole,
                     },
                 });
 
             if (response.data.success) {
                 dispatch({ type: 'LOGOUT' });
                 alert(response.data.message);
-                sessionStorage.removeItem('isAuthenticated');
-                sessionStorage.removeItem('userRole');
-                sessionStorage.removeItem('userId');
-                sessionStorage.removeItem('firstName');
-                sessionStorage.removeItem('middleName');
-                sessionStorage.removeItem('lastName');
-                sessionStorage.removeItem('username');
-                sessionStorage.removeItem('email');
-                sessionStorage.removeItem('imageUrl');
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
+
+                // Clear sessionStorage
+                Object.keys(sessionStorage).forEach(key => sessionStorage.removeItem(key));
+
+                // Clear localStorage
+                Object.keys(localStorage).forEach(key => localStorage.removeItem(key));
                 navigate('/');
             }
         } catch (error) {

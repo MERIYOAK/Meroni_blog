@@ -61,13 +61,13 @@ function App() {
         console.error('Error fetching data:', error);
       });
 
-    const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (isAuthenticated) {
       const action = {
         type: 'LOGIN',
         payload: {
-          id: sessionStorage.getItem('userId'),
-          userRole: sessionStorage.getItem('userRole'),
+          id: localStorage.getItem('userId'),
+          userRole: localStorage.getItem('userRole'),
           email: sessionStorage.getItem('email'),
           imageUrl: sessionStorage.getItem('imageUrl')
         }

@@ -5,18 +5,10 @@ function generateTokens(user) {
         const accessTokenPayload = {
             userId: user._id.toString(),
             userRole: user.role,
-            firstName: user.firstName,
-            middleName: user.middleName,
-            lastName: user.lastName,
-            email: user.email,
         };
         const refreshTokenPayload = {
             userId: user._id.toString(),
-            userRole: user.role,
-            firstName: user.firstName,
-            middleName: user.middleName,
-            lastName: user.lastName,
-            email: user.email,
+            userRole: user.role
         };
 
         // Generate access token

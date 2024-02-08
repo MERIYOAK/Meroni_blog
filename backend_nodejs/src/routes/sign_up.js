@@ -63,13 +63,6 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                 req.session.isAuthenticated = true;
                 req.session.userRole = newUser.role;
                 req.session.userId = newUser._id.toString();
-                req.session.firstName = newUser.firstName;
-                req.session.middleName = newUser.middleName;
-                req.session.lastName = newUser.lastName;
-                req.session.email = newUser.email;
-                req.session.imageUrl = newUser.imageUrl;
-                req.session.accessToken = accessToken;
-                req.session.refreshToken = refreshToken;
 
                 await new Promise((resolve, reject) => {
                     req.session.save((err) => {
@@ -87,16 +80,17 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                     res.json({
                         success: true,
                         message: 'User created successfully',
+                        sessionId: req.sessionID,
                         isAuthenticated: req.session.isAuthenticated,
                         userRole: req.session.userRole,
                         id: req.session.userId,
-                        firstName: req.session.firstName,
-                        middleName: req.session.middleName,
-                        lastName: req.session.lastName,
-                        email: req.session.email,
-                        imageUrl: req.session.imageUrl,
-                        accessToken: req.session.accessToken,
-                        refreshToken: req.session.refreshToken
+                        firstName: newUser.firstName,
+                        middleName: newUser.middleName,
+                        lastName: newUser.lastName,
+                        email: newUser.email,
+                        imageUrl: newUser.imageUrl,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken
                     });
                     console.log('User created successfully');
                 } else if (role === 'Pending') {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import All_posts from '../../components/post/templates/all_posts/All_posts';
 import { MdClose } from 'react-icons/md';
 import handleTokenRefresh from '../../hooks/silentTokenRefresher';
+import BASE_URL from '../../../config';
 
 function Viewer() {
     const [selectedPostTypeToView, setSelectedPostTypeToView] = useState('');
@@ -11,17 +12,22 @@ function Viewer() {
     const [posts, setPosts] = useState([]);
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
     const refreshToken = localStorage.getItem('refreshToken');
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
+
     const handleViewAllPost = async (e) => {
         e.preventDefault();
         if (selectedPostTypeToView) {
             const postType = selectedPostTypeToView;
             try {
-                const response = await axios.get(`http://localhost:3000/allPost?type=${postType}`, {
+                const response = await axios.get(`${BASE_URL}/allPost?type=${postType}`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'SessionID': sessionId,
+                        'UserRole': userRole,
                     },
                 });
                 setPosts(response.data.posts);

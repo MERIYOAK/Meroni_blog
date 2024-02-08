@@ -28,14 +28,8 @@ login.post('/log_in', async (req, res) => {
                     req.session.isAuthenticated = true;
                     req.session.userRole = user.role;
                     req.session.userId = user._id.toString();
-                    req.session.firstName = user.firstName;
-                    req.session.middleName = user.middleName;
-                    req.session.lastName = user.lastName;
-                    req.session.email = user.email;
-                    req.session.imageUrl = user.imageUrl;
-                    req.session.accessToken = accessToken;
-                    req.session.refreshToken = refreshToken;
 
+                    // Save the session
                     await new Promise((resolve, reject) => {
                         req.session.save((err) => {
                             if (err) {
@@ -49,16 +43,17 @@ login.post('/log_in', async (req, res) => {
                     res.json({
                         success: true,
                         message: 'User logged in successfully',
+                        sessionId: req.sessionID,
                         isAuthenticated: req.session.isAuthenticated,
                         userRole: req.session.userRole,
                         id: req.session.userId,
-                        firstName: req.session.firstName,
-                        middleName: req.session.middleName,
-                        lastName: req.session.lastName,
-                        email: req.session.email,
-                        imageUrl: req.session.imageUrl,
-                        accessToken: req.session.accessToken,
-                        refreshToken: req.session.refreshToken
+                        firstName: user.firstName,
+                        middleName: user.middleName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        imageUrl: user.imageUrl,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken
                     });
                 } else {
                     res.json({ error: true, message: 'Invalid password' });

@@ -3,6 +3,7 @@ import './edit.css'
 import axios from 'axios';
 import Loader from '../../../utils/loader/Loader';
 import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
+import BASE_URL from '../../../../config';
 
 function Edit({ userData, updateUserData }) {
     const [loading, setLoading] = useState(false);
@@ -19,7 +20,8 @@ function Edit({ userData, updateUserData }) {
     const [isEditor, setIsEditor] = useState(false);
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
     const refreshToken = localStorage.getItem('refreshToken');
-
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
 
     const handleInputChange = () => {
         // Set formChanges to true when there are changes in the form
@@ -42,7 +44,7 @@ function Edit({ userData, updateUserData }) {
                 }
 
                 setLoading(true);
-                const response = await axios.post('http://localhost:3000/user-edit-profile',
+                const response = await axios.post(`${BASE_URL}/user-edit-profile`,
                     {
                         firstName,
                         middleName,
@@ -62,6 +64,8 @@ function Edit({ userData, updateUserData }) {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${accessToken}`,
+                            'sessionId': sessionId,
+                            'userRole': userRole
                         },
                     });
 

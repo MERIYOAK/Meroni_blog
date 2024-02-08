@@ -9,10 +9,7 @@ import path from 'path';
 import { config as configDotenv } from "dotenv";
 import cors from "cors";
 import MongoStore from 'connect-mongo';
-import authenticate from "./src/middlewares/authenticate.js";
-import authorize from "./src/middlewares/authorize.js";
 import Admin_creator from "./src/controllers/Admin_creator.js";
-import default_router from "./src/routes/default_routers.js";
 import fetch_posts from "./src/routes/fetch_posts.js";
 import add_post from "./src/routes/add_post.js";
 import update_post from "./src/routes/update_post.js";
@@ -57,6 +54,7 @@ const mongoStore = new MongoStore({
     collection: 'sessions',
     ttl: process.env.SESSION_TTL,
 });
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -64,37 +62,77 @@ app.use(session({
     store: mongoStore,
     cookie: {
         maxAge: process.env.SESSION_TTL * 1000,
-        //httpOnly: true,
-        //secure: true,
-        //sameSite: 'Strict',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
     },
 }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("../frontend_react_app/dist"));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/public', express.static(path.join(__dirname, 'public'), { 'Content-Type': 'text/css' }));
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://meronblog.onrender.com', 'https://meronblogbackend.onrender.com'],
+    origin: ['http://localhost:5173', 'https://meronblog.onrender.com'],
     methods: 'GET, POST, PUT, DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
 }));
 
+const authenticate = async (req, res, next) => {
+    try {
+        const sessionId = req.headers.sessionid;
+
+        mongoStore.get(sessionId, async (err, session) => {
+            if (err) {
+                console.error('Error fetching session from database:', err);
+                return res.status(500).send('Internal Server Error');
+            }
+
+            if (session && session.isAuthenticated) {
+                console.log('Authenticated');
+                next();
+            } else {
+                console.log('Not authenticated');
+                res.redirect('/');
+            }
+        });
+    } catch (error) {
+        console.error('Error checking authentication:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+const authorize = (requiredRoles) => {
+    return (req, res, next) => {
+        try {
+            const userRole = req.headers.userrole;
+
+            const hasRequiredRole = requiredRoles.includes(userRole);
+
+            if (hasRequiredRole) {
+                console.log('Authorized');
+                next();
+            } else {
+                console.log('Unauthorized');
+                res.status(403).send('Unauthorized');
+            }
+        } catch (error) {
+            console.error('Error checking authorization:', error);
+            res.status(500).send('Internal Server Error');
+        }
+    };
+};
+
 Admin_creator.createAdmin();
 
-app.use(default_router);
 app.use(fetch_posts);
 app.use(sign_up);
 app.use(login);
 app.use(refresh_token);
 
-const authAndAuthorize = [authenticate, verifyToken];
 
-app.use([...authAndAuthorize, authorize(requiredRolesForReactionCRUD)],
-    //app.use(verifyToken,
+app.use([authenticate, authorize(requiredRolesForReactionCRUD), verifyToken],
     user_data,
     logout,
     increase_like,
@@ -107,13 +145,11 @@ app.use([...authAndAuthorize, authorize(requiredRolesForReactionCRUD)],
     decrease_comment_like,
     add_reply);
 
-app.use([...authAndAuthorize, authorize(requiredRolesForPostCRUD)],
-    //app.use(verifyToken,
+app.use([authenticate, authorize(requiredRolesForPostCRUD), verifyToken],
     add_post,
     retrieve_post);
 
-app.use([...authAndAuthorize, authorize(reqiuredRolesForModeration)],
-    //app.use(verifyToken,
+app.use([authenticate, authorize(reqiuredRolesForModeration), verifyToken],
     update_post,
     delete_post,
     pending_editors);

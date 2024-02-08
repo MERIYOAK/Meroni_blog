@@ -2,23 +2,28 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import '../user_profile/user_profile.css'
 import handleTokenRefresh from '../../hooks/silentTokenRefresher';
+import BASE_URL from '../../../config';
 
 function Pending_editors() {
     const [pendingEditors, setPendingEditors] = useState([]);
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
     const refreshToken = localStorage.getItem('refreshToken');
-    const role = sessionStorage.getItem('userRole');
+    const role = localStorage.getItem('userRole');
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
 
     useEffect(() => {
         // Fetch pending editors if the user is an admin
         const fetchPendingEditors = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/pending', {
+                const response = await axios.get(`${BASE_URL}/pending`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'SessionID': sessionId,
+                        'UserRole': userRole,
                     },
                 });
                 setPendingEditors(response.data.pendingEditors);
@@ -39,7 +44,7 @@ function Pending_editors() {
 
     const handleAccept = async (editorId) => {
         try {
-            const response = await axios.post(`http://localhost:3000/approve/${editorId}`,
+            const response = await axios.post(`${BASE_URL}/approve/${editorId}`,
                 {},  // Empty data payload
                 {
                     method: 'POST',
@@ -47,6 +52,8 @@ function Pending_editors() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'SessionID': sessionId,
+                        'UserRole': userRole,
                     },
                 });
 
@@ -68,7 +75,7 @@ function Pending_editors() {
     const handleDecline = async (editorId) => {
         // Add logic to handle declining a pending pending_editor
         try {
-            const response = await axios.post(`http://localhost:3000/decline/${editorId}`,
+            const response = await axios.post(`${BASE_URL}/decline/${editorId}`,
                 {},  // Empty data payload
                 {
                     method: 'POST',
@@ -76,6 +83,8 @@ function Pending_editors() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'SessionID': sessionId,
+                        'UserRole': userRole,
                     },
                 });
 

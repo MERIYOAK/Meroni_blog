@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../../../../routes/updater/updater.css';
 import { MdClose } from "react-icons/md";
 import handleTokenRefresh from '../../../../hooks/silentTokenRefresher';
+import BASE_URL from '../../../../../config';
 
 function Slide_template({ postType, post, postToBeDeleted }) {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
@@ -13,6 +14,8 @@ function Slide_template({ postType, post, postToBeDeleted }) {
         URL: '',
     });
     const [isTemplateVisible, setIsTemplateVisible] = useState(true);
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
 
     useEffect(() => {
         if (post) {
@@ -42,12 +45,14 @@ function Slide_template({ postType, post, postToBeDeleted }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/addPost?postType=${postType}`, formData, {
+            const response = await axios.post(`${BASE_URL}/addPost?postType=${postType}`, formData, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
+                    'sessionId': sessionId,
+                    'userRole': userRole
                 },
             });
 
@@ -73,13 +78,15 @@ function Slide_template({ postType, post, postToBeDeleted }) {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/updateMyPost/${post.id}/${post.tableName}`, formData,
+            const response = await axios.post(`${BASE_URL}/updateMyPost/${post.id}/${post.tableName}`, formData,
                 {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'sessionId': sessionId,
+                        'userRole': userRole
                     },
                 });
 
@@ -105,13 +112,15 @@ function Slide_template({ postType, post, postToBeDeleted }) {
     const handleDelete = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.delete(`http://localhost:3000/deleteMyPost/${postToBeDeleted.id}/${postToBeDeleted.tableName}`,
+            const response = await axios.delete(`${BASE_URL}/deleteMyPost/${postToBeDeleted.id}/${postToBeDeleted.tableName}`,
                 {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`,
+                        'sessionId': sessionId,
+                        'userRole': userRole
                     },
                 });
 

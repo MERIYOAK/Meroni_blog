@@ -4,6 +4,8 @@ import { BiSolidLike, BiSolidCommentDetail } from 'react-icons/bi';
 import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 import axios from 'axios'
 import './comment.css'
+import BASE_URL from '../../../../config';
+
 function Comment({ comment }) {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
     const refreshToken = localStorage.getItem('refreshToken');
@@ -14,7 +16,8 @@ function Comment({ comment }) {
     const [displayCommentReplies, setDisplayCommentReplies] = useState(false);
     const [newReply, setNewReply] = useState('');
     const [userReplied, setUserReplied] = useState(comment.commentReplies.some((reply) => reply.userId === sessionStorage.getItem('userId')));
-
+    const sessionId = localStorage.getItem('sessionId');
+    const userRole = localStorage.getItem('userRole');
     const handleReplySubmit = async (e) => {
         e.preventDefault();
 
@@ -30,7 +33,7 @@ function Comment({ comment }) {
         };
 
         try {
-            const response = await axios.post('http://localhost:3000/comment/reply/add',
+            const response = await axios.post(`${BASE_URL}/comment/reply/add`,
                 {
                     reply: replyObject,
                 },
@@ -40,6 +43,8 @@ function Comment({ comment }) {
                     headers: {
                         'Content-Type': 'application/json',
                         'authorization': `Bearer ${accessToken}`,
+                        'sessionId': sessionId,
+                        'userRole': userRole
                     }
                 }
             );
@@ -71,7 +76,7 @@ function Comment({ comment }) {
 
         if (!liked) {
             try {
-                const response = await axios.post('http://localhost:3000/comment/like/increase',
+                const response = await axios.post(`${BASE_URL}/comment/like/increase`,
                     {
                         postId: comment.postId,
                         commentId: comment._id,
@@ -83,6 +88,8 @@ function Comment({ comment }) {
                         headers: {
                             'Content-Type': 'application/json',
                             'authorization': `Bearer ${accessToken}`,
+                            'sessionId': sessionId,
+                            'userRole': userRole
                         }
                     }
                 );
@@ -103,7 +110,7 @@ function Comment({ comment }) {
             }
         } else {
             try {
-                const response = await axios.post('http://localhost:3000/comment/like/decrease',
+                const response = await axios.post(`${BASE_URL}/comment/like/decrease`,
                     {
                         commentId: comment._id,
                         userId: sessionStorage.getItem('userId'),
@@ -114,6 +121,8 @@ function Comment({ comment }) {
                         headers: {
                             'Content-Type': 'application/json',
                             'authorization': `Bearer ${accessToken}`,
+                            'sessionId': sessionId,
+                            'userRole': userRole
                         }
                     }
                 );
@@ -165,7 +174,7 @@ function Comment({ comment }) {
                 {
                     displayCommentReplies && (
                         <div className='reply_container'>
-                            {sessionStorage.getItem('isAuthenticated') === 'true' && (
+                            {localStorage.getItem('isAuthenticated') === 'true' && (
                                 <div className='comment_form_container'>
                                     <form className='reply_form ' method='POST' onSubmit={handleReplySubmit}>
                                         <img src={sessionStorage.getItem('imageUrl')} alt='meron' />

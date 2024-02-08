@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 
 // Assume images will be stored in the 'uploads' directory
 const UPLOADS_DIR = 'uploads';
+const baseApiUrl = 'https://meronblogbackend.onrender.com';
 
 // Create the 'uploads' directory if it doesn't exist
 await fs.mkdir(UPLOADS_DIR, { recursive: true });
@@ -19,7 +20,7 @@ const handleImage = async (imageBuffer) => {
         await fs.writeFile(filePath, imageBuffer);
 
         // Return the URL or path to the saved image
-        return `http://localhost:3000/${UPLOADS_DIR}/${filename}`; // In a real-world scenario, this would be the URL to the image on your server or a CDN
+        return `${baseApiUrl}/${UPLOADS_DIR}/${filename}`; // In a real-world scenario, this would be the URL to the image on your server or a CDN
     } catch (error) {
         console.error('Error handling image:', error);
         throw new Error('Error handling image');
