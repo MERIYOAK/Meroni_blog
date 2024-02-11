@@ -45,8 +45,9 @@ jspm_packages/
 dist/
 dist
 uploads/
-path/
 data/
+var/
+lib/
 
 
 # Snowpack dependency directory (https://snowpack.dev/)

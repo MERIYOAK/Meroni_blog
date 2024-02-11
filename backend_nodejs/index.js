@@ -42,6 +42,7 @@ const __dirname = dirname(__filename);
 const reqiuredRolesForModeration = process.env.REQUIRED_ROLES_FOR_MODERATION.split(',');
 const requiredRolesForPostCRUD = process.env.REQUIRED_ROLES_FOR_POST_CRUD.split(',');
 const requiredRolesForReactionCRUD = process.env.REQUIRED_ROLES_FOR_REACTION_CRUD.split(',');
+const UPLOADS_DIR = process.env.UPLOADS_DIR;
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     console.log("Connected to MongoDB");
@@ -70,7 +71,7 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(`/${UPLOADS_DIR}`, express.static(path.join(__dirname, UPLOADS_DIR)));
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
