@@ -1,5 +1,6 @@
 import React from 'react'
 import './politics_body.css'
+import { PORTFOLIO_URL } from '../../../../config'
 
 function Politics_body(props) {
     return (
@@ -13,7 +14,7 @@ function Politics_body(props) {
                     <a href='#'><span className='socials'>---</span></a>
                 </div>
                 <div className='politics_body_left_side_link'>
-                    <a href='https://twitter.com/MeronMichael15'>Created my Meroni</a>
+                    <a href={PORTFOLIO_URL} target='_blank'>Created my Meroni</a>
                 </div>
             </div>
             <div className='politics_body_right'>

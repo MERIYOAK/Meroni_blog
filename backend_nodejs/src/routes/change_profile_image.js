@@ -7,10 +7,11 @@ import path from 'path';
 
 const change_profile_image = express();
 const upload = multer();
-//const __dirname = 'C:\\Users\\HP\\Desktop\\meron\\vscode\\Meroni_blog\\backend_nodejs\\';
+
+const UPLOADS_DIR = process.env.UPLOADS_DIR;
 const __dirname = path.resolve();
 
-change_profile_image.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+change_profile_image.use('/uploads', express.static(path.join(__dirname, UPLOADS_DIR)));
 
 change_profile_image.post('/user-edit-profile-image', upload.single('image'), async (req, res) => {
     const email = req.body.email;

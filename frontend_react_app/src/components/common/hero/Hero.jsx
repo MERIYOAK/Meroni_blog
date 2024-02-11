@@ -1,6 +1,7 @@
 import React from 'react'
 import './hero.css'
 import Meron from '../../../assets/images/Meron.jpg'
+import { PORTFOLIO_URL } from '../../../../config'
 
 function Hero() {
     return (
@@ -12,7 +13,7 @@ function Hero() {
                 <h2 className='name'>Michael</h2>
             </div>
             <div className='about_me'>
-                <a className='btn-primary' href='#my_portfolio_website'>About me...</a>
+                <a className='btn-primary' href={PORTFOLIO_URL} target='_blank'>About me...</a>
             </div>
         </div>
     )

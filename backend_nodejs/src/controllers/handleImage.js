@@ -1,30 +1,38 @@
+import { v4 as uuidv4 } from 'uuid';
+import { config as configDotenv } from 'dotenv';
 import fs from 'fs/promises';
-import BASE_API_URL from '../../config.js';
 
-// Assume images will be stored in the 'uploads' directory
-const UPLOADS_DIR = 'uploads';
+configDotenv();
+
+const UPLOADS_DIR = process.env.UPLOADS_DIR;
+const BASE_API_URL = process.env.BASE_API_URL;
 
 // Create the 'uploads' directory if it doesn't exist
 await fs.mkdir(UPLOADS_DIR, { recursive: true });
 
-// Function to handle image storage
 const handleImage = async (imageBuffer) => {
     try {
-        // Generate a unique filename (you might want to use a library for this)
-        const filename = `image_${Date.now()}.png`;
-
-        // Path where the image will be saved
+        const filename = generateUniqueFilename();
         const filePath = `${UPLOADS_DIR}/${filename}`;
 
         // Write the image buffer to the file
         await fs.writeFile(filePath, imageBuffer);
 
         // Return the URL or path to the saved image
-        return `${BASE_API_URL}/${UPLOADS_DIR}/${filename}`; // In a real-world scenario, this would be the URL to the image on your server or a CDN
+        return buildImageUrl(filename);
     } catch (error) {
         console.error('Error handling image:', error);
         throw new Error('Error handling image');
     }
 };
 
+const generateUniqueFilename = () => {
+    return `image_${uuidv4()}.png`;
+};
+
+const buildImageUrl = (filename) => {
+    return `${BASE_API_URL}/${UPLOADS_DIR}/${filename}`;
+};
+
 export default handleImage;
+
