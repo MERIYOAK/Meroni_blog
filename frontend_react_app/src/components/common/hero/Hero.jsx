@@ -1,6 +1,6 @@
 import React from 'react'
 import './hero.css'
-import Meron from '../../../assets/images/Meron.jpg'
+import Meron from '../../../assets/images/Meron.png'
 import { PORTFOLIO_URL } from '../../../../config'
 
 function Hero() {

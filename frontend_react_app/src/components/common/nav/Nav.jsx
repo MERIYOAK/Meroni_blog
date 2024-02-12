@@ -5,6 +5,7 @@ import { TbLetterX } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../../context/AuthContext';
 import { BiSolidUserCircle } from "react-icons/bi";
+import LoadingSpinner from "../../../utils/loading_spinner/LoadingSpinner";
 
 function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -102,7 +103,7 @@ function Nav() {
           <Link to="/user_profile" onClick={handleMenuClose} >
             {user.imageUrl ? (
               <img src={user.imageUrl} alt="Profile" className="profile_picture" />
-            ) : null}
+            ) : <LoadingSpinner />}
           </Link>
         ) : (
           <Link to="/sign_up" onClick={handleMenuClose}>

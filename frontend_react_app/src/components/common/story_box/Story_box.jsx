@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './story_box.css';
 import Reactions from '../../post/reactions/reactions';
+import LoadingSpinner from '../../../utils/loading_spinner/LoadingSpinner';
 
 function Story_box(props) {
     const [showFullContent, setShowFullContent] = useState(false);
@@ -49,7 +50,7 @@ function Story_box(props) {
                     </div>
                 </div>
             ) : (
-                <p>Loading...</p>
+                <LoadingSpinner />
             )}
         </>
 
