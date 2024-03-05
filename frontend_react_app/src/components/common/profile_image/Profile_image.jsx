@@ -44,7 +44,7 @@ function Profile_image({ userData, updateUserData }) {
                 });
             if (response.data.success) {
                 updateUserData(response.data.user);
-                sessionStorage.setItem('imageUrl', response.data.user.imageUrl);
+                localStorage.setItem('imageUrl', response.data.user.imageUrl);
                 setSelectedImage(null);
                 setLoading(false);
             } else {

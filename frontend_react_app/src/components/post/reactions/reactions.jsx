@@ -10,21 +10,21 @@ import BASE_URL from '../../../../config';
 
 function reactions(props) {
     const [likes, setLikes] = useState(props.post.likesCount);
-    const [liked, setLiked] = useState(props.post.likes.some((like) => like.userId === sessionStorage.getItem('userId')));
+    const [liked, setLiked] = useState(props.post.likes.some((like) => like.userId === localStorage.getItem('userId')));
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
     const refreshToken = localStorage.getItem('refreshToken');
     const [displayComments, setDisplayComments] = useState(false);
     const [newComment, setNewComment] = useState("");
     const [commentsCount, setCommentsCount] = useState(props.post.commentsCount);
     const [comments, setComments] = useState(props.post.comments);
-    const [userCommented, setUserCommented] = useState(props.post.comments.some((like) => like.userId === sessionStorage.getItem('userId')));
-    const [shared, setShared] = useState(props.post.shares.some((like) => like.userId === sessionStorage.getItem('userId')));
+    const [userCommented, setUserCommented] = useState(props.post.comments.some((like) => like.userId === localStorage.getItem('userId')));
+    const [shared, setShared] = useState(props.post.shares.some((like) => like.userId === localStorage.getItem('userId')));
     const [sharedCount, setSharedCount] = useState(props.post.sharesCount);
     const sessionId = localStorage.getItem('sessionId');
     const userRole = localStorage.getItem('userRole');
 
     const handleLikeClick = async () => {
-        if (sessionStorage.getItem('userId') === null) {
+        if (localStorage.getItem('userId') === null) {
             window.location.href = '/sign_up';
             return;
         }
@@ -34,7 +34,7 @@ function reactions(props) {
                     {
                         user: {
                             postId: props.post._id,
-                            userId: sessionStorage.getItem('userId'),
+                            userId: localStorage.getItem('userId'),
                         },
                     },
                     {
@@ -69,7 +69,7 @@ function reactions(props) {
                     {
                         user: {
                             postId: props.post._id,
-                            userId: sessionStorage.getItem('userId'),
+                            userId: localStorage.getItem('userId'),
                         },
                     },
                     {
@@ -108,10 +108,10 @@ function reactions(props) {
 
         const commentObject = {
             postId: props.post._id,
-            userId: sessionStorage.getItem('userId'),
-            userImage: sessionStorage.getItem('imageUrl'),
-            userFirstName: sessionStorage.getItem('firstName'),
-            userMiddleName: sessionStorage.getItem('middleName'),
+            userId: localStorage.getItem('userId'),
+            userImage: localStorage.getItem('imageUrl'),
+            userFirstName: localStorage.getItem('firstName'),
+            userMiddleName: localStorage.getItem('middleName'),
             comment: newComment.slice(0, 300),
             date: new Date(),
         };
@@ -155,7 +155,7 @@ function reactions(props) {
             title: props.post.title,
             text: props.post.content.intro.slice(0, 250) + (props.post.content.intro.length > 250 ? '...' : ''),
             image: props.post.image,
-            url: window.location.href,
+            url: `${BASE_URL}/shared_post/${props.post._id}`,
         };
 
         if (navigator.share) {
@@ -167,7 +167,7 @@ function reactions(props) {
                         {
                             user: {
                                 postId: props.post._id,
-                                userId: sessionStorage.getItem('userId'),
+                                userId: localStorage.getItem('userId'),
                             }
 
                         },
@@ -235,7 +235,7 @@ function reactions(props) {
                         {localStorage.getItem('isAuthenticated') === 'true' && (
                             <div className='comment_form_container'>
                                 <form className='comment_form' onSubmit={handleCommentSubmitClick} method='POST'>
-                                    <img src={sessionStorage.getItem('imageUrl')} alt='meron' />
+                                    <img src={localStorage.getItem('imageUrl')} alt='meron' />
                                     <input
                                         type='text'
                                         placeholder='Add a comment...'
@@ -267,12 +267,14 @@ function reactions(props) {
                     </div>
                 )}
             </div>
-            {/* <Helmet>
+            <Helmet>
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={props.post.title} />
-                <meta name="twitter:description" content={props.post.content.intro} />
-                <meta name="twitter:image" content={props.post.image} />
-            </Helmet> */}
+                <meta name="twitter:creator" content="@MeronMichael15" />
+                <meta name="og:title" content={props.post.title} />
+                <meta name="og:description" content={props.post.content.intro.slice(0, 250)} />
+                <meta name="og:image" content={props.post.image} />
+                <meta name="og:url" content={`${BASE_URL}/shared_post/${props.post._id}`} />
+            </Helmet>
         </>
     )
 }

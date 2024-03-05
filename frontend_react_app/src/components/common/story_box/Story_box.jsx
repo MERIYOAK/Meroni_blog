@@ -2,17 +2,29 @@ import React, { useState } from 'react';
 import './story_box.css';
 import Reactions from '../../post/reactions/reactions';
 import LoadingSpinner from '../../../utils/loading_spinner/LoadingSpinner';
+import { RiFullscreenFill } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
 
 function Story_box(props) {
     const [showFullContent, setShowFullContent] = useState(false);
-
+    const navigate = useNavigate();
     const toggleContent = () => {
         setShowFullContent(!showFullContent);
     };
+
+    const handleStoryFullScreen = () => {
+        // Use navigate to go to Story_full_screen with the entire post object as a parameter
+        navigate('/story_full_screen', { state: { post: props.post } });
+        window.scrollTo(0, 0);
+    };
+
     return (
         <>
             {props.post ? (
-                <div className='story_box '>
+                <div className='story_box'>
+                    <button className='full_screen_btn' onClick={handleStoryFullScreen}>
+                        <RiFullscreenFill className='full_screen_icon' />
+                    </button>
                     <div className='title_container'>
                         <strong className='story_box_title'>{props.post.title}</strong>
                         <br />
@@ -25,24 +37,11 @@ function Story_box(props) {
                         <div className='box_container'>
                             <div className='notes_container'>
                                 <p className='note'>
-                                    {showFullContent ? props.post.content.intro : `${props.post.content.intro.slice(0, 1000)}...`}
-                                    {!showFullContent && props.post.content.intro.length > 100 && (
-                                        <a className='read-btn' onClick={toggleContent}>
-                                            read more
-                                        </a>
-                                    )}
+                                    {`${props.post.content.intro.slice(0, 1000)}...`}
+                                    <a className='read-btn' onClick={handleStoryFullScreen}>
+                                        read more
+                                    </a>
                                 </p>
-                                {showFullContent && (
-                                    <>
-                                        <p className='note'>{props.post.content.body}</p>
-                                        <p className='note'>{props.post.content.conclude}</p>
-                                        {showFullContent && (
-                                            <a className='read-btn' onClick={toggleContent}>
-                                                read less
-                                            </a>
-                                        )}
-                                    </>
-                                )}
                             </div>
                             <Reactions post={props.post} />
                             <a href={props.post.authorURL} className='btn' target='blank'>More about the author</a>

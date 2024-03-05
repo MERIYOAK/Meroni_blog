@@ -5,7 +5,7 @@
   height: 2.1rem;
   width: 2.1rem;
   right: 10px;
-  z-index: 111;
+  z-index: 99999;
   cursor: pointer;
 }
 

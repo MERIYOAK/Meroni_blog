@@ -108,16 +108,14 @@ function Sign_up() {
                         imageUrl: responseData.imageUrl,
                     },
                 });
-                // Store non-sensitive information in sessionStorage
-                sessionStorage.setItem('userId', responseData.id);
-                sessionStorage.setItem('firstName', responseData.firstName);
-                sessionStorage.setItem('middleName', responseData.middleName);
-                sessionStorage.setItem('lastName', responseData.lastName);
-                sessionStorage.setItem('email', responseData.email);
-                sessionStorage.setItem('username', responseData.username);
-                sessionStorage.setItem('imageUrl', responseData.imageUrl);
 
                 // Store senstive information in localStorage
+                localStorage.setItem('firstName', responseData.firstName);
+                localStorage.setItem('middleName', responseData.middleName);
+                localStorage.setItem('lastName', responseData.lastName);
+                localStorage.setItem('email', responseData.email);
+                localStorage.setItem('username', responseData.username);
+                localStorage.setItem('imageUrl', responseData.imageUrl);
                 localStorage.setItem('sessionId', responseData.sessionId);
                 localStorage.setItem('isAuthenticated', true);
                 localStorage.setItem('userRole', responseData.userRole);
@@ -193,16 +191,12 @@ function Sign_up() {
                     },
                 });
 
-
-                // Store non-sensitive information in sessionStorage
-                sessionStorage.setItem('userId', responseData.id);
-                sessionStorage.setItem('firstName', responseData.firstName);
-                sessionStorage.setItem('middleName', responseData.middleName);
-                sessionStorage.setItem('lastName', responseData.lastName);
-                sessionStorage.setItem('email', responseData.email);
-                sessionStorage.setItem('imageUrl', responseData.imageUrl);
-
                 // Store senstive information in localStorage
+                localStorage.setItem('firstName', responseData.firstName);
+                localStorage.setItem('middleName', responseData.middleName);
+                localStorage.setItem('lastName', responseData.lastName);
+                localStorage.setItem('email', responseData.email);
+                localStorage.setItem('imageUrl', responseData.imageUrl);
                 localStorage.setItem('sessionId', responseData.sessionId);
                 localStorage.setItem('isAuthenticated', true);
                 localStorage.setItem('userRole', responseData.userRole);

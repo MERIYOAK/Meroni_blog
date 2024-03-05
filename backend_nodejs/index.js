@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import session from 'express-session';
+import ejs from 'ejs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
@@ -31,6 +32,7 @@ import change_profile from "./src/routes/change_profile.js";
 import increase_comment_like from "./src/routes/increase_comment_like.js";
 import decrease_comment_like from "./src/routes/decrease_comment_like.js";
 import add_reply from "./src/routes/add_reply.js";
+import shared_post from "./src/routes/shared_post.js";
 
 // Load environment variables from .env file
 configDotenv();
@@ -59,7 +61,7 @@ const mongoStore = new MongoStore({
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: mongoStore,
     cookie: {
         maxAge: process.env.SESSION_TTL * 1000,
@@ -71,6 +73,9 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(`/${UPLOADS_DIR}`, express.static(path.join(__dirname, UPLOADS_DIR)));
 
 app.use(cors({
@@ -131,7 +136,7 @@ app.use(fetch_posts);
 app.use(sign_up);
 app.use(login);
 app.use(refresh_token);
-
+app.use(shared_post);
 
 app.use([authenticate, authorize(requiredRolesForReactionCRUD), verifyToken],
     user_data,
@@ -158,4 +163,6 @@ app.use([authenticate, authorize(reqiuredRolesForModeration), verifyToken],
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+export { mongoStore };
 

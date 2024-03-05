@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/styles.css">
+    <title>Meroni Blog</title>
+</head>
+<body>
+    <% if (post === null) { %>
+        <h1>Post not found</h1>
+    <% } else { %>
+        <!-- sharedPost.ejs -->
+        <div class='story_box_full_screen'>
+            <a href='<%= `https://meroniblog.vercel.app/` %>' class='full_screen_btn'>Visit My Site</a>
+            <div class='title_container'>
+                <strong class='story_box_title'><%= post.title %></strong>
+                <br />
+                <em><%= post.date %></em>
+            </div>
+            <div class='story_box_content'>
+                <div class='image_container'>
+                    <img src='<%= post.image %>' alt='broken image' class='story_box_image'></img>
+                </div>
+                <div class='box_container'>
+                    <div class='notes_container'>
+                        <p class='note'><%= post.content.intro %></p>
+                        <p class='note'><%= post.content.body %></p>
+                        <p class='note'><%= post.content.conclude %></p>
+                    </div>
+                    <div class='btn_container'>
+                        <a href='<%= `https://meroniblog.vercel.app` %>' class='read-btn'>Read more</a>
+                        <a href='<%= post.authorURL %>' class='author-btn' target='_blank'>More about the author</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</body>
+</html>

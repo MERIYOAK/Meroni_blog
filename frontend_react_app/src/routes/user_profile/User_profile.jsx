@@ -109,8 +109,8 @@ function User_profile() {
                 dispatch({ type: 'LOGOUT' });
                 alert(response.data.message);
 
-                // Clear sessionStorage
-                Object.keys(sessionStorage).forEach(key => sessionStorage.removeItem(key));
+                // // Clear sessionStorage
+                // Object.keys(sessionStorage).forEach(key => sessionStorage.removeItem(key));
 
                 // Clear localStorage
                 Object.keys(localStorage).forEach(key => localStorage.removeItem(key));

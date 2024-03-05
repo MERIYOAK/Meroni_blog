@@ -24,11 +24,11 @@ function Comment({ comment }) {
         const replyObject = {
             postId: comment.postId,
             commentId: comment._id,
-            userId: sessionStorage.getItem('userId'),
+            userId: localStorage.getItem('userId'),
             reply: newReply.slice(0, 200),
-            userFirstName: sessionStorage.getItem('firstName'),
-            userMiddleName: sessionStorage.getItem('middleName'),
-            userImageUrl: sessionStorage.getItem('imageUrl'),
+            userFirstName: localStorage.getItem('firstName'),
+            userMiddleName: localStorage.getItem('middleName'),
+            userImageUrl: localStorage.getItem('imageUrl'),
             timestamp: Date.now(),
         };
 
@@ -69,7 +69,7 @@ function Comment({ comment }) {
 
 
     const handleCommentLikeClick = async () => {
-        if (sessionStorage.getItem('userId') === null) {
+        if (localStorage.getItem('userId') === null) {
             window.location.href = '/sign_up';
             return;
         }
@@ -80,7 +80,7 @@ function Comment({ comment }) {
                     {
                         postId: comment.postId,
                         commentId: comment._id,
-                        userId: sessionStorage.getItem('userId'),
+                        userId: localStorage.getItem('userId'),
                     },
                     {
                         method: 'POST', // Move 'method' here
@@ -113,7 +113,7 @@ function Comment({ comment }) {
                 const response = await axios.post(`${BASE_URL}/comment/like/decrease`,
                     {
                         commentId: comment._id,
-                        userId: sessionStorage.getItem('userId'),
+                        userId: localStorage.getItem('userId'),
                     },
                     {
                         method: 'POST', // Move 'method' here
@@ -177,7 +177,7 @@ function Comment({ comment }) {
                             {localStorage.getItem('isAuthenticated') === 'true' && (
                                 <div className='comment_form_container'>
                                     <form className='reply_form ' method='POST' onSubmit={handleReplySubmit}>
-                                        <img src={sessionStorage.getItem('imageUrl')} alt='meron' />
+                                        <img src={localStorage.getItem('imageUrl')} alt='meron' />
                                         <input
                                             type='text'
                                             placeholder='Add a reply...'

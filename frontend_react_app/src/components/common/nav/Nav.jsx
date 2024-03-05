@@ -70,7 +70,7 @@ function Nav() {
   }, []);
 
   const { state } = useAuth();
-  const { isAuthenticated, user } = state;
+  const { isAuthenticated } = state;
 
   return (
     <header className={`header ${visible ? 'visible' : 'hidden'}`}>
@@ -101,8 +101,8 @@ function Nav() {
       <div className="profile">
         {isAuthenticated ? (
           <Link to="/user_profile" onClick={handleMenuClose} >
-            {user.imageUrl ? (
-              <img src={user.imageUrl} alt="Profile" className="profile_picture" />
+            {localStorage.getItem('imageUrl') ? (
+              <img src={localStorage.getItem('imageUrl')} alt="Profile" className="profile_picture" />
             ) : <LoadingSpinner />}
           </Link>
         ) : (

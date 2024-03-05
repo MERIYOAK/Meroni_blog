@@ -91,7 +91,7 @@
 
 @media screen and (max-width: 450px) {
     .comment_container {
-        width: 100%;
+        width: 95%;
         font-size: .7;
     }
     

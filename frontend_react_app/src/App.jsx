@@ -17,6 +17,7 @@ const Sign_up = lazy(() => import('./routes/sign_up/Sign_up'));
 const User_profile = lazy(() => import('./routes/user_profile/User_profile'));
 import { useAuth } from './context/AuthContext';
 import BASE_URL from '../config';
+import Story_full_screen from './routes/story_full_screen/story_full_screen';
 
 function App() {
   //Initialize state to store fetched data
@@ -70,8 +71,8 @@ function App() {
         payload: {
           id: localStorage.getItem('userId'),
           userRole: localStorage.getItem('userRole'),
-          email: sessionStorage.getItem('email'),
-          imageUrl: sessionStorage.getItem('imageUrl')
+          email: localStorage.getItem('email'),
+          imageUrl: localStorage.getItem('imageUrl')
         }
       };
 
@@ -102,6 +103,7 @@ function App() {
               <Route path="/politics" element={<Politics politics_posts={politics_posts} black_body_content={black_body_content} hero_content_box_posts={hero_content_box_posts} />} />
               <Route path="/sign_up" element={<Sign_up />} />
               <Route path="/user_profile" element={<User_profile />} />
+              <Route path="/story_full_screen" element={<Story_full_screen />} />
             </Routes>
           )}
         </Suspense>
