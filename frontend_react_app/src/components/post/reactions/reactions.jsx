@@ -3,7 +3,7 @@ import './reactions.css'
 import { BiSolidLike, BiSolidCommentDetail } from 'react-icons/bi';
 import { BsShareFill } from 'react-icons/bs';
 import axios from 'axios'
-import { Helmet } from 'react-helmet';
+//import { Helmet } from 'react-helmet';
 import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 import Comment from '../../common/comment/Comment';
 import BASE_URL from '../../../../config';
@@ -267,14 +267,14 @@ function reactions(props) {
                     </div>
                 )}
             </div>
-            <Helmet>
+            {/* <Helmet>
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:creator" content="@MeronMichael15" />
                 <meta name="og:title" content={props.post.title} />
                 <meta name="og:description" content={props.post.content.intro.slice(0, 250)} />
                 <meta name="og:image" content={props.post.image} />
                 <meta name="og:url" content={`${BASE_URL}/shared_post/${props.post._id}`} />
-            </Helmet>
+            </Helmet> */}
         </>
     )
 }
