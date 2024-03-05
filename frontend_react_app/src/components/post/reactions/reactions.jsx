@@ -167,9 +167,8 @@ function reactions(props) {
                         {
                             user: {
                                 postId: props.post._id,
-                                userId: localStorage.getItem('userId'),
+                                userId: localStorage.getItem('userId') || 'unsubscribed',
                             }
-
                         },
                         {
                             method: 'POST', // Move 'method' here

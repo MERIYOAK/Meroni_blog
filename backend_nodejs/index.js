@@ -137,13 +137,13 @@ app.use(sign_up);
 app.use(login);
 app.use(refresh_token);
 app.use(shared_post);
+app.use(shares);
 
 app.use([authenticate, authorize(requiredRolesForReactionCRUD), verifyToken],
     user_data,
     logout,
     increase_like,
     decrease_like,
-    shares,
     add_comment,
     change_profile,
     change_profile_image,

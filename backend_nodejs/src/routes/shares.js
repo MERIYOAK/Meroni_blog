@@ -34,6 +34,8 @@ shares.post('/shares', async (req, res) => {
                 message: 'Post shared successfully',
                 updatedPost: populatedPost,
             });
+
+            console.log('Post shared successfully');
         } else {
             res.status(404).json({ error: 'Post not found' });
         }

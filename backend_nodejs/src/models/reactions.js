@@ -6,24 +6,6 @@ const likeSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
-// const commentLikeSchema = new mongoose.Schema({
-//     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-//     commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' },
-//     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-//     timestamp: { type: Date, default: Date.now }
-// });
-
-// const replySchema = new mongoose.Schema({
-//     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-//     commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' },
-//     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-//     reply: String,
-//     userFirstName: String,
-//     userMiddleName: String,
-//     userImage: String,
-//     timestamp: { type: Date, default: Date.now }
-// });
-
 const commentSchema = new mongoose.Schema({
     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
     comment: String,
@@ -64,7 +46,5 @@ const shareSchema = new mongoose.Schema({
 const Like = mongoose.model("Like", likeSchema);
 const Comment = mongoose.model("Comment", commentSchema);
 const Share = mongoose.model("Share", shareSchema);
-// const CommentLike = mongoose.model("CommentLike", commentLikeSchema);
-// const Reply = mongoose.model("Reply", replySchema);
 
 export { Like, Comment, Share };
