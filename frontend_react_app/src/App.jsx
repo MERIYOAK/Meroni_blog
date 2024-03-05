@@ -17,7 +17,7 @@ const Sign_up = lazy(() => import('./routes/sign_up/Sign_up'));
 const User_profile = lazy(() => import('./routes/user_profile/User_profile'));
 import { useAuth } from './context/AuthContext';
 import BASE_URL from '../config';
-import Story_full_screen from './routes/story_full_screen/story_full_screen';
+import Story_full_screen from './routes/story_full_screen/Story_full_screen';
 
 function App() {
   //Initialize state to store fetched data
