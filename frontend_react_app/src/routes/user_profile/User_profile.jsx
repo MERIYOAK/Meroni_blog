@@ -109,10 +109,6 @@ function User_profile() {
                 dispatch({ type: 'LOGOUT' });
                 alert(response.data.message);
 
-                // // Clear sessionStorage
-                // Object.keys(sessionStorage).forEach(key => sessionStorage.removeItem(key));
-
-                // Clear localStorage
                 Object.keys(localStorage).forEach(key => localStorage.removeItem(key));
                 navigate('/');
             }
@@ -136,7 +132,7 @@ function User_profile() {
                     <div className="profile-wrapper">
                         <div className="profile-header">
                             <div className='profile-image-container'>
-                                <Profile_image userData={userData} updateUserData={updateUserData} />
+                                <Profile_image userData={userData} />
                                 <p>{userData.firstName} {userData.middleName}  {userData.lastName}</p>
                                 <p><strong id='role-text'>Role: </strong>{userData.role}</p>
                             </div>

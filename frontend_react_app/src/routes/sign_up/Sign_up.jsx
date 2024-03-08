@@ -195,6 +195,7 @@ function Sign_up() {
                 localStorage.setItem('firstName', responseData.firstName);
                 localStorage.setItem('middleName', responseData.middleName);
                 localStorage.setItem('lastName', responseData.lastName);
+                localStorage.setItem('username', responseData.username);
                 localStorage.setItem('email', responseData.email);
                 localStorage.setItem('imageUrl', responseData.imageUrl);
                 localStorage.setItem('sessionId', responseData.sessionId);

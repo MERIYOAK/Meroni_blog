@@ -12,11 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.525.0",
+    "@aws-sdk/s3-request-presigner": "^3.525.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
@@ -35,6 +38,7 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0",
     "path": "^0.12.7",
+    "sharp": "^0.33.2",
     "url": "^0.11.3",
     "uuid": "^9.0.1"
   }

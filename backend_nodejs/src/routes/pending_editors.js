@@ -1,12 +1,25 @@
 import express from "express";
 import { User } from "../models/user.js";
+import { generatePresignedUrls } from "../controllers/imageUrlGenerator.js";
+
 
 const pending_editors = express();
+
 
 pending_editors.get('/pending', async (req, res) => {
     try {
         const pendingEditors = await User.find({ role: 'Pending' });
-        res.json({ pendingEditors });
+
+        const preSignedUrls = await generatePresignedUrls(await User.find());
+
+        pendingEditors.forEach((user) => {
+            user.imageUrl = preSignedUrls.find(url => url.userId.toString() === user._id.toString())?.imageUrl;
+        });
+
+        res.json({ success: true, pendingEditors });
+
+        console.log('Pending editors fetched successfully');
+
     } catch (error) {
         console.error('Error fetching pending editors:', error);
     }

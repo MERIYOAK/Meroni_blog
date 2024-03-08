@@ -6,7 +6,7 @@ import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 import Loader from '../../../utils/loader/Loader';
 import BASE_URL from '../../../../config';
 
-function Profile_image({ userData, updateUserData }) {
+function Profile_image({ userData }) {
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
@@ -14,6 +14,7 @@ function Profile_image({ userData, updateUserData }) {
     const sessionId = localStorage.getItem('sessionId');
     const userRole = localStorage.getItem('userRole');
 
+    const [imageUrl, setImageUrl] = useState(userData.imageUrl);
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         setSelectedImage(file);
@@ -43,8 +44,9 @@ function Profile_image({ userData, updateUserData }) {
                     },
                 });
             if (response.data.success) {
-                updateUserData(response.data.user);
-                localStorage.setItem('imageUrl', response.data.user.imageUrl);
+                alert('Image uploaded successfully');
+                setImageUrl(response.data.imageUrl);
+                localStorage.setItem('imageUrl', response.data.imageUrl);
                 setSelectedImage(null);
                 setLoading(false);
             } else {
@@ -66,7 +68,7 @@ function Profile_image({ userData, updateUserData }) {
             {loading ?
                 (<Loader />) : (
                     <>
-                        <img src={userData.imageUrl} alt="User Profile" />
+                        <img src={imageUrl} alt="User Profile" />
                         <div className="profile-image-overlay">
                             <div id="imageContainer">
                                 <div id="editIcon">

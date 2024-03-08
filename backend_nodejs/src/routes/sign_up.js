@@ -1,12 +1,31 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
-import handleImage from "../controllers/handleImage.js";
 import generateTokens from '../controllers/token_generator.js';
 import multer from 'multer';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import crypto from 'crypto';
+import sharp from 'sharp';
+import { generatePresignedUrls } from '../controllers/imageUrlGenerator.js';
 
 const sign_up = express();
-const upload = multer();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const BUCKET_NAME = process.env.BUCKET_NAME
+const BUCKET_REGION = process.env.BUCKET_REGION
+const ACCESS_KEY_ID = process.env.ACCESS_KEY
+const SECRET_ACCESS_KEY = process.env.SECRET_ACCESS_KEY
+
+const s3 = new S3Client({
+    region: BUCKET_REGION,
+    credentials: {
+        accessKeyId: ACCESS_KEY_ID,
+        secretAccessKey: SECRET_ACCESS_KEY
+    }
+});
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+const imageName = randomImageName();
 
 sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
     const { username, password, firstName, middleName, lastName, role, birthDate, telephone, country, city, bio } = req.body;
@@ -20,12 +39,23 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                 console.log('User Name already exists');
             }
 
+            const buffer = await sharp(req.file.buffer).resize({ width: 200, height: 200, fit: 'cover' }).toBuffer();
+            try {
+                const params = {
+                    Bucket: BUCKET_NAME,
+                    Key: imageName,
+                    Body: buffer,
+                    ContentType: req.file.mimetype
+                };
+
+                const command = new PutObjectCommand(params);
+                await s3.send(command);
+                console.log('Image uploaded successfully to S3');
+            } catch (error) {
+                console.error('Error uploading image to S3:', error);
+            }
+
             const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
-
-            const imageBuffer = req.file.buffer;
-
-            const imageUrl = await handleImage(imageBuffer);
-
             let lastPost;
             let lastId = 0;
 
@@ -34,7 +64,6 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                 lastId = lastPost[0].id;
             }
             const id = lastId + 1;
-
 
             // Save the rest of the data to the database
             const newUser = new User({
@@ -45,7 +74,7 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                 middleName,
                 lastName,
                 username,
-                imageUrl: imageUrl,
+                imageName: imageName,
                 role: role,
                 birthDate,
                 telephone,
@@ -56,6 +85,9 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
 
             try {
                 await newUser.save();
+
+                const preSignedUrls = await generatePresignedUrls(await User.find());
+                const imageUrl = preSignedUrls.find(url => url.userId.toString() === newUser._id.toString())?.imageUrl || null;
 
                 const { accessToken, refreshToken } = generateTokens(newUser);
 
@@ -76,6 +108,8 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                     });
                 });
 
+
+
                 if (role === 'Reader') {
                     res.json({
                         success: true,
@@ -88,7 +122,8 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                         middleName: newUser.middleName,
                         lastName: newUser.lastName,
                         email: newUser.email,
-                        imageUrl: newUser.imageUrl,
+                        username: newUser.username,
+                        imageUrl: imageUrl,
                         accessToken: accessToken,
                         refreshToken: refreshToken
                     });
@@ -97,16 +132,18 @@ sign_up.post('/sign_up', upload.single('image'), async (req, res) => {
                     res.json({
                         success: true,
                         message: 'Editor created successfully, please wait for approval',
+                        sessionId: req.sessionID,
                         isAuthenticated: req.session.isAuthenticated,
                         userRole: req.session.userRole,
                         id: req.session.userId,
-                        firstName: req.session.firstName,
-                        middleName: req.session.middleName,
-                        lastName: req.session.lastName,
-                        email: req.session.email,
-                        imageUrl: req.session.imageUrl,
-                        accessToken: req.session.accessToken,
-                        refreshToken: req.session.refreshToken
+                        firstName: newUser.firstName,
+                        middleName: newUser.middleName,
+                        lastName: newUser.lastName,
+                        email: newUser.email,
+                        username: newUser.username,
+                        imageUrl: imageUrl,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken
                     });
                     console.log('Editor created successfully, please wait for approval');
                 }
