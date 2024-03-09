@@ -22,4 +22,12 @@
     .story_box_intro, .daily_quote {
         padding: 0 1rem;
     }
+
+    .story_box_intro {
+        font-size: .9rem;
+    }
+
+    .daily_quote {
+        font-size: .8rem;
+    }
 }
