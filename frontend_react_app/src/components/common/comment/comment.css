@@ -19,6 +19,13 @@
     align-items: center;
 }
 
+.user_icon {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .comment_content {
     overflow: hidden;
     height: auto;

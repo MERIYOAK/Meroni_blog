@@ -5,6 +5,7 @@ import handleTokenRefresh from '../../../hooks/silentTokenRefresher';
 import axios from 'axios'
 import './comment.css'
 import BASE_URL from '../../../../config';
+import { BiSolidUserCircle } from "react-icons/bi";
 
 function Comment({ comment }) {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
@@ -149,7 +150,11 @@ function Comment({ comment }) {
             <div className='user_comment'>
                 <div className='comment'>
                     <div className='comment_image'>
-                        <img src={comment.userImage} alt='user image' />
+                        {comment.userImage ? (
+                            <img src={comment.userImage} alt='User Profile' />
+                        ) : (
+                            <BiSolidUserCircle className='user_icon' />
+                        )}
                     </div>
                     <div className='comment_content'>
                         <strong>{comment.userFirstName} {comment.userMiddleName}</strong>
@@ -199,7 +204,11 @@ function Comment({ comment }) {
                                     {commentReplies.slice().reverse().map((reply) => (
                                         <div className='reply ' key={reply._id}>
                                             <div className='reply_image '>
-                                                <img src={reply.userImageUrl} alt='user image' />
+                                                {comment.userImage ? (
+                                                    <img src={reply.userImageUrl} alt='User Profile' />
+                                                ) : (
+                                                    <BiSolidUserCircle className='user_icon' />
+                                                )}
                                             </div>
                                             <div className='reply_content '>
                                                 <strong>{reply.userFirstName} {reply.userMiddleName}</strong>
