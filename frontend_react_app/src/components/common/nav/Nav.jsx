@@ -5,6 +5,8 @@ import { TbLetterX } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../../context/AuthContext';
 import { BiSolidUserCircle } from "react-icons/bi";
+import axios from 'axios';
+import BASE_URL from '../../../../config';
 
 function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,6 +72,59 @@ function Nav() {
 
   const { state } = useAuth();
   const { isAuthenticated, user } = state;
+  const [imageUrl, setImageUrl] = useState('');
+
+  let isRegeneratingUrl = false;
+
+  useEffect(() => {
+    setImageUrl(localStorage.getItem('imageUrl'));
+    const fetchImageUrl = async () => {
+      if (isAuthenticated) {
+        const user_id = user.id;
+        try {
+          const response = await axios.get(`${BASE_URL}/userImageUrl/${user_id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+              'sessionId': localStorage.getItem('sessionId'),
+              'userRole': localStorage.getItem('userRole')
+            }
+          });
+          if (response.status === 200 && response.data.preSignedUrl.user_id === user_id) {
+            const imageUrl = response.data.preSignedUrl.imageUrl;
+            console.log('Fetched image URL:', imageUrl);
+            setImageUrl(imageUrl);
+            localStorage.setItem('imageUrl', imageUrl);
+          } else {
+            console.error('Failed to fetch image URL');
+          }
+        } catch (error) {
+          console.error('Error fetching image URL:', error);
+        }
+      }
+    };
+
+    // Check if the stored URL is expired and regenerate if needed
+    const storedImageUrl = localStorage.getItem('imageUrl');
+    if (storedImageUrl && !isRegeneratingUrl) {
+      const img = new Image();
+      img.src = storedImageUrl;
+
+      img.onload = () => {
+        console.log('Image loaded successfully');
+      };
+
+      img.onerror = async () => {
+        isRegeneratingUrl = true;
+        console.log('Regenerating image URL...');
+        await fetchImageUrl();
+        isRegeneratingUrl = false;
+        console.log('Image URL regenerated successfully');
+      };
+    }
+
+  }, [isAuthenticated, user]);
+
 
   return (
     <header className={`header ${visible ? 'visible' : 'hidden'}`}>
@@ -100,9 +155,7 @@ function Nav() {
       <div className="profile">
         {isAuthenticated ? (
           <Link to="/user_profile" onClick={handleMenuClose} >
-            {user.imageUrl ? (
-              <img src={user.imageUrl} alt="Profile" className="profile_picture" />
-            ) : <BiSolidUserCircle className="profile_picture" />}
+            <img src={imageUrl} alt="Profile" className="profile_picture" />
           </Link>
         ) : (
           <Link to="/sign_up" onClick={handleMenuClose}>

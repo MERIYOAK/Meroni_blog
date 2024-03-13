@@ -33,6 +33,7 @@ import increase_comment_like from "./src/routes/increase_comment_like.js";
 import decrease_comment_like from "./src/routes/decrease_comment_like.js";
 import add_reply from "./src/routes/add_reply.js";
 import shared_post from "./src/routes/shared_post.js";
+import userImageUrl from "./src/routes/userImageUrl.js";
 
 // Load environment variables from .env file
 configDotenv();
@@ -138,6 +139,7 @@ app.use(shared_post);
 app.use(shares);
 
 app.use([authenticate, authorize(requiredRolesForReactionCRUD), verifyToken],
+    userImageUrl,
     user_data,
     logout,
     increase_like,

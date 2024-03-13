@@ -16,7 +16,6 @@ const s3 = new S3Client({
         secretAccessKey: SECRET_ACCESS_KEY,
     },
 });
-
 export async function generatePresignedUrls(users) {
     const preSignedUrls = [];
 
@@ -35,9 +34,35 @@ export async function generatePresignedUrls(users) {
             const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
             preSignedUrls.push({ userId: user._id, imageUrl: url });
         } catch (error) {
-            console.error(`Error generating pre-signed URL for user ${user._id}:`, error);
+            if (error.name === 'AccessDenied') {
+                // Handle Access Denied error by regenerating a new URL
+                console.error(`Access Denied for user ${user._id}. Regenerating URL.`);
+                const regeneratedUrl = await generatePresignedUrl(user);
+                if (regeneratedUrl) {
+                    preSignedUrls.push(regeneratedUrl);
+                }
+            } else {
+                // Handle other errors
+                console.error(`Error generating pre-signed URL for user ${user._id}:`, error);
+            }
         }
     }
 
     return preSignedUrls;
+}
+
+export async function generatePresignedUrl(user) {
+    const GetObjectParams = {
+        Bucket: BUCKET_NAME,
+        Key: user.imageName,
+    };
+    const command = new GetObjectCommand(GetObjectParams);
+
+    try {
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        return { userId: user._id, imageUrl: url };
+    } catch (error) {
+        console.error(`Error generating pre-signed URL for user ${user._id}:`, error);
+        return null;
+    }
 }

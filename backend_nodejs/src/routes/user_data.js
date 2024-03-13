@@ -1,6 +1,6 @@
 import express from "express";
 import { User } from "../models/user.js";
-import { generatePresignedUrls } from "../controllers/imageUrlGenerator.js";
+import { generatePresignedUrl } from "../controllers/imageUrlGenerator.js";
 
 const user_data = express();
 
@@ -8,13 +8,13 @@ user_data.get('/user_data', async (req, res) => {
     const { user_id } = req.query;
 
     try {
-        const preSignedUrls = await generatePresignedUrls(await User.find());
+        const preSignedUrl = await generatePresignedUrl(await User.findById(user_id));
 
         let user = await User.findById(user_id).select('-password -imageName');
 
         user = {
             ...user.toObject(),
-            imageUrl: preSignedUrls.find(url => url.userId.toString() === user_id)?.imageUrl
+            imageUrl: preSignedUrl.imageUrl
         }
 
         if (!user) {
