@@ -1,7 +1,7 @@
 import express from 'express';
 import { Post } from '../models/post.js';
 import { Like } from '../models/reactions.js';
-import { populateReactions } from './fetch_posts.js';
+import populateReactions from '../middlewares/populateReactions.js';
 
 const decrease_like = express();
 

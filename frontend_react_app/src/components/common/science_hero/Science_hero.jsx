@@ -8,8 +8,8 @@ function Science_hero(props) {
         <div className='sci_hero'>
             <h1 className='sci_hero_title'>Explore the world’s biggest questions</h1>
             <p>Dive in and think big with me.</p>
-            <div className='sci_hero_body'>
-                <Sci_hero_body_content post={props.mainPost} key={props.mainPost.id} isFooter={false} />
+            <div className='sci_hero_body' key={props.mainPost.id}>
+                <Sci_hero_body_content post={props.mainPost} isFooter={false} />
                 <div className='sci_hero_body_right'>
                     <img src={props.mainPost.image} alt='image'></img>
                 </div>

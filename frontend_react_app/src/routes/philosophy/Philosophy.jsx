@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './philosophy.css'
 import Philosophy_article from '../../components/common/philosophy_article/Philosophy_article'
 import Stroy_box from '../../components/common/story_box/Story_box'
 import VideoBackground from '../../assets/videos/philosophy_video.mp4'
+import axios from 'axios';
+import BASE_URL from '../../../config';
+import LoadingSpinner from '../../utils/loading_spinner/LoadingSpinner';
 
-function Philosophy(props) {
+function Philosophy() {
+    const [philosophy_article_posts, setPhilosophyArticlePosts] = useState([]);
+    const [philosophy_posts, setPhilosophyPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/postofPhilosophy`)
+            .then((response) => {
+                setPhilosophyArticlePosts(response.data.philosophy_article_posts);
+                setPhilosophyPosts(response.data.philosophy_posts);
+            })
+            .catch((error) => {
+                console.error('Error fetching  data:', error);
+            });
+
+
+        setLoading(false);
+    }, []);
     return (
         <div >
             <div className='philo_intro'>
@@ -25,16 +45,19 @@ function Philosophy(props) {
                     </div>
                 </div>
             </div>
-            <h4 className='notable_figures'>Notable figuers in Philosophy</h4>
-            <div className='void3'></div>
-            <div className='philosophy_article_container'>
-                {props.philosophy_article_posts && props.philosophy_article_posts.map((post) => (
-                    <Philosophy_article post={post} key={post.id} />
-                ))}
-            </div>
-            {props.philosophy_posts && props.philosophy_posts.map((post) => (
-                <Stroy_box post={post} key={post.id} />
-            ))}
+            {loading ? <LoadingSpinner /> : (
+                <>
+                    <h4 className='notable_figures'>Notable figuers in Philosophy</h4>
+                    <div className='void3'></div>
+                    <div className='philosophy_article_container'>
+                        {philosophy_article_posts && philosophy_article_posts.map((post) => (
+                            <Philosophy_article post={post} key={post.id} />
+                        ))}
+                    </div>
+                    {philosophy_posts && philosophy_posts.map((post) => (
+                        <Stroy_box post={post} key={post.id} />
+                    ))}
+                </>)}
         </div>
     )
 }

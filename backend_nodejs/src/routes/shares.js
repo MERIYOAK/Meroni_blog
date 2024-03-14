@@ -1,7 +1,7 @@
 import exress from 'express';
 import { Post } from "../models/post.js";
 import { Share } from '../models/reactions.js';
-import { populateReactions } from './fetch_posts.js';
+import populateReactions from '../middlewares/populateReactions.js';
 
 const shares = exress();
 

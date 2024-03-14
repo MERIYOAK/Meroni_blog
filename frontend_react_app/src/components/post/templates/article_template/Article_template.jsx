@@ -221,7 +221,7 @@ function Article_template({ postType, post, postToBeDeleted }) {
                             required
                         /><br />
 
-                        <button type="submit">{post
+                        <button type="submit" className='btn-primary'>{post
                             ? 'Update Article'
                             : postToBeDeleted
                                 ? 'Delete Article'

@@ -34,6 +34,7 @@
     border: 2px solid transparent;
     border-radius: .5rem;
     transition: var(--transition);
+    color: var(--color-black) !important;
 }
 
 .template_container input:focus, .template_container textarea:focus, .template_container select:focus {
@@ -130,6 +131,7 @@ body.dark-theme .template_container input, body.dark-theme .template_container t
     border: 2px solid transparent;
     border-radius: .5rem;
     transition: var(--transition);
+
 }
 
 body.dark-theme .template_container input:focus,body.dark-theme  .template_container textarea:focus, body.dark-theme .template_container select:focus {
