@@ -23,7 +23,8 @@ function Sign_up() {
     const [country, setCountry] = useState('');
     const [city, setCity] = useState('');
     const [bio, setBio] = useState('');
-    const [isLoginButtonDisabled, setLoginButtonDisabled] = useState(false)
+    const [isLoginButtonDisabled, setLoginButtonDisabled] = useState(false);
+    const [isSignUpButtonDisabled, setSignUpButtonDisabled] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
     const [countdown, setCountdown] = useState(0);
     const [isContributorClicked, setIsContributorClicked] = useState(false);
@@ -36,6 +37,8 @@ function Sign_up() {
 
         try {
             e.preventDefault();
+
+            setSignUpButtonDisabled(true);
 
             // After handling other form fields, set the role based on the checkbox
             const role = isEditor ? 'Pending' : 'Reader';
@@ -93,8 +96,10 @@ function Sign_up() {
 
             if (responseData.error) {
                 alert(responseData.message);
+                setSignUpButtonDisabled(false);
             } else if (responseData.success) {
                 alert(`${responseData.message}\nYour email is ${responseData.email}`);
+                setSignUpButtonDisabled(false);
 
                 dispatch({
                     type: 'LOGIN',
@@ -325,7 +330,7 @@ function Sign_up() {
                                 </div>
                             )}
 
-                            <button type="submit" className='btn-primary sign-up-btn' >Sign up</button>
+                            <button type="submit" className='btn-primary sign-up-btn' disabled={isSignUpButtonDisabled} style={isSignUpButtonDisabled ? { display: 'none' } : {}}  >Sign up</button>
 
                             {!isEditor && !isContributorClicked && (
                                 <a onClick={() => setIsContributorClicked(true)}><p id='contributor'>Become a contributor</p></a>
